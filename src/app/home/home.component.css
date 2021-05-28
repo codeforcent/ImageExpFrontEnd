@@ -1,0 +1,57 @@
+.container-fluid {
+    /* background-color: rgb(180, 180, 180, 0.3); */
+    margin-top: -48px;
+    padding-top: 50px;
+}
+
+.save-btn {
+    float: right;
+}
+
+a {
+    height: fit-content;
+}
+
+.pin {
+    z-index: 2;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 45%;
+    padding: 10px;
+    background-color: rgb(150, 150, 150, 0.4);
+}
+
+.avatar-img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: none;
+    box-shadow: 1px 4px 8px 1px rgba(0, 195, 255, 0.2), 1px 6px 20px 1px rgba(0, 110, 255, 0.19);
+    position: absolute;
+    bottom: 10px;
+}
+
+.share {
+    position: absolute;
+    bottom: 10px;
+    right: 50px;
+    display: none;
+}
+
+.ellipsis {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: none;
+}
+
+.gal-img {
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+}
+
+.gal>* {
+    margin-right: -10px;
+    margin-bottom: 20px;
+}
