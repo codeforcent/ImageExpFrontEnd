@@ -1,0 +1,53 @@
+<app-header></app-header>
+
+<div class="container-fluid">
+    <form>
+        <input type="submit" value="Upload" class="btn btn-danger rounded-pill solid">
+        <div class="row">
+            <div class="col-lg-4 upImg">
+                <div [ngStyle]="uploaded ? {'border' : '0'} : {'border' : 'border: 2px dashed cadetblue;'} ">
+                    <img [src]="url" width="100%" class="uploadedImg">
+                    <input class="inputImg" (change)="onSelectedFile($event)" type="file" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" style="cursor: pointer; height: 100%; opacity: 0; position: absolute; width: 100%; left: 0px; top: 0px; font-size: 0px;">
+                    <div class="inputOnImg" *ngIf="!uploaded">
+                        <i class="fas fa-upload"></i>
+                        <p class="text-center">Drag and drop or choose your file for uploading</p>
+                        <small class="form-text text-center">Recommend: using .jpg file < 200MB</small>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-lg-8 upInfor">
+                <div class="top-upInfor">
+                    <div class="input-field">
+
+                        <textarea placeholder="Create your title" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
+
+                    </div>
+                    <div class="own">
+                        <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="avatar-img" alt="...">
+                        <span class="username">username</span>
+                    </div>
+
+
+                    <ng-multiselect-dropdown [placeholder]="'Choose your topic(s)'" [settings]="dropdownSettings" [data]="dropdownList" [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" (click)="ngOnInit()">
+
+                    </ng-multiselect-dropdown>
+                    <div class="input-field">
+                        <textarea placeholder="Let's show everyone what you would like to share" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
+                    </div>
+                </div>
+
+                <tag-input [theme]="'bootstrap'" [(ngModel)]="dragAndDropObjects" [ngModel]="['item']" name="items" [addOnBlur]="true" [clearOnBlur]="true" [editable]="true" (onTagEdited)="onTagEdited($event)" [dragZone]="'zone1'">
+                    <tag-input-dropdown [autocompleteItems]="autocompleteItems">
+                    </tag-input-dropdown>
+                </tag-input>
+
+            </div>
+        </div>
+
+
+
+    </form>
+
+</div>

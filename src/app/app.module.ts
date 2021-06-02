@@ -1,13 +1,20 @@
-import { NgModule, Directive } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { Routes, RouterModule } from '@angular/router';
-
+import { NgSelect2Module } from 'ng-select2';
+import {NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { JsonPipe } from '@angular/common';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TagInputModule } from 'ngx-chips';
+import {TextFieldModule} from '@angular/cdk/text-field';
 const routesConfig: Routes = [
   { path: 'userLogin', component: SigninComponent},
-  { path: '', component: HomeComponent}
+  { path: '', component: HomeComponent},
+  { path: 'upload', component: UploadComponent}
 ];
 
 
@@ -17,8 +24,11 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { UserComponent } from './user/user.component';
 import { SigninComponent } from './signin/signin.component';
-import { SocialAuthServiceConfig  } from 'angularx-social-login';
-import { SocialLoginModule, GoogleLoginProvider } from 'angularx-social-login';
+import { SocialLoginModule } from 'angularx-social-login';
+import { ClickOutsideDirective } from './click-outside.directive';
+import { ImageComponent } from './image/image.component';
+import { UploadComponent } from './upload/upload.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -28,7 +38,10 @@ import { SocialLoginModule, GoogleLoginProvider } from 'angularx-social-login';
     HeaderComponent,
     FooterComponent,
     UserComponent,
-    SigninComponent
+    SigninComponent,
+    ClickOutsideDirective,
+    ImageComponent,
+    UploadComponent
 
   ],
   imports: [
@@ -38,21 +51,19 @@ import { SocialLoginModule, GoogleLoginProvider } from 'angularx-social-login';
     HttpClientModule,
     ReactiveFormsModule,
     SocialLoginModule,
-    RouterModule.forRoot(routesConfig)
+    MatProgressBarModule,
+    NgbModule,
+    TagInputModule,
+    TextFieldModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    RouterModule.forRoot(routesConfig),
+    BrowserAnimationsModule
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider('509192302630-gh7tosdn682pb7inin05e1tck05l1ap4.apps.googleusercontent.com')
-          }
-        ]
-      } as SocialAuthServiceConfig,
-    }
+    JsonPipe
   ],
   bootstrap: [AppComponent]
 })

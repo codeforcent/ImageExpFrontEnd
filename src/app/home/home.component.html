@@ -1,217 +1,27 @@
 <app-header></app-header>
-<h1>Hello3</h1>
+
 <div class="container-fluid">
-    <div class="row gal">
-        <a href="#" class="col-3">
-            <div class="gal-item" (mouseover)="hovered=true" (mouseleave)="hovered=false">
-                <div class="text-white">
-                    <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="card-img gal-img" alt="..." [ngStyle]="hovered ? { 'opacity' : '0.4' } : { 'opacity' : '1' }">
-                    <div class="card-img-overlay">
-                        <button type="button" class="btn btn-primary save-btn" [ngStyle]=" hovered ? { 'display' : 'inline-block'} : { 'display' : 'none' }">Save</button>
-                        <a href="#">
-                            <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="avatar-img" alt="..." [ngStyle]=" hovered ? { 'display' : 'inline-block'} : { 'display' : 'none' }">
-                        </a>
-                        <div class="share" [ngStyle]=" hovered ? { 'display' : 'inline-block'} : { 'display' : 'none' }">
-                            <a href="#">
-                                <i class="fas fa-share-square fa-2x" style="color: black"></i>
-                            </a>
 
-                        </div>
-                        <div class="ellipsis" [ngStyle]=" hovered ? { 'display' : 'inline-block'} : { 'display' : 'none' }">
-                            <a href="#">
-                                <i class="fas fa-ellipsis-h fa-2x" style="color: black"></i>
-                            </a>
+    <div class="card-columns">
+        <div class="gal" *ngFor="let item of listSrc">
+            <app-image [item]=item [hovered]="item === hoveredItem" (mouseover)="onMouseover(item)" (mouseleave)="onMouseleave(item)"></app-image>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <a href="#" class="col-3">
-            <div class="gal-item">
-                <div class="text-white">
-                    <img src="https://i1.sndcdn.com/artworks-000428487834-xokjnv-t500x500.jpg" class="card-img gal-img" alt="...">
-                    <div class="card-img-overlay">
-                        <button type="button" class="btn btn-primary save-btn" style="display: none;">Save</button>
-                        <a href="#">
-                            <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="avatar-img" alt="...">
-                        </a>
-                        <div class="share">
-                            <a href="#">
-                                <i class="fas fa-share-square fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                        <div class="ellipsis">
-                            <a href="#">
-                                <i class="fas fa-ellipsis-h fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="col-3">
-            <div class="gal-item">
-                <div class="text-white">
-                    <img src="https://image.hayghe.org/data/film/Your-Lie-in-April-1.jpg" class="card-img gal-img" alt="...">
-                    <div class="card-img-overlay">
-                        <button type="button" class="btn btn-primary save-btn" style="display: none;">Save</button>
-                        <a href="#">
-                            <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="avatar-img" alt="...">
-                        </a>
-                        <div class="share">
-                            <a href="#">
-                                <i class="fas fa-share-square fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                        <div class="ellipsis">
-                            <a href="#">
-                                <i class="fas fa-ellipsis-h fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="col-3">
-            <div class="gal-item">
-                <div class="text-white">
-                    <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="card-img gal-img" alt="...">
-                    <div class="card-img-overlay">
-                        <button type="button" class="btn btn-primary save-btn" style="display: none;">Save</button>
-                        <a href="#">
-                            <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="avatar-img" alt="...">
-                        </a>
-                        <div class="share">
-                            <a href="#">
-                                <i class="fas fa-share-square fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                        <div class="ellipsis">
-                            <a href="#">
-                                <i class="fas fa-ellipsis-h fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="col-3">
-            <div class="gal-item">
-                <div class="text-white">
-                    <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="card-img gal-img" alt="...">
-                    <div class="card-img-overlay">
-                        <button type="button" class="btn btn-primary save-btn" style="display: none;">Save</button>
-                        <a href="#">
-                            <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="avatar-img" alt="...">
-                        </a>
-                        <div class="share">
-                            <a href="#">
-                                <i class="fas fa-share-square fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                        <div class="ellipsis">
-                            <a href="#">
-                                <i class="fas fa-ellipsis-h fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="col-3">
-            <div class="gal-item">
-                <div class="text-white">
-                    <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="card-img gal-img" alt="...">
-                    <div class="card-img-overlay">
-                        <button type="button" class="btn btn-primary save-btn" style="display: none;">Save</button>
-                        <a href="#">
-                            <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="avatar-img" alt="...">
-                        </a>
-                        <div class="share">
-                            <a href="#">
-                                <i class="fas fa-share-square fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                        <div class="ellipsis">
-                            <a href="#">
-                                <i class="fas fa-ellipsis-h fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="col-3">
-            <div class="gal-item">
-                <div class="text-white">
-                    <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="card-img gal-img" alt="...">
-                    <div class="card-img-overlay">
-                        <button type="button" class="btn btn-primary save-btn" style="display: none;">Save</button>
-                        <a href="#">
-                            <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="avatar-img" alt="...">
-                        </a>
-                        <div class="share">
-                            <a href="#">
-                                <i class="fas fa-share-square fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                        <div class="ellipsis">
-                            <a href="#">
-                                <i class="fas fa-ellipsis-h fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="#" class="col-3">
-            <div class="gal-item">
-                <div class="text-white">
-                    <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="card-img gal-img" alt="...">
-                    <div class="card-img-overlay">
-                        <button type="button" class="btn btn-primary save-btn" style="display: none;">Save</button>
-                        <a href="#">
-                            <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="avatar-img" alt="...">
-                        </a>
-                        <div class="share">
-                            <a href="#">
-                                <i class="fas fa-share-square fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                        <div class="ellipsis">
-                            <a href="#">
-                                <i class="fas fa-ellipsis-h fa-2x" style="color: black"></i>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
+        </div>
 
 
 
 
-    <div class="pin">
-        <a href="#">
-            <i class="fas fa-plus fa-2x" style="color:rgba(255,255,255, 0.9)"></i>
-        </a>
 
     </div>
+
+
+
+    <a href="/upload">
+        <div class="pin" (mouseover)="hoveredPin=true" (mouseleave)="hoveredPin=false">
+
+            <i class="fas fa-plus" [ngStyle]="hoveredPin ? {'color' : 'rgb(150, 150, 150)'} : {'color' : 'rgba(255,255,255, 0.9)'}"></i>
+
+        </div>
+    </a>
+
 </div>

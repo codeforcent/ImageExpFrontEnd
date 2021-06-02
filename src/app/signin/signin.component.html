@@ -1,10 +1,5 @@
-<div *ngIf="user">
-    <h1>Login successfully</h1>
-</div>
+<mat-progress-bar mode="indeterminate" value=40 *ngIf="onload"></mat-progress-bar>
 
-<div *ngIf="user">
-    <button type="submit" class="btn btn-danger" (click)="onClickSignOutByGoogle()">Sign Out</button>
-</div>
 <div class="container" [ngClass]="{'sign-up-mode' :  signMode }">
     <div class="form-container">
         <div class="signin-signup">
@@ -23,6 +18,7 @@
                     <small *ngIf="formSignIn.get('password')?.invalid && formSignIn.get('password')?.touched" class="form-text error-text">Password is required</small>
 
                 </div>
+                <small *ngIf="!signInSuccess" class="form-text error-text">Invalid email or password</small>
                 <input type="submit" value="Login" class="btn solid" [disabled]="formSignIn.invalid">
 
 
@@ -32,7 +28,7 @@
                 <h2 class="title">Sign up</h2>
                 <div class="input-field" [ngClass]="{'error-box' : formSignUp.get('email')?.invalid && formSignUp.get('email')?.touched}">
                     <i class="fas fa-envelope"></i>
-                    <input type="text" placeholder="Email" formControlName="email" required>
+                    <input type="text" placeholder="Email" formControlName="email" required ngbPopover="Existed email" triggers="manual" #p="ngbPopover" placement="top-right">
                     <span></span>
                     <small *ngIf="formSignUp.get('email')?.errors?.required && formSignUp.get('email')?.touched" class="form-text error-text">Email is required</small>
                     <small *ngIf="formSignUp.get('email')?.errors?.email" class="form-text error-text">Email is invalid</small>
@@ -56,7 +52,7 @@
                     <small *ngIf="formSignUp.get('repassword')?.value !== formSignUp.get('password')?.value && formSignUp.get('repassword')?.touched && formSignUp.get('password')?.touched" class="form-text error-text">Repassword is not match with password</small>
 
                 </div>
-                <input type="submit" value="Sign Up" class="btn solid" [disabled]="formSignUp.invalid">
+                <input type="submit" value="Sign Up" class="btn solid" [disabled]="formSignUp.invalid || onload">
 
 
             </form>

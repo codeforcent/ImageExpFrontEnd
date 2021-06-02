@@ -1,0 +1,28 @@
+<a href="#">
+    <!-- [ngStyle]="{'background-image' : 'url('+ item.src +')'}" -->
+    <div class="gal-item overlay">
+        <img src="{{item.src}}" class="card-img gal-img" alt="..." [ngStyle]="hovered ? { 'opacity' : '0.4' } : { 'opacity' : '1' }" #gal_img>
+        <!-- <div [ngStyle]="hovered ? { 'top' : calHeight() } : { 'display' : 'none' }"> -->
+        <button type="button" class="btn btn-primary save-btn rounded-pill" [ngStyle]="hovered ? {'display' : 'inline-block' } : { 'display' : 'none' }">Save</button>
+        <a href="#">
+            <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="avatar-img" alt="..." [ngStyle]="hovered ? { 'top' : calHeight() } : { 'display' : 'none' }">
+        </a>
+        <div class="share" [ngStyle]="hovered ? { 'top' : calHeightIC(), 'display' : 'inline-block' } : { 'display' : 'none' }">
+            <a href="#">
+                <i class="fas fa-share-square" style="color: black"></i>
+            </a>
+
+        </div>
+        <div class="ellipsis" [ngStyle]="hovered ? { 'top' : calHeightIC(), 'display' : 'inline-block' } : { 'display' : 'none' }">
+            <a href="#">
+                <i class="fas fa-ellipsis-h" style="color: black"></i>
+            </a>
+
+        </div>
+        <!-- </div> -->
+
+
+
+
+    </div>
+</a>

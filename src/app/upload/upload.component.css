@@ -1,0 +1,206 @@
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~@ng-select/ng-select/themes/material.theme.css";
+.avatar img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.container-fluid {
+    background-color: rgb(180, 180, 180, 0.3);
+    margin-top: -48px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    box-shadow: 0 4px 8px 0 rgba(0, 195, 255, 0.2), 0 6px 20px 0 rgba(0, 110, 255, 0.19);
+}
+
+.post-img {
+    margin-left: 10px;
+    position: relative;
+    top: 10px;
+}
+
+.post-content>* {
+    margin-top: 20px;
+}
+
+.btn-save {
+    margin: 10px;
+    position: relative;
+    left: 380px;
+}
+
+.close {
+    position: relative;
+    right: 430px;
+    margin-top: 10px;
+}
+
+.post-content {
+    display: inline-block;
+    position: relative;
+    left: 220px;
+    bottom: 70px;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0rem 5rem;
+    transition: all 0.2s 0.7s;
+    overflow: hidden;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+    width: 70%;
+    margin-left: 15%;
+    border-radius: 10px;
+    padding: 20px;
+    grid-template-columns: 50% 50%;
+}
+
+.upImg {
+    position: relative;
+    right: 120px;
+    width: 250px;
+    height: 350px;
+    padding: 10px;
+    background-color: aliceblue;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+    border-radius: 10px;
+}
+
+.upImg>div {
+    border: 2px dashed cadetblue;
+    border-radius: 10px;
+    height: 330px;
+}
+
+.uploadedImg {
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+    max-height: 100%;
+}
+
+.inputOnImg i {
+    position: relative;
+    top: 110px;
+    left: 110px;
+}
+
+.inputOnImg p {
+    position: relative;
+    top: 110px;
+}
+
+.inputOnImg small {
+    position: relative;
+    top: 190px;
+}
+
+.inputImg {
+    z-index: 1;
+}
+
+.upInfor {
+    position: relative;
+    left: -110px;
+    top: -25px;
+}
+
+.row {
+    width: 100%;
+    margin-left: 235px;
+}
+
+.input-field {
+    max-width: 380px;
+    width: 100%;
+    margin: 15px 0;
+    /* height: 55px; */
+    display: grid;
+    padding: 0 0.4rem;
+    position: relative;
+}
+
+.input-field textarea {
+    background: none;
+    outline: none;
+    border: none;
+    line-height: 1.5;
+    color: #333;
+    border-bottom: 2px solid #aaa;
+    margin-top: -15px;
+}
+
+.input-field:first-child textarea {
+    font-size: 1.5rem;
+    max-width: 95%;
+    white-space: pre-wrap;
+    overflow: hidden;
+    height: 36px;
+    word-wrap: break-word;
+    resize: none;
+    vertical-align: top;
+    padding: 0;
+    font-weight: 600;
+}
+
+.input-field:nth-last-child(1) textarea {
+    font-size: 0.8rem;
+    width: 480px;
+    white-space: pre-wrap;
+    overflow: hidden;
+    height: 20px;
+    word-wrap: break-word;
+    resize: none;
+    vertical-align: top;
+    padding: 0;
+    margin-top: 10px;
+    font-weight: 300;
+    margin-left: -5px;
+    margin-bottom: 10px;
+}
+
+.input-field textarea::placeholder {
+    color: #aaa;
+    font-weight: 500;
+}
+
+.avatar-img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: 1px 4px 8px 1px rgba(0, 195, 255, 0.2), 1px 6px 20px 1px rgba(0, 110, 255, 0.19);
+    margin-top: 10px;
+}
+
+.btn {
+    position: relative;
+    left: 45%;
+    top: -5px;
+    right: -20px;
+    margin-bottom: 10px;
+}
+
+.username {
+    margin-left: 5px;
+    vertical-align: middle;
+    font-weight: 700;
+}
+
+.own {
+    margin-bottom: 20px;
+}
+
+tag-input[name="items"] {
+    margin-top: 10px;
+}
+
+.top-upInfor {
+    height: 350px;
+    margin-bottom: 10px;
+}

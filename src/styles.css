@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+
+.item2 {
+    display: flex;
+    overflow: hidden;
+    flex-wrap: wrap;
+}
+
+.item2 li {
+    margin-right: 10px;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

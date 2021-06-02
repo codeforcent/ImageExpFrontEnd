@@ -1,10 +1,13 @@
 {
   "account": [
     {
-      "email": "kiet@gmail.com",
-      "password": "123456",
-      "repassword": "123456",
       "id": 1
+    },
+    {
+      "email": "kiet1@gmail.com",
+      "password": "admin1",
+      "repassword": "admin1",
+      "id": 2
     }
   ],
   "pic": [

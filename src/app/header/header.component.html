@@ -1,11 +1,14 @@
 <div class="header">
     <header class="d-flex shadow-lg p-3 mb-5 rounded">
-        <img id="logo" src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" alt="">
+        <a href="#">
+            <img id="logo" src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" alt="">
+        </a>
         <form class="search-form">
             <div class="input-group input-group-lg">
-                <input type="text" class="form-control" placeholder="Search">
+                <span class="ico ico-mglass" [ngClass]="clicked ? {'ico-mglass' : false} : {'ico-mglass' : true}"></span>
+                <input type="text" class="form-control rounded-pill" [placeholder]="clicked ? 'Search' : '    Search'" (click)="clicked=true" (clickOutside)="clicked=false">
                 <span class="input-group-append" style="margin-left: 0.5px;">
-                <button class="btn btn-success" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+
             </span>
             </div>
         </form>
@@ -98,11 +101,13 @@
             </div>
         </div>
 
-        <div class="avatar">
+        <div class="avatar" style="display: none">
             <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" alt="...">
         </div>
         <!-- Example single danger button -->
-        <div class="btn-group drop-menu">
+        <a class="btn btn-danger rounded-pill sign-in" href="/userLogin">Sign in</a>
+
+        <div class="btn-group drop-menu" style="display: none">
             <button type="button" class="border-0" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: rgba(20, 140, 177,0); " data-offset="-150,0">
 
             <i class="fas fa-sort-down"></i>

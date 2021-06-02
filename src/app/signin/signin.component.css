@@ -279,6 +279,10 @@ form.sign-in-form {
     border: 2px solid red;
 }
 
+.popover {
+    z-index: 1080;
+}
+
 @media (max-width: 870px) {
     .container {
         min-height: 800px;
