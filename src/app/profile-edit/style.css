@@ -1,0 +1,166 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    overflow: hidden;
+    padding: 0 20px;
+    background: linear-gradient(80deg, lightsalmon, rgb(102, 196, 255));
+}
+
+::selection {
+    background: rgba(23, 162, 184, 0.3);
+}
+
+.wrapper {
+    max-width: 90%;
+    width: 50%;
+    margin: 5% auto;
+    padding: 25px 30px 30px 30px;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper header {
+    font-size: 30px;
+    font-weight: 600;
+    padding-bottom: 20px;
+}
+
+.wrapper nav {
+    position: relative;
+    width: 80%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.wrapper nav label {
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    color: #75CCF1;
+    font-size: 17px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.wrapper nav label:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+#personal:checked~nav label.personal,
+#setting:checked~nav label.setting {
+    color: #fff;
+}
+
+nav label i {
+    padding-right: 7px;
+}
+
+nav .slider {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    left: 0;
+    bottom: 0;
+    z-index: 0;
+    border-radius: 5px;
+    background: #F9EF9B;
+    transition: all 0.3s ease;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+#personal:checked~nav .slider {
+    left: 0%;
+}
+
+#setting:checked~nav .slider {
+    left: 50%;
+}
+
+section .content {
+    display: none;
+    background: #fff;
+}
+
+#personal:checked~section .content-1,
+#setting:checked~section .content-2 {
+    display: block;
+}
+
+section .content .title {
+    font-size: 21px;
+    font-weight: 500;
+    margin: 30px 0 10px 0;
+}
+
+section .content p {
+    text-align: justify;
+}
+
+.form {
+    padding: 1%;
+    padding-top: 0%;
+    margin: 1%;
+}
+
+.title1 {
+    color: #799FCB;
+}
+
+.title2 {
+    color: #FFD19B;
+}
+
+.input-field {
+    width: 60%;
+    height: 30px;
+    border-radius: 50px;
+    display: grid;
+    grid-template-columns: 5% 85%;
+    padding: 0 0.4rem;
+    position: relative;
+    padding-bottom: 1%;
+    margin: 10px 0;
+    margin-left: 5%;
+}
+
+.name-form .input-field {
+    background-color: #799FCB;
+}
+
+.password-form .input-field {
+    background-color: #FFD19B;
+}
+
+.input-field i {
+    padding-left: 10px;
+    line-height: 30px;
+}
+
+.input-field input {
+    padding-left: 10%;
+    width: 100%;
+    height: 100%;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: rgb(0, 0, 0);
+    outline: none;
+    border: none;
+    line-height: 1;
+    background: none;
+}
