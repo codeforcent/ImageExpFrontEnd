@@ -164,3 +164,22 @@ section .content p {
     line-height: 1;
     background: none;
 }
+
+.btn {
+    width: 150px;
+    background-color: #9BD1A7;
+    border: none;
+    outline: none;
+    height: 25px;
+    border-radius: 25px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 10px 0;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.btn:hover {
+    background-color: #80BA9D;
+}
