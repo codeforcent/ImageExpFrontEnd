@@ -11,7 +11,7 @@ import { ChangePasswordService } from './change-password.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
-import { User } from '../../model/user';
+
 
 @Component({
   selector: 'app-change-password',
@@ -94,15 +94,9 @@ export class ChangePasswordComponent implements OnInit {
       res.then((__zone_symbol__value) =>  __zone_symbol__value.body.success === true)
     ) {
       // setTimeout(() => { }, 500);
-      var user = new User(
-        this.app.cookieService.get('auth-token'),
-        this.email,
-        this.username,
-        this.avatar,
-        1
-      );
 
-      var a = user.getAvatar();
+
+
 
   } else {
     this.app.cookieService.delete('auth-token');

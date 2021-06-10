@@ -10,6 +10,7 @@ export class User {
   getEmail() { return this.email; }
   getUsername() { return this.username; }
   getAvatar() { return this.avatar; }
+  getStatus() {return this.status;}
   setUsername(username) { this.username = username; }
   setAvatar(avatar) { this.avatar = avatar; }
   setStatus(status) {this.status = status;}

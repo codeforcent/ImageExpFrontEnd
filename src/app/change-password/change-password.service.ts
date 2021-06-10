@@ -13,7 +13,7 @@ export class ChangePasswordService {
        {reportProgress: true});
     console.warn("request",this.http.request(request).subscribe(event => console.log("ev", event)));
 
-    var data1 = this.http.post<any>('http://localhost:8000/changeuserpassword', { "success": "false" }).subscribe(data => {
+    this.http.post<any>('http://localhost:8000/changeuserpassword', { "success": "false" }).subscribe(data => {
     this.postID = data;
     console.warn("postID", data);
     });

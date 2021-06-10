@@ -32,7 +32,6 @@
         "@ng-bootstrap/ng-bootstrap": "^9.1.1",
         "@ng-select/ng-select": "^6.1.0",
         "angular-bootstrap-md": "^11.1.0",
-        "angularx-social-login": "^3.5.7",
         "bootstrap": "^5.0.1",
         "express": "^4.17.1",
         "jquery": "^3.6.0",
@@ -50,6 +49,7 @@
         "rxjs": "~6.6.0",
         "select2": "^4.1.0-rc.0",
         "tslib": "^2.2.0",
+        "tslint-etc": "^1.13.10",
         "zone.js": "~0.11.4"
     },
     "devDependencies": {
@@ -58,14 +58,16 @@
         "@angular/compiler-cli": "~12.0.1",
         "@types/jasmine": "~3.6.0",
         "@types/node": "^12.11.1",
+        "cypress": "7.5.0",
+        "gulp": "^4.0.2",
+        "gulp-purifycss": "^0.2.0",
         "jasmine-core": "~3.7.0",
         "karma": "~6.3.0",
         "karma-chrome-launcher": "~3.1.0",
         "karma-coverage": "~2.0.3",
         "karma-jasmine": "~4.0.0",
         "karma-jasmine-html-reporter": "^1.5.0",
-        "typescript": "~4.2.3",
-        "cypress": "7.5.0"
+        "typescript": "~4.2.3"
     },
     "engine": {
         "node": "14.17.0",

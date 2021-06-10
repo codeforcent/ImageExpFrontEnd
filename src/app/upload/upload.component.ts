@@ -101,8 +101,12 @@ export class UploadComponent implements OnInit {
 
 
 }
-  onItemSelect(item:any) {}
-  onSelectAll(item:any) {}
+  onItemSelect(item:any) {
+    console.log("item", item);
+  }
+  onSelectAll(item:any) {
+    console.log("item", item);
+  }
   public onTagEdited(item) {
     console.log('tag edited: current value is ' + item);
   }

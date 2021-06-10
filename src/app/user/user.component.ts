@@ -1,7 +1,5 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { MdbBtnDirective } from 'angular-bootstrap-md';
-import { Observable } from 'rxjs';
+
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-user',

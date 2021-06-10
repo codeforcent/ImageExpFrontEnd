@@ -5,7 +5,6 @@ import { AuthService } from './auth.service';
 import { ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from '../app.component';
-import { User } from '../../model/user';
 import { UserService } from '../user/user.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
 

@@ -14,11 +14,11 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   getList() {
-    const request = new HttpRequest(
-      "POST", "http://localhost:8000/registeruser", {},
-       {reportProgress: true});
+    // const request = new HttpRequest(
+    //   "POST", "http://localhost:8000/registeruser", {},
+    //    {reportProgress: true});
 
-    var data1 = this.http.post<any>('http://localhost:8000/registeruser', { "success": "false" }).subscribe(data => {
+    this.http.post<any>('http://localhost:8000/registeruser', { "success": "false" }).subscribe(data => {
     this.postID = data;
 
     });

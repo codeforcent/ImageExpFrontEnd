@@ -4,7 +4,7 @@
 
     <div class="card-columns">
         <div class="gal" *ngFor="let item of listSrc">
-            <app-image [item]=item [hovered]="item === hoveredItem" (mouseover)="onMouseover(item)" (mouseleave)="onMouseleave(item)"></app-image>
+            <app-image [item]=item [hovered]="item === hoveredItem" (mouseover)="onMouseover(item)" (mouseleave)="onMouseleave()"></app-image>
 
         </div>
 

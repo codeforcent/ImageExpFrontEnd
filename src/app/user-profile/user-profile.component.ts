@@ -79,7 +79,7 @@ export class UserProfileComponent implements OnInit {
         1
       );
 
-      var a = user.getAvatar();
+
     if (user.getAvatar() !== undefined) {
       this.url = user.getAvatar();
     } else {
@@ -129,10 +129,7 @@ console.warn('suc', (await res.then(
     ) {
       this.onload = true;
 
-      var obj = {
-        username: this.formUserProfile.get('username').value,
-        avatar: this.url,
-      };
+
       // this.app.user.setUsername(this.formUserProfile.get('username').value);
       // this.app.user.setAvatar(this.url);
       // setTimeout(() => {}, 500);

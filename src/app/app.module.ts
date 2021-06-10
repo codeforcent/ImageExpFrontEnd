@@ -43,7 +43,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { UserComponent } from './user/user.component';
 import { SigninComponent } from './signin/signin.component';
-import { SocialLoginModule } from 'angularx-social-login';
+
 import { ClickOutsideDirective } from './click-outside.directive';
 import { ImageComponent } from './image/image.component';
 import { UploadComponent } from './upload/upload.component';
@@ -78,7 +78,7 @@ import { UserService } from './user/user.service';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    SocialLoginModule,
+
     MatProgressBarModule,
     NgbModule,
     TagInputModule,
