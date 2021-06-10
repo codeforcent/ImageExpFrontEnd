@@ -1,1 +1,11 @@
-<p>user works!</p>
+<div class="row">
+    <div *ngFor="let exploreCard of exploreCards" class="col-sm-3">
+        <div class="card three-col">
+            <img class="card-img-top" [src]="exploreCard.src" alt="Card image cap" />
+            <div class="card-body">
+                <h5 class="card-title">{{exploreCard.title}}</h5>
+                <p>{{exploreCard.id}}</p>
+            </div>
+        </div>
+    </div>
+</div>

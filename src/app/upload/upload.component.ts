@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ViewChild,Input,NgZone} from '@angular/core'
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
-import { FormControl, FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {take} from 'rxjs/operators';
 @Component({
@@ -80,16 +80,12 @@ export class UploadComponent implements OnInit {
   onKeyUpBSTitle(ev) {
     this.charCount = ev?.target?.value?.length;
     // console.warn("len", ev?.target?.value?.length);
-    console.warn("backspace1", this.charCount);
-    console.warn("backspace", this.charCount % 28 === 0);
-    console.warn("backspace", this.charCount % 29 === 0);
-    console.warn("backspace", this.charCount %26 === 0);
-    console.warn("backspace", this.charCount %27 === 0);
+
 
       if (this.charCount % 27 === 0 && this.charCount > 0) {
-        console.log("before", this.scrollHeightTitle);
+
         this.scrollHeightTitle -= 35;
-        console.log("after", this.scrollHeightTitle);
+
       }
     }
 
@@ -105,8 +101,12 @@ export class UploadComponent implements OnInit {
 
 
 }
-  onItemSelect(item:any) {}
-  onSelectAll(item:any) {}
+  onItemSelect(item:any) {
+    console.log("item", item);
+  }
+  onSelectAll(item:any) {
+    console.log("item", item);
+  }
   public onTagEdited(item) {
     console.log('tag edited: current value is ' + item);
   }

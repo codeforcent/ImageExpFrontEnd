@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   onMouseover(item) {
     this.hoveredItem = item;
   }
-  onMouseleave(item) {
+  onMouseleave() {
     this.hoveredItem = null;
   }
 }

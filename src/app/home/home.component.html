@@ -4,7 +4,7 @@
 
     <div class="card-columns">
         <div class="gal" *ngFor="let item of listSrc">
-            <app-image [item]=item [hovered]="item === hoveredItem" (mouseover)="onMouseover(item)" (mouseleave)="onMouseleave(item)"></app-image>
+            <app-image [item]=item [hovered]="item === hoveredItem" (mouseover)="onMouseover(item)" (mouseleave)="onMouseleave()"></app-image>
 
         </div>
 
@@ -16,7 +16,7 @@
 
 
 
-    <a href="/upload">
+    <a href="/post">
         <div class="pin" (mouseover)="hoveredPin=true" (mouseleave)="hoveredPin=false">
 
             <i class="fas fa-plus" [ngStyle]="hoveredPin ? {'color' : 'rgb(150, 150, 150)'} : {'color' : 'rgba(255,255,255, 0.9)'}"></i>

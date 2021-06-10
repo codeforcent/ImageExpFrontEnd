@@ -7,6 +7,8 @@
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true  ,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
