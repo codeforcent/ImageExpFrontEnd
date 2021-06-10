@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve",
+        "start": "node server.js",
         "build": "ng build",
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
@@ -11,7 +11,7 @@
         "test:coverage": "ng test --code-coverage=true",
         "cypress:open": "cypress open",
         "cypress:run": "cypress run",
-        "heroku-postbuild": "ng build --prod"
+        "heroku-postbuild": "ng build"
     },
     "private": true,
     "dependencies": {
@@ -53,7 +53,7 @@
         "zone.js": "~0.11.4"
     },
     "devDependencies": {
-        "@angular-devkit/build-angular": "~12.0.1",
+        "@angular-devkit/build-angular": "^12.0.3",
         "@angular/cli": "~12.0.1",
         "@angular/compiler-cli": "~12.0.1",
         "@types/jasmine": "~3.6.0",
