@@ -11,7 +11,7 @@
         "test:coverage": "ng test --code-coverage=true",
         "cypress:open": "cypress open",
         "cypress:run": "cypress run",
-        "heroku-postbuild": "ng build --prod"
+        "heroku-postbuild": "ng build"
     },
     "private": true,
     "dependencies": {
