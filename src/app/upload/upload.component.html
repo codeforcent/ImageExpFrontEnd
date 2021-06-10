@@ -38,7 +38,8 @@
                     </div>
                 </div>
 
-                <tag-input [theme]="'bootstrap'" [(ngModel)]="dragAndDropObjects" [ngModel]="['item']" name="items" [addOnBlur]="true" [clearOnBlur]="true" [editable]="true" (onTagEdited)="onTagEdited($event)" [dragZone]="'zone1'">
+                <tag-input [theme]="'bootstrap'" [(ngModel)]="dragAndDropObjects" [placeholder]="'+ New keyword(s)'" [secondaryPlaceholder]="'+ Add keywords'" name="items" [addOnBlur]="true" [clearOnBlur]="true" [editable]="true" (onTagEdited)="onTagEdited($event)" [dragZone]="'zone1'"
+                    [identifyBy]="'id'" [displayBy]="'value'">
                     <tag-input-dropdown [autocompleteItems]="autocompleteItems">
                     </tag-input-dropdown>
                 </tag-input>

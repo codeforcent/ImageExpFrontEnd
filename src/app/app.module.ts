@@ -4,17 +4,36 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { Routes, RouterModule } from '@angular/router';
-import { NgSelect2Module } from 'ng-select2';
 import {NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { JsonPipe } from '@angular/common';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TagInputModule } from 'ngx-chips';
 import {TextFieldModule} from '@angular/cdk/text-field';
+import { CookieService } from 'ngx-cookie-service';
+import {MDBBootstrapModule  } from 'angular-bootstrap-md';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import {PasswordModule} from 'primeng/password';
+import {ButtonModule} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+import {MessageService} from 'primeng/api';
+import {ToastModule} from 'primeng/toast';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {PanelMenuModule} from 'primeng/panelmenu';
+import {TabMenuModule} from 'primeng/tabmenu';
+import {MenuModule} from 'primeng/menu';
 const routesConfig: Routes = [
+
   { path: 'userLogin', component: SigninComponent},
   { path: '', component: HomeComponent},
-  { path: 'upload', component: UploadComponent}
+  { path: 'post', component: UploadComponent},
+  { path: 'user', component: UserComponent},
+  { path: 'settings', component: UserProfileComponent},
+  { path: 'settings/user-profile', component: UserProfileComponent},
+  { path: 'settings/change-password', component: ChangePasswordComponent}
 ];
 
 
@@ -29,6 +48,11 @@ import { ClickOutsideDirective } from './click-outside.directive';
 import { ImageComponent } from './image/image.component';
 import { UploadComponent } from './upload/upload.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { SettingsComponent } from './settings/settings.component';
+import { UserService } from './user/user.service';
+
 
 
 @NgModule({
@@ -41,7 +65,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SigninComponent,
     ClickOutsideDirective,
     ImageComponent,
-    UploadComponent
+    UploadComponent,
+    UserProfileComponent,
+    ChangePasswordComponent,
+    SettingsComponent
+
 
   ],
   imports: [
@@ -55,6 +83,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NgbModule,
     TagInputModule,
     TextFieldModule,
+    MDBBootstrapModule,
+    DragDropModule,
+    PasswordModule,
+    ButtonModule,
+    InputTextModule,
+    AutoCompleteModule,
+    MessagesModule,
+    MessageModule,
+    ToastModule,
+    FontAwesomeModule,
+    PanelMenuModule,
+    TabMenuModule,
+    MenuModule,
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot(routesConfig),
     BrowserAnimationsModule
@@ -63,7 +104,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [
-    JsonPipe
+    JsonPipe,
+    CookieService,
+    MessageService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

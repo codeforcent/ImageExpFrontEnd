@@ -1,4 +1,5 @@
-<mat-progress-bar mode="indeterminate" value=40 *ngIf="onload"></mat-progress-bar>
+<mat-progress-bar mode="indeterminate" value=40 *ngIf="onload">
+</mat-progress-bar>
 
 <div class="container" [ngClass]="{'sign-up-mode' :  signMode }">
     <div class="form-container">
@@ -9,46 +10,68 @@
                     <i class="fas fa-envelope"></i>
                     <input type="text" placeholder="Email" formControlName="email" required>
                     <span></span>
+
                     <small *ngIf="formSignIn.get('email')?.invalid && formSignIn.get('email')?.touched" class="form-text error-text">Email is required</small>
                 </div>
                 <div class="input-field" [ngClass]="{'error-box' : formSignIn.get('password')?.invalid && formSignIn.get('password')?.touched}">
                     <i class="fas fa-lock"></i>
                     <input type="password" placeholder="Password" formControlName="password" required>
                     <span></span>
+
                     <small *ngIf="formSignIn.get('password')?.invalid && formSignIn.get('password')?.touched" class="form-text error-text">Password is required</small>
 
                 </div>
+                <div style="width: 88%" class="forget-a">
+                    <a href="#" style="text-decoration:none; float:right;">Forget password?</a>
+                </div>
+
                 <small *ngIf="!signInSuccess" class="form-text error-text">Invalid email or password</small>
                 <input type="submit" value="Login" class="btn solid" [disabled]="formSignIn.invalid">
 
 
             </form>
 
-            <form action="" class="sign-up-form" (ngSubmit)="onSubmitSignUp();" [formGroup]="formSignUp">
+            <form class="sign-up-form" (ngSubmit)="onSubmitSignUp();" [formGroup]="formSignUp">
                 <h2 class="title">Sign up</h2>
-                <div class="input-field" [ngClass]="{'error-box' : formSignUp.get('email')?.invalid && formSignUp.get('email')?.touched}">
+                <div class="input-field" [ngClass]="{'error-box':formSignUp.get('email')?.dirty && formSignUp.get('email')?.invalid}">
                     <i class="fas fa-envelope"></i>
-                    <input type="text" placeholder="Email" formControlName="email" required ngbPopover="Existed email" triggers="manual" #p="ngbPopover" placement="top-right">
+                    <input type="text" placeholder="Email" formControlName="email" required pInputText>
                     <span></span>
-                    <small *ngIf="formSignUp.get('email')?.errors?.required && formSignUp.get('email')?.touched" class="form-text error-text">Email is required</small>
+
+
+                    <small *ngIf="formSignUp.get('email')?.errors?.required && formSignUp.get('email')?.dirty" class="form-text error-text">Email is required</small>
                     <small *ngIf="formSignUp.get('email')?.errors?.email" class="form-text error-text">Email is invalid</small>
+                    <small *ngIf="!signUpSuccess" class="form-text error-text">Existed email</small>
 
                 </div>
-                <div class="input-field" [ngClass]="{'error-box' : formSignUp.get('password')?.invalid && formSignUp.get('password')?.touched}">
+
+
+
+
+                <div class="input-field" [ngClass]="{'error-box': formSignUp.get('password')?.touched && formSignUp.get('password')?.invalid}">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Password" formControlName="password" required>
+
+
+                    <p-password type="password" placeholder="Password" formControlName="password" required [toggleMask]="true">
+                    </p-password>
+
+
                     <span></span>
-                    <small *ngIf="formSignUp.get('password')?.errors?.required && formSignUp.get('password')?.touched" class="form-text error-text">Password is required</small>
+
+                    <small *ngIf="formSignUp.get('password')?.errors?.required && formSignUp.get('password')?.touched" class="form-text p-invalid error-text">Password is required</small>
                     <small *ngIf="formSignUp.get('password')?.errors?.minlength" class="form-text error-text">Password is at least 6 characters</small>
                     <small *ngIf="formSignUp.get('password')?.errors?.maxlength" class="form-text error-text">Password is at most 50 characters</small>
                     <small *ngIf="formSignUp.get('password')?.errors?.pattern && (!formSignUp.get('password')?.errors?.minlength && !formSignUp.get('password')?.errors?.maxlength)" class="form-text error-text">Password cannot contain special character(s)</small>
 
                 </div>
-                <div class="input-field" [ngClass]="{'error-box' : formSignUp.get('repassword')?.invalid && formSignUp.get('repassword')?.touched}">
+                <div class="input-field" [ngClass]="{'error-box': formSignUp.get('repassword')?.touched && formSignUp.get('repassword')?.invalid}">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Confirm Password" formControlName="repassword" required>
-                    <span></span>
+                    <p-password type="password" placeholder="Confirm Password" formControlName="repassword" required [toggleMask]="true" required>
+                    </p-password>
 
+
+                    <span></span>
+                    <small *ngIf="formSignUp.get('repassword')?.errors?.required && formSignUp.get('repassword')?.touched" class="form-text p-invalid error-text">Repassword is required</small>
                     <small *ngIf="formSignUp.get('repassword')?.value !== formSignUp.get('password')?.value && formSignUp.get('repassword')?.touched && formSignUp.get('password')?.touched" class="form-text error-text">Repassword is not match with password</small>
 
                 </div>

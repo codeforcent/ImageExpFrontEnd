@@ -1,0 +1,34 @@
+<app-header></app-header>
+<p-toast key="smsg" position="top-right"></p-toast>
+<div class="container-fluid">
+    <app-settings></app-settings>
+    <div class="forms-container">
+        <div class="input-name">
+            <form action="#" class="input-name-form" [formGroup]="formUserProfile">
+                <div class="upImg">
+                    <img [src]="url" width="100%" class="uploadedImg" [style.opacity]="hovered ? 0.5 : 1" />
+                    <input formControlName="avatar" class="inputImg" type="file" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" (mouseenter)="hovered = true" (mouseleave)="hovered = false" (change)="onSelectedFile($event)" />
+                    <div class="inputOnImg" [style.opacity]="hovered ? 1 : 0">
+                        <i class="fas fa-plus fa-2x"></i>
+                        <small class="form-text text-center">Upload your<br />avatar</small>
+                    </div>
+                </div>
+                <div class="input-field">
+                    <i class="fas"></i>
+                    <input type="text" [placeholder]="
+              username !== '' ? username : 'What should us call you'
+            " formControlName="username" />
+
+                    <small *ngIf="formUserProfile.get('username')?.errors?.maxlength" class="form-text error-text">New password is at most 50 characters</small
+          >
+        </div>
+        <input
+          type="submit"
+          value="Save"
+          class="btn solid"
+          (click)="onSubmitUpdateUser()"
+        />
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+:host>>>.p-tabmenu .p-tabmenu-nav {
+    display: block;
+    background-color: transparent;
+    border: none;
+}
+
+:host>>>.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+    border: none;
+}
+
+:host>>>.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
+    background-color: transparent;
+}
+
+:host>>>p-tabmenu div {
+    display: inline-block;
+    width: 20%;
+    float: left;
+    z-index: 10;
+}
+
+:host>>>.p-tabmenu .p-tabmenu-nav .p-tabmenuitem:not(.p-highlight):not(.p-disabled):hover .p-menuitem-link {
+    background: none;
+}
+
+:host>>>.p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link:not(.p-disabled):focus {
+    box-shadow: none;
+    border-bottom: 2px solid #2196F3;
+}
+
+:host>>>p-tabmenu .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link-active {
+    border-bottom: 2px solid #2196F3 !important;
+    color: #007bff !important;
+}

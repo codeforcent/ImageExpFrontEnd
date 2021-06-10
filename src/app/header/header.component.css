@@ -51,7 +51,7 @@ header {
 }
 
 .avatar {
-    margin-right: -10px;
+    margin-right: -20px;
 }
 
 .avatar img {
@@ -76,8 +76,17 @@ header {
     text-align: justify;
 }
 
+.dropdown-toggle::after {
+    display: none;
+}
+
 @media screen and (max-width:1000px) {
     .sign-in {
         margin-right: 5px;
     }
+    .avatar {
+        margin-right: -10px;
+    }
 }
+
+@media screen and (max-width:800px) {}
