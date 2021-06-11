@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.yaml.snakeyaml
+Bnd-LastModified: 1623423716440
+Build-Jdk: 1.8.0_271
+Built-By: Kiet
+Bundle-Description: YAML 1.1 parser and emitter for Java
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-ManifestVersion: 2
+Bundle-Name: SnakeYAML
+Bundle-SymbolicName: org.yaml.snakeyaml
+Bundle-Version: 1.26.0
+Created-By: Apache Maven Bundle Plugin
+Tool: Bnd-3.5.0.201709291849
