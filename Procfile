@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar ImageExpBackend.jar --port 8000
+web: node server.js
