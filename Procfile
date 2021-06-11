@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar ImageExpBackend.jar --port $PORT
+web: java $JAVA_OPTS -jar ImageExpBackend.jar --port 8000
