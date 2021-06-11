@@ -1,1 +1,1 @@
-web: java -jar ImageExpackend.jar
+web: java $JAVA_OPTS -jar ImageExpackend.jar --port $PORT
