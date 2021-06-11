@@ -1,0 +1,12 @@
+server:
+  ip: ''
+  port: 8000
+  secret-key: d7sTPQBxmSv8OmHdgjS5
+database:
+  use-mysql: false
+  first-load: false
+  host: localhost
+  port: '3306'
+  db-name: imageexp
+  username: root
+  password: ''

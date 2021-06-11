@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: ImageExpBackend
+Implementation-Version: 1.0-SNAPSHOT
+Multi-Release: true
+Specification-Title: ImageExpBackend
+Build-Jdk-Spec: 1.8
+Created-By: Maven Jar Plugin 3.2.0
+Specification-Version: 1.0
+Main-Class: edu.fpt.swp391.g2.imageexp.ImageExpBoostrap
+
