@@ -140,6 +140,23 @@
         </testResources>
         <pluginManagement>
             <plugins>
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-war-plugin</artifactId>
+  <version>2.5</version>
+  <executions>
+    <execution>
+      <id>prepare-war</id>
+      <phase>prepare-package</phase>
+        <goals>
+          <goal>exploded</goal>
+        </goals>
+    </execution>
+  </executions>
+  <configuration>
+    <useCache>true</useCache>    
+ </configuration>
+</plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
