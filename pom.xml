@@ -382,6 +382,9 @@
     </plugin>
           
         </plugins>
+<pluginGroups>
+  <pluginGroup>org.apache.tomcat.maven</pluginGroup>
+</pluginGroups>
     </build>
     <reporting>
         <plugins>
