@@ -1,0 +1,9 @@
+<ul>
+<li>PLATFORM: JDK16 support added. .</li>
+<li>PLATFORM: All lombok features updated to act in a sane fashion with JDK16's <em>record</em> feature. In particular, you can annotate record components with <code>@NonNull</code> to have lombok add null checks to your compact constructor (which will be created if need be).</li>
+<li>BUGFIX: Trying to use a lambda expression as parameter to an <code>@ExtensionMethod</code> did not work. . (by <strong>@Rawi01</strong>).</li>
+<li>BUGFIX: <code>@SuperBuilder</code> with an existing constructor caused issues in eclipse. . (by @JanRieke).</li>
+<li>BUGFIX: Using <code>@SuperBuilder</code> with a handwritten builder class caused issues. . (by @JanRieke).</li>
+<li>BUGFIX: Lombok interacts properly with the new save actions in eclipse 2021-03.</li>
+<li>POTENTIAL BUGFIX: lombok + errorprone could cause <code>IllegalArgumentException</code> if using the <code>MissingSummary</code> bug pattern. .</li>
+</ul>
