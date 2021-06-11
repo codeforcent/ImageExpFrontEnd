@@ -402,7 +402,7 @@
     <artifactId>tomcat7-maven-plugin</artifactId>
     <version>2.2</version>
 <configuration>
-    <url>http://localhost:8080</url>
+    <url>http://localhost:8000</url>
     <path>/rps</path>
   </configuration>
 </plugin>
