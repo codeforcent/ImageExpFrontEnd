@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: org.yaml.snakeyaml
-Bnd-LastModified: 1623427199443
+Bnd-LastModified: 1623428224187
 Build-Jdk: 1.8.0_271
 Built-By: Kiet
 Bundle-Description: YAML 1.1 parser and emitter for Java
