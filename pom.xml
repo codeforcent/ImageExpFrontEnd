@@ -850,10 +850,11 @@
                         </executions>
                     </plugin>
                 </plugins>
-            </build>
-        </profile>
-    </profiles>
 <pluginGroups>
   <pluginGroup>org.apache.tomcat.maven</pluginGroup>
 </pluginGroups>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
