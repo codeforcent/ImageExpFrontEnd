@@ -18,12 +18,12 @@ export class AuthService {
     //   "POST", "http://localhost:8000/registeruser", {},
     //    {reportProgress: true});
 
-    this.http.post<any>('http://localhost:8000/registeruser', { "success": "false" }).subscribe(data => {
+    this.http.post<any>('https://image-exp-backend.herokuapp.com/registeruser', { "success": "false" }).subscribe(data => {
     this.postID = data;
 
     });
 
-    return this.http.post<any>('http://localhost:8000/registeruser', this.data);
+    return this.http.post<any>('https://image-exp-backend.herokuapp.com/registeruser', this.data);
 
 
 
@@ -38,7 +38,7 @@ export class AuthService {
     };
 
     var respo = null;
-    var res = await this.http.post('http://localhost:8000/registeruser', data, httpOptions);
+    var res = await this.http.post('https://image-exp-backend.herokuapp.com/registeruser', data, httpOptions);
     setTimeout( () => {  }, 500 );
     await res.toPromise().then(response =>{
 
@@ -56,7 +56,7 @@ export class AuthService {
     };
 
     var respo = null;
-    var res = await this.http.post('http://localhost:8000/loginuser', data, httpOptions);
+    var res = await this.http.post('https://image-exp-backend.herokuapp.com/loginuser', data, httpOptions);
     setTimeout( () => {  }, 500 );
     await res.toPromise().then(response =>{
       respo = response;

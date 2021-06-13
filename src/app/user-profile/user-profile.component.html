@@ -6,7 +6,7 @@
         <div class="input-name">
             <form action="#" class="input-name-form" [formGroup]="formUserProfile">
                 <div class="upImg">
-                    <img [src]="url" width="100%" class="uploadedImg" [style.opacity]="hovered ? 0.5 : 1" />
+                    <img [src]="avatar !== undefined ? avatar : 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png'" width="100%" class="uploadedImg" [style.opacity]="hovered ? 0.5 : 1" />
                     <input formControlName="avatar" class="inputImg" type="file" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" (mouseenter)="hovered = true" (mouseleave)="hovered = false" (change)="onSelectedFile($event)" />
                     <div class="inputOnImg" [style.opacity]="hovered ? 1 : 0">
                         <i class="fas fa-plus fa-2x"></i>
@@ -16,7 +16,7 @@
                 <div class="input-field">
                     <i class="fas"></i>
                     <input type="text" [placeholder]="
-              username !== '' ? username : 'What should us call you'
+              username !== '' ? username : 'What should we call you'
             " formControlName="username" />
 
                     <small *ngIf="formUserProfile.get('username')?.errors?.maxlength" class="form-text error-text">New password is at most 50 characters</small

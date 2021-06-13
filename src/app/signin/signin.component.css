@@ -146,6 +146,10 @@ form.sign-in-form {
     border: none;
 }
 
+:host>>>.p-inputtext:enabled:focus {
+    box-shadow: none;
+}
+
 
 /*
 :host>>>.ng-dirty.ng-invalid,

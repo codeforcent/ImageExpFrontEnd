@@ -26,6 +26,8 @@ export class SigninComponent implements OnInit {
   signUpSuccess = true;
   signInSuccess = true;
 
+  clicked;
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -46,13 +48,7 @@ export class SigninComponent implements OnInit {
         ],
       ],
       repassword: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(50),
-          Validators.pattern('[a-zA-Z0-9_-]*'),
-        ],
+        ''
       ],
     });
     this.formSignIn = this.fb.group({
@@ -71,11 +67,18 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit(): void { }
-  onClick() { }
   onClickSignIn() {
-    this.signMode = false;
+    this.clicked = true;
   }
   onClickSignUp() {
+    this.clicked = true;
+  }
+  onClickTransformSignIn() {
+    this.clicked = false;
+    this.signMode = false;
+  }
+  onClickTransformSignUp() {
+    this.clicked = false;
     this.signMode = true;
   }
   async onSubmitSignIn() {
@@ -99,11 +102,12 @@ export class SigninComponent implements OnInit {
     ) {
       // 24DJBWID328FNSU32Z
       this.app.cookieService.set('auth-token', this.vigenereCipherService.vigenereCipher(this.formSignIn.get('email').value, '24DJBWID328FNSU32Z', true));
+
       // window.alert("this is encrypte " + this.app.cookieService.get('auth_token'));
       // window.alert("this is decrypte " + this.vigenereCipherService.vigenereCipher(this.app.cookieService.get('auth_token'), '24DJBWID328FNSU32Z', false));
       // this.app.cookieService.set('auth_token', token);
       // window.alert(this.app.cookieService.get('token'))
-      console.warn("token sign in", 123);
+      // console.warn("token sign in", 123);
       // var user = new User(
       //   token,
       //   this.formSignIn.get('email').value,

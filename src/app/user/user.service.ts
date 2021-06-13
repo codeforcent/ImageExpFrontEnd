@@ -17,7 +17,7 @@ export class UserService {
     };
 
     var respo = null;
-    var res = await this.http.post('http://localhost:8000/getuserbyemail', data, httpOptions);
+    var res = await this.http.post('https://image-exp-backend.herokuapp.com/getuserbyemail', data, httpOptions);
     setTimeout( () => {  }, 500 );
     await res.toPromise().then(response =>{
 

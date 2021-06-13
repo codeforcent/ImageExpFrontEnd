@@ -9,16 +9,16 @@ export class ChangePasswordService {
   constructor(private http: HttpClient) { }
   getList() {
     const request = new HttpRequest(
-      "POST", "http://localhost:8000/changeuserpassword", {},
+      "POST", "https://image-exp-backend.herokuapp.com/changeuserpassword", {},
        {reportProgress: true});
     console.warn("request",this.http.request(request).subscribe(event => console.log("ev", event)));
 
-    this.http.post<any>('http://localhost:8000/changeuserpassword', { "success": "false" }).subscribe(data => {
+    this.http.post<any>('https://image-exp-backend.herokuapp.com/changeuserpassword', { "success": "false" }).subscribe(data => {
     this.postID = data;
     console.warn("postID", data);
     });
 
-    return this.http.post<any>('http://localhost:8000/changeuserpassword', this.data);
+    return this.http.post<any>('https://image-exp-backend.herokuapp.com/changeuserpassword', this.data);
 
 
 
@@ -33,7 +33,7 @@ export class ChangePasswordService {
     };
 
     var respo = null;
-    var res = await this.http.post('http://localhost:8000/changeuserpassword', data, httpOptions);
+    var res = await this.http.post('https://image-exp-backend.herokuapp.com/changeuserpassword', data, httpOptions);
     setTimeout( () => {  }, 500 );
     await res.toPromise().then(response =>{
       console.log("response", response);

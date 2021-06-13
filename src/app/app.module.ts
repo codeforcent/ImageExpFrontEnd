@@ -73,7 +73,7 @@ import { UserService } from './user/user.service';
 
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
@@ -98,7 +98,8 @@ import { UserService } from './user/user.service';
     MenuModule,
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot(routesConfig),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    RouterModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import {
   faEnvelope,
   faLock,
@@ -11,7 +11,7 @@ import { ChangePasswordService } from './change-password.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
-
+import {HeaderComponent} from '../header/header.component';
 
 @Component({
   selector: 'app-change-password',
@@ -19,7 +19,8 @@ import { UserService } from '../user/user.service';
   styleUrls: ['./change-password.component.css'],
   providers: [MessageService, ChangePasswordService],
 })
-export class ChangePasswordComponent implements OnInit {
+export class ChangePasswordComponent implements OnInit, AfterViewInit {
+  @ViewChild(HeaderComponent) header : HeaderComponent;
   faEnvelope = faEnvelope;
   faUnlock = faUnlock;
   faLock = faLock;
@@ -78,6 +79,16 @@ export class ChangePasswordComponent implements OnInit {
       },
     ];
   }
+  async ngAfterViewInit() {
+    await this.delay(800);
+    // window.alert("email1: " + this.header?.email);
+    this.email =  this.header?.email;
+    this.username =  this.header?.username;
+    this.avatar =  this.header?.avatar;
+  }
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+}
   async getuser() {
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',

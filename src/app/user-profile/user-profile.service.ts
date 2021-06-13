@@ -9,16 +9,16 @@ export class UserProfileService {
   constructor(private http: HttpClient) { }
   getResponse() {
     const request = new HttpRequest(
-      "POST", "http://localhost:8000/updateuser", {},
+      "POST", "https://image-exp-backend.herokuapp.com/updateuser", {},
        {reportProgress: true});
     console.warn("request",this.http.request(request).subscribe(event => console.log("ev", event)));
 
-    this.http.post<any>('http://localhost:8000/updateuser', { "success": "false" }).subscribe(data => {
+    this.http.post<any>('https://image-exp-backend.herokuapp.com/updateuser', { "success": "false" }).subscribe(data => {
     this.postID = data;
     console.warn("postID", data);
     });
 
-    return this.http.post<any>('http://localhost:8000/updateuser', this.data);
+    return this.http.post<any>('https://image-exp-backend.herokuapp.com/updateuser', this.data);
 
 
 
@@ -33,7 +33,7 @@ export class UserProfileService {
     };
 
     var respo = null;
-    var res = await this.http.post('http://localhost:8000/updateuser', data, httpOptions);
+    var res = await this.http.post('https://image-exp-backend.herokuapp.com/updateuser', data, httpOptions);
     setTimeout( () => {  }, 500 );
     await res.toPromise().then(response =>{
       console.log("response", response);
