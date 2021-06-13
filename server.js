@@ -10,7 +10,7 @@ const app = express();
 app.use(express.static(__dirname + '/dist/DrawEX'));
 
 app.get('/*', (req, res) =>
-    res.sendFile(path.join(__dirname + '/dist/DrawEX/browser/app/home/home.component.ts'))
+    res.sendFile(path.join(__dirname + '/dist/DrawEX/browser/app'))
 );
 let port = process.env.PORT || 8080;
 // Start the app by listening on the default Heroku port
