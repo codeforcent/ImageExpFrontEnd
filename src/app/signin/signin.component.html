@@ -42,7 +42,7 @@
 
                     <small *ngIf="formSignUp.get('email')?.errors?.required && formSignUp.get('email')?.dirty || formSignUp.invalid && clicked" class="form-text error-text">Email is required</small>
                     <small *ngIf="formSignUp.get('email')?.errors?.email" class="form-text error-text">Email is invalid</small>
-                    <small *ngIf="!signUpSuccess && formSignUp.get('email')?.dirty" class="form-text error-text">Existed email</small>
+                    <small *ngIf="!signUpSuccess && formSignUp.get('email')?.dirty && clicked" class="form-text error-text">Existed email</small>
 
                 </div>
 

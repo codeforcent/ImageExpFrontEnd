@@ -163,6 +163,7 @@ export class SigninComponent implements OnInit {
       // setTimeout(() => { }, 500);
       this.onload = false;
       this.signUpSuccess = false;
+      this.clicked = false;
     }
   }
 }
