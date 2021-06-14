@@ -6,12 +6,12 @@
         <div class="signin-signup">
             <form class="sign-in-form" (ngSubmit)="onSubmitSignIn();" [formGroup]="formSignIn">
                 <h2 class="title">Sign In</h2>
-                <div class="input-field" [ngClass]="{'error-box' : formSignIn.get('email')?.invalid && formSignIn.get('email')?.touched || formSignIn.invalid && clicked}">
+                <div class="input-field" [ngClass]="{'error-box' : formSignIn.get('email')?.invalid && formSignIn.get('email')?.dirty || formSignIn.invalid && clicked}">
                     <i class="fas fa-envelope"></i>
                     <input type="text" placeholder="Email" formControlName="email" required>
                     <span></span>
 
-                    <small *ngIf="formSignIn.get('email')?.invalid && formSignIn.get('email')?.touched || formSignIn.invalid && clicked" class="form-text error-text">Email is required</small>
+                    <small *ngIf="formSignIn.get('email')?.invalid && formSignIn.get('email')?.dirty || formSignIn.invalid && clicked" class="form-text error-text">Email is required</small>
                 </div>
                 <div class="input-field" [ngClass]="{'error-box' : formSignIn.get('password')?.invalid && formSignIn.get('password')?.touched || formSignIn.invalid && clicked}">
                     <i class="fas fa-lock"></i>
@@ -34,15 +34,14 @@
 
             <form class="sign-up-form" (ngSubmit)="onSubmitSignUp();" [formGroup]="formSignUp">
                 <h2 class="title">Sign up</h2>
-                <div class="input-field" [ngClass]="{'error-box':formSignUp.get('email')?.dirty && formSignUp.get('email')?.invalid || formSignUp.invalid && clicked}">
+                <div class="input-field" [ngClass]="{'error-box':formSignUp.get('email')?.dirty && formSignUp.get('email')?.invalid || clicked && existed && formSignUp.get('email')?.dirty}">
                     <i class="fas fa-envelope"></i>
                     <input type="text" placeholder="Email" formControlName="email" required pInputText>
                     <span></span>
 
-
-                    <small *ngIf="formSignUp.get('email')?.errors?.required && formSignUp.get('email')?.dirty || formSignUp.invalid && clicked" class="form-text error-text">Email is required</small>
-                    <small *ngIf="formSignUp.get('email')?.errors?.email" class="form-text error-text">Email is invalid</small>
-                    <small *ngIf="!signUpSuccess && formSignUp.get('email')?.dirty && clicked" class="form-text error-text">Existed email</small>
+                    <small *ngIf="formSignUp.get('email')?.errors?.required && formSignUp.get('email')?.dirty || clicked && formSignUp.get('email')?.errors?.required" class="form-text error-text">Email is required</small>
+                    <small *ngIf="formSignUp.get('email')?.errors?.email && formSignUp.get('email')?.dirty" class="form-text error-text">Email is invalid</small>
+                    <small *ngIf="clicked && existed && formSignUp.get('email')?.touched && !formSignUp.get('email')?.errors?.required && !formSignUp.get('email')?.errors?.email" class="form-text error-text">Existed email</small>
 
                 </div>
 
@@ -59,7 +58,7 @@
 
                     <span></span>
 
-                    <small *ngIf="formSignUp.get('password')?.errors?.required && formSignUp.get('password')?.touched || formSignUp.invalid && clicked" class="form-text p-invalid error-text">Password is required</small>
+                    <small *ngIf="formSignUp.get('password')?.errors?.required && formSignUp.get('password')?.touched || clicked && formSignUp.get('password')?.errors?.required" class="form-text p-invalid error-text">Password is required</small>
                     <small *ngIf="formSignUp.get('password')?.errors?.minlength" class="form-text error-text">Password is at least 6 characters</small>
                     <small *ngIf="formSignUp.get('password')?.errors?.maxlength" class="form-text error-text">Password is at most 50 characters</small>
                     <small *ngIf="formSignUp.get('password')?.errors?.pattern && (!formSignUp.get('password')?.errors?.minlength && !formSignUp.get('password')?.errors?.maxlength)" class="form-text error-text">Password cannot contain special character(s)</small>
@@ -73,7 +72,8 @@
 
                     <span></span>
 
-                    <small *ngIf="formSignUp.get('repassword')?.value !== formSignUp.get('password')?.value && formSignUp.get('repassword')?.touched && formSignUp.get('password')?.touched || formSignUp.invalid && clicked" class="form-text error-text">Repassword is not match with password</small>
+                    <small *ngIf="formSignUp.get('repassword')?.value !== formSignUp.get('password')?.value && formSignUp.get('repassword')?.touched && formSignUp.get('password')?.touched || clicked && formSignUp.get('repassword')?.value !== formSignUp.get('password')?.value"
+                        class="form-text error-text">Repassword is not match with password</small>
 
                 </div>
                 <input type="submit" value="Sign Up" class="btn solid" (click)="onClickSignUp()">

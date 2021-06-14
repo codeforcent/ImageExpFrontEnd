@@ -27,7 +27,7 @@ export class SigninComponent implements OnInit {
   signInSuccess = true;
 
   clicked;
-
+  existed;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -47,9 +47,7 @@ export class SigninComponent implements OnInit {
           Validators.pattern('[a-zA-Z0-9_-]*'),
         ],
       ],
-      repassword: [
-        ''
-      ],
+      repassword: [''],
     });
     this.formSignIn = this.fb.group({
       email: ['', Validators.required],
@@ -63,10 +61,9 @@ export class SigninComponent implements OnInit {
     //     this.router.navigate(['']);
     //   }
     // }
-
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
   onClickSignIn() {
     this.clicked = true;
   }
@@ -90,40 +87,50 @@ export class SigninComponent implements OnInit {
         password: this.formSignIn.get('password').value,
       },
     };
-    var res = this.authService.signIn(data);
-    // var token = (
-    //   Math.floor(Math.random() * (999999 - 100000)) + 100000
-    // ).toString();
+    if (this.formSignIn.valid) {
+      var res = this.authService.signIn(data);
+      // var token = (
+      //   Math.floor(Math.random() * (999999 - 100000)) + 100000
+      // ).toString();
 
-    if (
-      (await res.then(
-        (__zone_symbol__value) => __zone_symbol__value.body.success
-      )) === true
-    ) {
-      // 24DJBWID328FNSU32Z
-      this.app.cookieService.set('auth-token', this.vigenereCipherService.vigenereCipher(this.formSignIn.get('email').value, '24DJBWID328FNSU32Z', true));
+      if (
+        (await res.then(
+          (__zone_symbol__value) => __zone_symbol__value.body.success
+        )) === true
+      ) {
+        // 24DJBWID328FNSU32Z
+        this.app.cookieService.set(
+          'auth-token',
+          this.vigenereCipherService.vigenereCipher(
+            this.formSignIn.get('email').value,
+            '24DJBWID328FNSU32Z',
+            true
+          )
+        );
 
-      // window.alert("this is encrypte " + this.app.cookieService.get('auth_token'));
-      // window.alert("this is decrypte " + this.vigenereCipherService.vigenereCipher(this.app.cookieService.get('auth_token'), '24DJBWID328FNSU32Z', false));
-      // this.app.cookieService.set('auth_token', token);
-      // window.alert(this.app.cookieService.get('token'))
-      // console.warn("token sign in", 123);
-      // var user = new User(
-      //   token,
-      //   this.formSignIn.get('email').value,
-      //   '',
-      //   '',
-      //   1
-      // );
-      // this.app.userService.addUser(user);
-      // window.alert(this.app.userService.getUserByToken(token));
-      // sessionStorage.setItem(this.app.cookieService.get('auth-token'), this.formSignIn.get('email').value);
-      this.router.navigate(['']);
-
+        // window.alert("this is encrypte " + this.app.cookieService.get('auth_token'));
+        // window.alert("this is decrypte " + this.vigenereCipherService.vigenereCipher(this.app.cookieService.get('auth_token'), '24DJBWID328FNSU32Z', false));
+        // this.app.cookieService.set('auth_token', token);
+        // window.alert(this.app.cookieService.get('token'))
+        // console.warn("token sign in", 123);
+        // var user = new User(
+        //   token,
+        //   this.formSignIn.get('email').value,
+        //   '',
+        //   '',
+        //   1
+        // );
+        // this.app.userService.addUser(user);
+        // window.alert(this.app.userService.getUserByToken(token));
+        // sessionStorage.setItem(this.app.cookieService.get('auth-token'), this.formSignIn.get('email').value);
+        this.router.navigate(['']);
+      } else {
+        // setTimeout(() => { }, 500);
+        this.onload = false;
+        this.signInSuccess = false;
+      }
     } else {
-      // setTimeout(() => { }, 500);
       this.onload = false;
-      this.signInSuccess = false;
     }
   }
   async onSubmitSignUp() {
@@ -136,34 +143,45 @@ export class SigninComponent implements OnInit {
         password: this.formSignUp.get('password').value,
       },
     };
-    var res = this.authService.signUp(data);
-    // var token = (
-    //   Math.floor(Math.random() * (999999 - 100000)) + 100000
-    // ).toString();
-    if (
-      (await res.then(
-        (__zone_symbol__value) => __zone_symbol__value.body.success
-      )) === true
-    ) {
-      // setTimeout(() => { }, 500);
-      this.authService.signIn(data);
+    if (this.formSignUp.valid) {
+      var res = this.authService.signUp(data);
+      // var token = (
+      //   Math.floor(Math.random() * (999999 - 100000)) + 100000
+      // ).toString();
+      if (
+        (await res.then(
+          (__zone_symbol__value) => __zone_symbol__value.body.success
+        )) === true
+      ) {
+        // setTimeout(() => { }, 500);
+        this.authService.signIn(data);
 
-      this.app.cookieService.set('auth-token', this.vigenereCipherService.vigenereCipher(this.formSignUp.get('email').value, '24DJBWID328FNSU32Z', true));
-      // var user = new User(
-      //   token,
-      //   this.formSignUp.get('email').value,
-      //   '',
-      //   '',
-      //   1
-      // );
-      // this.app.userService.addUser(user);
+        this.app.cookieService.set(
+          'auth-token',
+          this.vigenereCipherService.vigenereCipher(
+            this.formSignUp.get('email').value,
+            '24DJBWID328FNSU32Z',
+            true
+          )
+        );
+        // var user = new User(
+        //   token,
+        //   this.formSignUp.get('email').value,
+        //   '',
+        //   '',
+        //   1
+        // );
+        // this.app.userService.addUser(user);
 
-      this.router.navigate(['']);
+        this.router.navigate(['']);
+      } else {
+        // setTimeout(() => { }, 500);
+        this.existed = true;
+        this.onload = false;
+        this.signUpSuccess = false;
+      }
     } else {
-      // setTimeout(() => { }, 500);
       this.onload = false;
-      this.signUpSuccess = false;
-      this.clicked = false;
     }
   }
 }
