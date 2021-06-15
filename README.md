@@ -25,3 +25,15 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Edge Point
+
+sigma(edges e)u_e x w_e x d_e 
+- u_e: 
++ Like, comment, share, save: +1
+- w_e:
++ Like: +1
++ Comment: +2
++ Share, save: +3
+- d_e=1/n  (n is amount of elapsed hours)
+
