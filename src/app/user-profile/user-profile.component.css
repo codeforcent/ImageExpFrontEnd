@@ -111,6 +111,7 @@ form {
     margin: 10px 0;
     cursor: pointer;
     transition: 0.5s;
+  margin-top: 20px;
 }
 
 .btn:hover {
@@ -179,7 +180,10 @@ form {
     background: #FFD07B;
 }
 
+.error-box {
+  border: 2px solid red !important;
 
+}
 /* :host>>>.p-tabmenu .p-tabmenu-nav {
     display: block;
     background-color: transparent;
@@ -213,6 +217,7 @@ form {
     margin-top: 17px;
     margin-left: 1rem;
     color: red;
+
 }
 
 @media (max-width: 870px) {

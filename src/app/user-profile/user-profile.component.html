@@ -1,25 +1,69 @@
+<mat-progress-bar mode="indeterminate" value="40" *ngIf="onload">
+</mat-progress-bar>
 <app-header></app-header>
 <p-toast key="smsg" position="top-right"></p-toast>
 <div class="container-fluid">
-    <app-settings></app-settings>
-    <div class="forms-container">
-        <div class="input-name">
-            <form action="#" class="input-name-form" [formGroup]="formUserProfile">
-                <div class="upImg">
-                    <img [src]="avatar !== undefined ? avatar : 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png'" width="100%" class="uploadedImg" [style.opacity]="hovered ? 0.5 : 1" />
-                    <input formControlName="avatar" class="inputImg" type="file" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" (mouseenter)="hovered = true" (mouseleave)="hovered = false" (change)="onSelectedFile($event)" />
-                    <div class="inputOnImg" [style.opacity]="hovered ? 1 : 0">
-                        <i class="fas fa-plus fa-2x"></i>
-                        <small class="form-text text-center">Upload your<br />avatar</small>
-                    </div>
-                </div>
-                <div class="input-field">
-                    <i class="fas"></i>
-                    <input type="text" [placeholder]="
+  <app-settings></app-settings>
+  <div class="forms-container">
+    <div class="input-name">
+      <form action="#" class="input-name-form" [formGroup]="formUserProfile">
+        <div class="upImg">
+          <img
+            [src]="
+              avatar !== undefined
+                ? avatar
+                : 'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png'
+            "
+            width="100%"
+            class="uploadedImg"
+            [style.opacity]="hovered ? 0.5 : 1"
+          />
+          <input
+            formControlName="avatar"
+            class="inputImg"
+            type="file"
+            accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp"
+            aria-hidden="true"
+            (mouseenter)="hovered = true"
+            (mouseleave)="hovered = false"
+            (change)="onSelectedFile($event)"
+          />
+          <div class="inputOnImg" [style.opacity]="hovered ? 1 : 0">
+            <i class="fas fa-plus fa-2x"></i>
+            <small class="form-text text-center">Upload your<br />avatar</small>
+          </div>
+        </div>
+        <div
+          class="input-field"
+          [ngClass]="{
+            'error-box':
+              (formUserProfile.get('username')?.invalid &&
+                formUserProfile.get('username')?.touched) ||
+              (clicked && formUserProfile.get('username')?.pristine)
+          }"
+        >
+          <i class="fas"></i>
+          <input
+            type="text"
+            [placeholder]="
               username !== '' ? username : 'What should we call you'
-            " formControlName="username" />
-
-                    <small *ngIf="formUserProfile.get('username')?.errors?.maxlength" class="form-text error-text">New password is at most 50 characters</small
+            "
+            formControlName="username"
+            required
+          />
+          <small
+            *ngIf="
+              (formUserProfile.get('username')?.errors?.required &&
+                formUserProfile.get('username')?.touched) ||
+              (clicked && formUserProfile.get('username')?.pristine)
+            "
+            class="form-text error-text"
+            >Username is required</small
+          >
+          <small
+            *ngIf="formUserProfile.get('username')?.errors?.maxlength"
+            class="form-text error-text"
+            >Username is at most 50 characters</small
           >
         </div>
         <input

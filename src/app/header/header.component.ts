@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AppComponent } from '../app.component';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
@@ -22,17 +22,14 @@ export class HeaderComponent implements OnInit {
     private userService: UserService,
     private vigenereCipherService: VigenereCipherService
   ) {
-
-
     if (this.app.cookieService.check('auth-token')) {
-
       this.getInforUser();
       // this.user.emit();
     } else {
       // window.alert("here is else");
       this.logIn = false;
+      this.router.navigate(['']);
     }
-
   }
 
   ngOnInit(): void {}
@@ -60,21 +57,20 @@ export class HeaderComponent implements OnInit {
       )) === true
     ) {
       // setTimeout(() => { }, 500);
-      this.email = res.then(
-        (__zone_symbol__value) =>
-          (this.email = __zone_symbol__value.body.response.email)
-      );
-      this.avatar = res.then(
+
+      this.avatar =  res.then(
         (__zone_symbol__value) =>
           (this.avatar = __zone_symbol__value.body.response.avatar)
       );
-      this.username = res.then(
-        (__zone_symbol__value) =>
-          (this.username = __zone_symbol__value.body.response.name)
-      );
 
-      if (await this.avatar.then((__zone_symbol__value) => __zone_symbol__value === '')) {
-        this.avatar = "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png";
+
+      if (
+        await this.avatar.then(
+          (__zone_symbol__value) => __zone_symbol__value === ''
+        )
+      ) {
+        this.avatar =
+          'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
       }
       this.logIn = true;
       // setTimeout(() => { }, 500);
@@ -92,8 +88,5 @@ export class HeaderComponent implements OnInit {
     }
     // var user = this.app.userService.getUserByToken(this.app.cookieService.get('token'));
     // window.alert("here is if");
-
-
   }
-
 }
