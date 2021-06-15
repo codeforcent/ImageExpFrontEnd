@@ -1,41 +1,26 @@
 <mat-progress-bar mode="indeterminate" value="40" *ngIf="onload">
 </mat-progress-bar>
 
-<div class="container" [ngClass]="{ 'sign-up-mode': signMode }">
-  <div class="form-container">
-    <div class="signin-signup">
-      <form
-        class="sign-in-form"
-        (ngSubmit)="onSubmitSignIn()"
-        [formGroup]="formSignIn"
-      >
-        <h2 class="title">Sign In</h2>
-        <div
-          class="input-field"
-          [ngClass]="{
+<div class="container-fluid" [ngClass]="{ 'sign-up-mode': signMode }">
+    <div class="form-container">
+        <div class="signin-signup">
+            <form class="sign-in-form" (ngSubmit)="onSubmitSignIn()" [formGroup]="formSignIn">
+                <h2 class="title">Sign In</h2>
+                <div class="input-field" [ngClass]="{
             'error-box':
               (formSignIn.get('email')?.invalid &&
                 formSignIn.get('email')?.dirty) ||
               (formSignIn.invalid && clicked)
-          }"
-        >
-          <i class="fas fa-envelope"></i>
-          <input
-            type="text"
-            placeholder="Email"
-            formControlName="email"
-            required
-          />
-          <span></span>
+          }">
+                    <i class="fas fa-envelope"></i>
+                    <input type="text" placeholder="Email" formControlName="email" required />
+                    <span></span>
 
-          <small
-            *ngIf="
+                    <small *ngIf="
               (formSignIn.get('email')?.invalid &&
                 formSignIn.get('email')?.dirty) ||
               (formSignIn.invalid && clicked)
-            "
-            class="form-text error-text"
-            >Email is required</small
+            " class="form-text error-text">Email is required</small
           >
         </div>
         <div

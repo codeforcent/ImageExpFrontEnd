@@ -1,0 +1,165 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container-fluid,
+input {
+    font-family: "Poppins", sans-serif;
+}
+
+input {
+    display: none;
+}
+
+.container-fluid {
+    position: relative;
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    min-height: 100vh;
+    overflow: hidden;
+    text-align: center;
+}
+
+h1 {
+    position: relative;
+    font-weight: 600;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+h1::before {
+    content: '';
+    position: absolute;
+    width: 20%;
+    height: 3px;
+    background-color: salmon;
+    bottom: -10px;
+    left: 50%;
+    transform: translate(-50%);
+    animation: animate 3s linear infinite;
+}
+
+@keyframes animate {
+    0% {
+        width: 20%;
+    }
+    50% {
+        width: 30%;
+    }
+    100% {
+        width: 20%;
+    }
+}
+
+.top-content {
+    background-color: lavender;
+    width: 90%;
+    margin: auto;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+}
+
+h3 {
+    height: 100%;
+    background-color: lightblue;
+    line-height: 55px;
+    padding-left: 2%;
+    padding-right: 2%;
+    color: white;
+    border-radius: 5px;
+}
+
+label {
+    display: inline-block;
+    height: 100%;
+    padding-left: 4%;
+    padding-right: 4%;
+    line-height: 55px;
+    color: black;
+    cursor: pointer;
+    transition: 0.6s;
+    border-radius: 5px;
+}
+
+label:hover {
+    color: white;
+    background-color: salmon;
+}
+
+.photo-gallery {
+    width: 90%;
+    display: grid;
+    margin: auto;
+    grid-template-columns: repeat(4, 1tr);
+    grid-gap: 0.5%;
+}
+
+.pic {
+    height: 100%;
+}
+
+.pic img {
+    position: relative;
+    height: auto;
+    width: 40%;
+}
+
+
+/* check 1*/
+
+#check1:checked~.container-fluid .photo-gallery .posted {
+    opacity: 1;
+    transition: 0.6s;
+    transform: scale(1);
+    position: relative;
+}
+
+#check1:checked~.container-fluid .photo-gallery .liked,
+#check1:checked~.container-fluid .photo-gallery .uploaded {
+    opacity: 0;
+    transition: 0s;
+    transform: scale(0);
+    position: absolute;
+}
+
+
+/* check 2*/
+
+#check2:checked~.container-fluid .photo-gallery .liked {
+    opacity: 1;
+    transition: 0.6s;
+    transform: scale(1);
+    position: relative;
+}
+
+#check2:checked~.container-fluid .photo-gallery .posted,
+#check2:checked~.container-fluid .photo-gallery .uploaded {
+    opacity: 0;
+    transition: 0s;
+    transform: scale(0);
+    position: absolute;
+}
+
+
+/* check 3*/
+
+#check3:checked~.container-fluid .photo-gallery .uploaded {
+    opacity: 1;
+    transition: 0.6s;
+    transform: scale(1);
+    position: relative;
+}
+
+#check3:checked~.container-fluid .photo-gallery .liked,
+#check3:checked~.container-fluid .photo-gallery .posted {
+    opacity: 0;
+    transition: 0s;
+    transform: scale(0);
+    position: absolute;
+}
