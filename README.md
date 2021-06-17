@@ -1,7 +1,7 @@
 # Front-end Server interface:
 
-Cao Hoang Anh Uy: UI Design
-Pham Tuan Kiet: Front-end Handling
+- Cao Hoang Anh Uy: UI Design
+- Pham Tuan Kiet: Front-end Handling
 
 # DrawEX
 
