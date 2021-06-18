@@ -140,8 +140,9 @@ form {
     font-size: 1.5rem;
     max-width: 95%;
     white-space: pre-wrap;
-    overflow: hidden;
-    height: 36px;
+    overflow: auto;
+    overflow-wrap: break-word;
+    height: 38px;
     word-wrap: break-word;
     resize: none;
     vertical-align: top;
@@ -153,8 +154,8 @@ form {
     font-size: 0.8rem;
     width: 480px;
     white-space: pre-wrap;
-    overflow: hidden;
-    height: 20px;
+    overflow: auto;
+    height: 22px;
     word-wrap: break-word;
     resize: none;
     vertical-align: top;
@@ -203,4 +204,48 @@ tag-input[name="items"] {
 .top-upInfor {
     height: 350px;
     margin-bottom: 10px;
+}
+
+.error-text {
+  margin-top: 3px;
+  color: red;
+}
+
+.error-box {
+  border: 2px solid red !important;
+}
+:host>>>.p-multiselect-panel .p-multiselect-items:not(.p-multiselect-virtualscroll){
+  display: flex;
+  flex-wrap: wrap;
+  /* grid-template-columns: 4; */
+}
+:host>>>.p-multiselect.p-multiselect-chip .p-multiselect-token {
+  background-color:#2196F3;
+  color: white;
+}
+:host>>>.p-multiselect{
+width: 100%;
+
+
+}
+:host>>>.p-multiselect .p-multiselect-panel{
+  width:100%;
+}
+:host>>>.p-multiselect-items-wrapper {
+  padding-left: 10px;
+
+}
+:host>>>p-multiselect.ng-dirty.ng-invalid > .p-multiselect {
+  border: 2px solid red;
+}
+:host>>>mat-hint{
+  float:right;
+  color: #aaa;
+}
+.cate-item-value{
+  padding: .25rem .5rem;
+  border-radius: 3px;
+  display: inline-flex;
+  margin-right: .5rem;
+  background-color: cornflowerblue;
 }

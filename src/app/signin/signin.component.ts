@@ -53,14 +53,14 @@ export class SigninComponent implements OnInit {
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
-    // if (this.app.cookieService.check('token')) {
-    //   if (
-    //     this.app.cookieService.get('token') === this.userService.getUserByEmail().
-    //   ) {
-    //     this.app.cookieService.delete('token');
-    //     this.router.navigate(['']);
-    //   }
-    // }
+    if (this.app.cookieService.check('auth-token')) {
+      // if (
+      //   this.app.cookieService.get('token') === this.userService.getUserByEmail().
+      // ) {
+        // this.app.cookieService.delete('token');
+        this.router.navigate(['']);
+      // }
+    }
   }
 
   ngOnInit(): void {}

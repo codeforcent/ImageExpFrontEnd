@@ -98,6 +98,8 @@
               (formSignUp.get('email')?.dirty &&
                 formSignUp.get('email')?.invalid) ||
               (clicked && existed && formSignUp.get('email')?.dirty)
+              || formSignUp.get('email')?.errors?.required &&
+              clicked
           }"
         >
           <i class="fas fa-envelope"></i>

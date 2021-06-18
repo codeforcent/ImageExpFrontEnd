@@ -1,54 +1,235 @@
+<mat-progress-bar mode="indeterminate" value="40" *ngIf="onload">
+</mat-progress-bar>
 <app-header></app-header>
-
+<p-toast key="smsg" position="top-right"></p-toast>
 <div class="container-fluid">
-    <form>
-        <input type="submit" value="Upload" class="btn btn-danger rounded-pill solid">
-        <div class="row">
-            <div class="col-lg-4 upImg">
-                <div [ngStyle]="uploaded ? {'border' : '0'} : {'border' : 'border: 2px dashed cadetblue;'} ">
-                    <img [src]="url" width="100%" class="uploadedImg">
-                    <input class="inputImg" (change)="onSelectedFile($event)" type="file" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" style="cursor: pointer; height: 100%; opacity: 0; position: absolute; width: 100%; left: 0px; top: 0px; font-size: 0px;">
-                    <div class="inputOnImg" *ngIf="!uploaded">
-                        <i class="fas fa-upload"></i>
-                        <p class="text-center">Drag and drop or choose your file for uploading</p>
-                        <small class="form-text text-center">Recommend: using .jpg file < 200MB</small>
-                    </div>
-                </div>
+  <form (ngSubmit)="onPost()" [formGroup]="formUpload">
+    <input
+      type="submit"
+      value="Upload"
+      class="btn btn-danger rounded-pill solid"
+    />
+    <div class="row">
+      <div class="col-lg-4 upImg">
+        <!-- [ngStyle]="
+        uploaded
+          ? { border: '0' }
+          : { border: 'border: 2px dashed cadetblue;' }
+      " -->
+        <div
+          [ngStyle]="{
+            'border':
+              formUpload.get('img')?.invalid &&
+              formUpload.get('img')?.touched
+                ? '2px dashed red'
+                : '2px dashed cadetblue'
+          }"
+        >
+          <img [src]="img" width="100%" class="uploadedImg" />
+          <input
+            class="inputImg"
+            (change)="onSelectedFile($event)"
+            type="file"
+            accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp"
+            aria-hidden="true"
+            style="
+              cursor: pointer;
+              height: 100%;
+              opacity: 0;
+              position: absolute;
+              width: 100%;
+              left: 0px;
+              top: 0px;
+              font-size: 0px;
+            "
+            formControlName="img"
+          />
+          <div class="inputOnImg" *ngIf="!uploaded">
+            <i class="fas fa-upload"></i>
+            <p class="text-center">
+              Drag and drop or choose your file for uploading
+            </p>
+            <small class="form-text text-center"
+              >Recommend: using .jpg file < 200MB</small
+            >
+            <small
+              *ngIf="
+                formUpload.get('img')?.errors?.required &&
+                formUpload.get('img')?.touched
+              "
+              class="form-text error-text text-center"
+              >Image is required</small
+            >
+          </div>
+        </div>
+      </div>
+      <!--  -->
+      <div class="col-lg-8 upInfor">
+        <div class="top-upInfor">
+          <div class="input-field">
+            <textarea
+              placeholder="Create your title"
+              matInput
+              #autosize="cdkTextareaAutosize"
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5"
+              formControlName="title"
+              [ngStyle]="{
+                'border-bottom':
+                  formUpload.get('title')?.invalid &&
+                  formUpload.get('title')?.touched
+                    ? '2px solid red'
+                    : '2px solid #aaa'
+              }"
+            ></textarea>
+            <small
+              *ngIf="
+                formUpload.get('title')?.errors?.required &&
+                formUpload.get('title')?.touched
+              "
+              class="form-text error-text"
+              >Title is required</small
+            >
+            <small
+              *ngIf="
+                formUpload.get('title')?.errors?.maxlength &&
+                formUpload.get('title')?.touched
+              "
+              class="form-text error-text"
+              >Title is at most 50 characters</small
+            >
+          </div>
+          <div class="own">
+            <img [src]="avatar" class="avatar-img" alt="..." />
+            <span class="username">username</span>
+          </div>
 
+          <!--
+          <ng-multiselect-dropdown
+            [placeholder]="'Choose your topic(s)'"
+            [settings]="dropdownSettings"
+            [data]="dropdownList"
+            [(ngModel)]="selectedItems"
+            (onSelect)="onItemSelect($event)"
+            (onSelectAll)="onSelectAll($event)"
 
-            </div>
-            <div class="col-lg-8 upInfor">
-                <div class="top-upInfor">
-                    <div class="input-field">
+            formControlName="cates"
+          >
+          </ng-multiselect-dropdown> -->
+          <p-multiSelect
+            [options]="cateList"
+            [(ngModel)]="selectedCates"
+            defaultLabel="Select your Topic(s)"
+            optionLabel="name"
+            class="multiselect-custom"
+            display="chip"
+            [maxSelectedLabels]="7"
+            style="width: 100%"
+            formControlName="cates"
+            panelStyle="border: 2px solid red"
+          >
+            <ng-template
+              let-value
+              pTemplate="selectedCates"
+              (change)="onChange()"
+            >
+              <div
+                class="cate-item cate-item-value"
+                *ngFor="let option of selectedCates"
+              >
+                <div>{{ option.name }}</div>
+              </div>
+              <div
+                *ngIf="!selectedCates || selectedCates.length === 0"
+                class="cate-placeholder"
+              >
+                Choose your topic(s)
+              </div>
+            </ng-template>
+            <ng-template let-cate pTemplate="item">
+              <div class="cate-item">
+                <div>{{ cate.name }}</div>
+              </div>
+            </ng-template>
+          </p-multiSelect>
+          <small
+            *ngIf="
+              formUpload.get('cates')?.errors?.required &&
+              formUpload.get('cates')?.dirty
+            "
+            class="form-text error-text"
+            >Choose at least 1 category</small
+          >
+          <!--  -->
+          <div class="input-field">
+            <mat-form-field>
+              <textarea
+                placeholder="Let's show everyone what you would like to share"
+                matInput
+                cdkTextareaAutosize
+                #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"
+                formControlName="des"
+                [ngStyle]="{
+                  'border-bottom':
+                    formUpload.get('des')?.invalid &&
+                    formUpload.get('des')?.touched
+                      ? '2px solid red'
+                      : '2px solid #aaa'
+                }"
+              ></textarea>
+              <mat-hint
+                >{{ formUpload.get("des").value?.length || 0 }}/250</mat-hint
+              >
+            </mat-form-field>
 
-                        <textarea placeholder="Create your title" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
-
-                    </div>
-                    <div class="own">
-                        <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="avatar-img" alt="...">
-                        <span class="username">username</span>
-                    </div>
-
-
-                    <ng-multiselect-dropdown [placeholder]="'Choose your topic(s)'" [settings]="dropdownSettings" [data]="dropdownList" [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)" (click)="ngOnInit()">
-
-                    </ng-multiselect-dropdown>
-                    <div class="input-field">
-                        <textarea placeholder="Let's show everyone what you would like to share" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
-                    </div>
-                </div>
-
-                <tag-input [theme]="'bootstrap'" [(ngModel)]="dragAndDropObjects" [placeholder]="'+ New keyword(s)'" [secondaryPlaceholder]="'+ Add keywords'" name="items" [addOnBlur]="true" [clearOnBlur]="true" [editable]="true" (onTagEdited)="onTagEdited($event)" [dragZone]="'zone1'"
-                    [identifyBy]="'id'" [displayBy]="'value'">
-                    <tag-input-dropdown [autocompleteItems]="autocompleteItems">
-                    </tag-input-dropdown>
-                </tag-input>
-
-            </div>
+            <small
+              *ngIf="
+                formUpload.get('des')?.errors?.maxlength &&
+                formUpload.get('des')?.touched
+              "
+              class="form-text error-text"
+              >Description is at most 250 characters</small
+            >
+          </div>
         </div>
 
-
-
-    </form>
-
+        <tag-input
+          [theme]="'bootstrap'"
+          [ngModel]="[]"
+          [placeholder]="'+ New keyword(s)'"
+          [secondaryPlaceholder]="'+ Add keywords'"
+          name="items"
+          [addOnBlur]="true"
+          [clearOnBlur]="true"
+          [editable]="true"
+          (onTagEdited)="onTagEdited($event)"
+          [dragZone]="'zone1'"
+          [identifyBy]="'id'"
+          [displayBy]="'value'"
+          formControlName="keywords"
+          [ngStyle]="{
+            'border-bottom':
+              formUpload.get('keywords')?.invalid &&
+              formUpload.get('keywords')?.touched
+                ? '2px solid red'
+                : 'none'
+          }"
+        >
+          <tag-input-dropdown [autocompleteItems]="autocompleteItems">
+          </tag-input-dropdown>
+        </tag-input>
+        <small
+          *ngIf="
+            formUpload.get('keywords')?.errors?.required &&
+            formUpload.get('keywords')?.touched
+          "
+          class="form-text error-text"
+          >Add at least one keyword</small
+        >
+      </div>
+    </div>
+  </form>
 </div>

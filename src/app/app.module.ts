@@ -4,38 +4,37 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { Routes, RouterModule } from '@angular/router';
-import {NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { JsonPipe } from '@angular/common';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { JsonPipe, CommonModule } from '@angular/common';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TagInputModule } from 'ngx-chips';
-import {TextFieldModule} from '@angular/cdk/text-field';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { CookieService } from 'ngx-cookie-service';
-import {MDBBootstrapModule  } from 'angular-bootstrap-md';
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import {PasswordModule} from 'primeng/password';
-import {ButtonModule} from 'primeng/button';
-import {InputTextModule} from 'primeng/inputtext';
-import {AutoCompleteModule} from 'primeng/autocomplete';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
-import {MessageService} from 'primeng/api';
-import {ToastModule} from 'primeng/toast';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { PasswordModule } from 'primeng/password';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {PanelMenuModule} from 'primeng/panelmenu';
-import {TabMenuModule} from 'primeng/tabmenu';
-import {MenuModule} from 'primeng/menu';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { MenuModule } from 'primeng/menu';
+import { MultiSelectModule } from 'primeng/multiselect';
 const routesConfig: Routes = [
-
-  { path: 'userLogin', component: SigninComponent},
-  { path: '', component: HomeComponent},
-  { path: 'post', component: UploadComponent},
-  { path: 'user', component: UserComponent},
-  { path: 'settings', component: UserProfileComponent},
-  { path: 'settings/user-profile', component: UserProfileComponent},
-  { path: 'settings/change-password', component: ChangePasswordComponent}
+  { path: 'userLogin', component: SigninComponent },
+  { path: '', component: HomeComponent },
+  { path: 'post', component: UploadComponent },
+  { path: 'user', component: UserComponent },
+  { path: 'settings', component: UserProfileComponent },
+  { path: 'settings/user-profile', component: UserProfileComponent },
+  { path: 'settings/change-password', component: ChangePasswordComponent },
 ];
-
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -52,8 +51,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { SettingsComponent } from './settings/settings.component';
 import { UserService } from './user/user.service';
-
-
+import { GalleryComponent } from './gallery/gallery.component';
 
 @NgModule({
   declarations: [
@@ -68,9 +66,8 @@ import { UserService } from './user/user.service';
     UploadComponent,
     UserProfileComponent,
     ChangePasswordComponent,
-    SettingsComponent
-
-
+    SettingsComponent,
+    GalleryComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -78,7 +75,7 @@ import { UserService } from './user/user.service';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-
+    MultiSelectModule,
     MatProgressBarModule,
     NgbModule,
     TagInputModule,
@@ -96,20 +93,14 @@ import { UserService } from './user/user.service';
     PanelMenuModule,
     TabMenuModule,
     MenuModule,
+    CommonModule,
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot(routesConfig),
     BrowserAnimationsModule,
-    RouterModule
+    RouterModule,
   ],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
-  ],
-  providers: [
-    JsonPipe,
-    CookieService,
-    MessageService,
-    UserService
-  ],
-  bootstrap: [AppComponent]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [JsonPipe, CookieService, MessageService, UserService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
