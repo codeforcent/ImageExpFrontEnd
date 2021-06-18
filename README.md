@@ -1,3 +1,8 @@
+# Front-end Server interface:
+
+- Cao Hoang Anh Uy: UI Design
+- Pham Tuan Kiet: Front-end Handling
+
 # DrawEX
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.1.
