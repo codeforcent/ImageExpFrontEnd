@@ -1,27 +1,25 @@
-<input type="radio" name="Photos" id="check1" checked>
-    <input type="radio" name="Photos" id="check2">
-    <input type="radio" name="Photos" id="check3">
+<mat-progress-bar mode="indeterminate" value="40" *ngIf="onload">
+</mat-progress-bar>
+<p-toast key="smsg" position="top-right"></p-toast>
+<input type="radio" name="Photos" id="check1" checked />
+<input type="radio" name="Photos" id="check2" />
+<input type="radio" name="Photos" id="check3" />
 
-    <div class="container-fluid">
-        <h1>[User name]'s Gallery</h1>
-        <div class="top-content">
-            <h3>[User name]'s Galery</h3>
-            <label for="check1">Posted photos</label>
-            <label for="check2">Liked photos</label>
-            <label for="check3">Uploaded photos (hidden with orther user)</label>
-        </div>
+<div class="container-fluid">
+  <h1>{{username}}'s Gallery</h1>
+  <div class="top-content">
+    <h3>{{username}}'s Galery</h3>
+    <label for="check1">Posted photos</label>
+    <label for="check2">Liked photos</label>
+  </div>
 
-
-        <div class="photo-gallery">
-            <div class="pic posted">
-                <img src="../../assets/test1.jpg" alt="">
-                <img src="../../assets/test3.jpg" alt="">
-            </div>
-            <div class="pic liked">
-                <img src="../../assets/test2.jpg" alt="">
-            </div>
-            <div class="pic uploaded">
-                <img src="../../assets/test3.jpg" alt="">
-            </div>
-        </div>
+  <div class="photo-gallery">
+    <div class="pic posted">
+      <img src="../../assets/test1.jpg" alt="" />
+      <img src="../../assets/test3.jpg" alt="" />
     </div>
+    <div class="pic liked">
+      <img src="../../assets/test2.jpg" alt="" />
+    </div>
+  </div>
+</div>

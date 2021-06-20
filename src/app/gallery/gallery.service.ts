@@ -7,6 +7,8 @@ export class GalleryService {
   postID: any;
   constructor(private http: HttpClient) {}
 
+
+
   async uploadPic(data) {
     const httpOptions: { headers; observe } = {
       headers: new HttpHeaders({
@@ -27,6 +29,4 @@ export class GalleryService {
     });
     return respo;
   }
-
-
 }

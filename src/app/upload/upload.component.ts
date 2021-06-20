@@ -60,7 +60,8 @@ export class UploadComponent implements OnInit, AfterViewInit {
   items: SelectItem[];
 
   item: string;
-height;
+  height;
+  clicked = false;
   constructor(
     private fb: FormBuilder,
     private _ngZone: NgZone,
@@ -276,12 +277,11 @@ height;
     this._ngZone.onStable
       .pipe(take(1))
       .subscribe(() => this.autosize.resizeToFitContent(true));
-
   }
   async onPost() {
     this.onload = true;
-    console.log(this.formUpload);
-    console.log("img", this.img);
+    this.clicked = true;
+
     await this.onUploadPic();
 
     var data = {
@@ -292,10 +292,11 @@ height;
         title: this.title,
         description: this.des,
         categoryId: this.cates,
-        keywords: this.keywords
+        keywords: this.keywords,
       },
-      };
+    };
     var res = this.uploadService.uploadPost(data);
+    console.log('res', res);
     if (
       (await res.then(
         (__zone_symbol__value) => __zone_symbol__value.body.success
@@ -311,6 +312,7 @@ height;
       //   1
       // );
       // this.app.userService.addUser(user);
+      console.log('onload sc');
       this.onload = false;
       this.messageService.add({
         key: 'smsg',
@@ -318,8 +320,9 @@ height;
         summary: 'Message',
         detail: 'Uploaded your post successfully',
       });
-  console.log("PicpICID", this.picId);
+      console.log('PicpICID', this.picId);
     } else {
+      console.log('onload f');
       // setTimeout(() => { }, 500);
     }
   }
@@ -333,7 +336,7 @@ height;
     };
 
     if (this.formUpload.valid) {
-      console.log("upload ok");
+      console.log('upload ok');
       var res = this.galleryService.uploadPic(data);
       console.log(res);
       // var token = (
@@ -358,12 +361,13 @@ height;
           (__zone_symbol__value) =>
             (this.picId = __zone_symbol__value.body.response.picId)
         );
-    console.log("PicpICID", this.picId);
+        console.log('PicpICID', this.picId);
       } else {
         // setTimeout(() => { }, 500);
       }
     } else {
-      // this.onload = false;
+      this.onload = false;
     }
   }
+
 }

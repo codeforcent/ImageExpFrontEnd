@@ -18,9 +18,10 @@
       " -->
         <div
           [ngStyle]="{
-            'border':
-              formUpload.get('img')?.invalid &&
-              formUpload.get('img')?.touched
+            border:
+              (formUpload.get('img')?.invalid &&
+                formUpload.get('img')?.touched) ||
+              (clicked && formUpload.get('img')?.pristine)
                 ? '2px dashed red'
                 : '2px dashed cadetblue'
           }"
@@ -54,8 +55,9 @@
             >
             <small
               *ngIf="
-                formUpload.get('img')?.errors?.required &&
-                formUpload.get('img')?.touched
+                (formUpload.get('img')?.errors?.required &&
+                  formUpload.get('img')?.touched) ||
+                clicked
               "
               class="form-text error-text text-center"
               >Image is required</small
@@ -77,16 +79,18 @@
               formControlName="title"
               [ngStyle]="{
                 'border-bottom':
-                  formUpload.get('title')?.invalid &&
-                  formUpload.get('title')?.touched
+                  (formUpload.get('title')?.invalid &&
+                    formUpload.get('title')?.touched) ||
+                  (clicked && formUpload.get('title')?.pristine)
                     ? '2px solid red'
                     : '2px solid #aaa'
               }"
             ></textarea>
             <small
               *ngIf="
-                formUpload.get('title')?.errors?.required &&
-                formUpload.get('title')?.touched
+                (formUpload.get('title')?.errors?.required &&
+                  formUpload.get('title')?.touched) ||
+                (clicked && formUpload.get('title')?.pristine)
               "
               class="form-text error-text"
               >Title is required</small
@@ -155,8 +159,9 @@
           </p-multiSelect>
           <small
             *ngIf="
-              formUpload.get('cates')?.errors?.required &&
-              formUpload.get('cates')?.dirty
+              (formUpload.get('cates')?.errors?.required &&
+                formUpload.get('cates')?.dirty) ||
+              (clicked && formUpload.get('cates')?.pristine)
             "
             class="form-text error-text"
             >Choose at least 1 category</small
@@ -212,8 +217,9 @@
           formControlName="keywords"
           [ngStyle]="{
             'border-bottom':
-              formUpload.get('keywords')?.invalid &&
-              formUpload.get('keywords')?.touched
+              (formUpload.get('keywords')?.invalid &&
+                formUpload.get('keywords')?.touched) ||
+              (clicked && formUpload.get('keywords')?.pristine)
                 ? '2px solid red'
                 : 'none'
           }"
@@ -223,8 +229,9 @@
         </tag-input>
         <small
           *ngIf="
-            formUpload.get('keywords')?.errors?.required &&
-            formUpload.get('keywords')?.touched
+            (formUpload.get('keywords')?.errors?.required &&
+              formUpload.get('keywords')?.touched) ||
+            (clicked && formUpload.get('keywords')?.pristine)
           "
           class="form-text error-text"
           >Add at least one keyword</small
