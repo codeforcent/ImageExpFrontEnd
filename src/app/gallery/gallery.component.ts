@@ -1,3 +1,4 @@
+import { GalleryService } from './gallery.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { AppComponent } from './../app.component';
@@ -9,6 +10,7 @@ import { Galleria } from 'primeng/galleria';
 
 import { UserService } from '../user/user.service';
 import { PhotoService } from '../user/photo.service';
+
 // import {  delay } from 'rxjs/operators';
 @Component({
   selector: 'app-gallery',
@@ -43,44 +45,14 @@ export class GalleryComponent implements OnInit {
     private router: Router,
     private messageService: MessageService,
     private photoService: PhotoService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private galleryService: GalleryService
   ) {
     this.formUploadPic = this.fb.group({
       pic: [''],
       pics: [''],
     });
-    this.exploreCards = [
-      {
-        id: 1,
-        src: 'https://data.whicdn.com/images/252447756/original.jpg',
-        title: 'img1',
-      },
-      {
-        id: 2,
-        src: 'https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg',
-        title: 'img2',
-      },
-      {
-        id: 3,
-        src: 'https://hanayukichan.files.wordpress.com/2015/10/1257798871309782118.png?w=640',
-        title: 'img3',
-      },
-      {
-        id: 4,
-        src: 'https://s3-ap-southeast-1.amazonaws.com/images.spiderum.com/sp-images/920481102d0311e7a999e7b5135b7d88.jpg',
-        title: 'img4',
-      },
-      {
-        id: 5,
-        src: 'https://i.ytimg.com/vi/H5ohDQ-umHM/maxresdefault.jpg',
-        title: 'img5',
-      },
-      {
-        id: 6,
-        src: 'http://st.nhattruyen.com/data/comics/105/shigatsu-wa-kimi-no-uso-coda.jpg',
-        title: 'img6',
-      },
-    ];
+
     if (this.app.cookieService.check('auth-token')) {
       this.getInforUser();
 
@@ -109,6 +81,7 @@ export class GalleryComponent implements OnInit {
     var res = this.photoService.getImages().then((images) => {
       this.images = images;
     });
+    await console.log(this.images);
     await console.log(res);
     this.bindDocumentListeners();
   }
@@ -196,7 +169,7 @@ export class GalleryComponent implements OnInit {
       },
     };
     console.log(pic);
-    var res = this.userService.uploadPic(data);
+    var res = this.galleryService.uploadPic(data);
     console.log(res);
     if (
       (await res.then(
@@ -232,6 +205,7 @@ export class GalleryComponent implements OnInit {
     }
   }
   async onUpload(event) {
+    this.onload = true;
     // console.log("ev", event);
     // for(let file of event.files) {
     //     this.uploadedFiles.push(file);
@@ -240,17 +214,28 @@ export class GalleryComponent implements OnInit {
     // this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
     var uploadFiles = [];
     for (let file of event.files) {
-      uploadFiles.push(this.readFiles(file));
+      var base64data;
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        base64data = reader.result;
+      };
+      // var upFile = await this.readFiles(file);
+      // console.log("readFile", this.readFiles(file));
+      await this.delay(500);
+
+      uploadFiles.push(base64data);
     }
+
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
         userId: this.userId,
-        picture: uploadFiles,
+        pictures: uploadFiles,
       },
     };
-    var res = this.userService.uploadPic(data);
-    console.log(res);
+    var res = this.galleryService.uploadPics(data);
+
     if (
       (await res.then(
         (__zone_symbol__value) => __zone_symbol__value.body.success
@@ -284,17 +269,7 @@ export class GalleryComponent implements OnInit {
       // setTimeout(() => { }, 500);
     }
   }
-  readFiles(file) {
-    var base64data;
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      base64data = reader.result;
-      return base64data;
-    };
 
-    //  console.log(res);
-  }
   onThumbnailButtonClick() {
     this.showThumbnails = !this.showThumbnails;
   }

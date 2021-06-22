@@ -1,9 +1,10 @@
+import { HttpClient } from '@angular/common/http';
+declare var require: any
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AppComponent } from '../app.component';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
-
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -16,11 +17,13 @@ export class HeaderComponent implements OnInit {
   avatar;
   email;
   username;
+
   constructor(
     private app: AppComponent,
     private router: Router,
     private userService: UserService,
-    private vigenereCipherService: VigenereCipherService
+    private vigenereCipherService: VigenereCipherService,
+    private http: HttpClient
   ) {
     if (this.app.cookieService.check('auth-token')) {
       this.getInforUser();
@@ -58,11 +61,10 @@ export class HeaderComponent implements OnInit {
     ) {
       // setTimeout(() => { }, 500);
 
-      this.avatar =  res.then(
+      this.avatar = res.then(
         (__zone_symbol__value) =>
           (this.avatar = __zone_symbol__value.body.response.avatar)
       );
-
 
       if (
         await this.avatar.then(
@@ -88,5 +90,14 @@ export class HeaderComponent implements OnInit {
     }
     // var user = this.app.userService.getUserByToken(this.app.cookieService.get('token'));
     // window.alert("here is if");
+  }
+  async onSearch() {
+    var res = this.http.get("https://api.datamuse.com/words?rel_trg=li");
+    // https://api.datamuse.com/words?rel_trg=cat
+    // https://api.datamuse.com/sug?s=cat
+    await res.toPromise().then(response =>{
+      console.log("response", response);
+
+    } );
   }
 }

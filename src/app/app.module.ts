@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { JsonPipe, CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -28,20 +28,7 @@ import { MenuModule } from 'primeng/menu';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FileUploadModule } from 'primeng/fileupload';
 import { GalleriaModule } from 'primeng/galleria';
-const routesConfig: Routes = [
-  { path: 'userLogin', component: SigninComponent },
-  { path: '', component: HomeComponent },
-  { path: 'post', component: UploadComponent },
-  {
-    path: 'user/:id',
-    component: UserComponent,
-  },
-  { path: 'settings', component: UserProfileComponent },
-  { path: 'settings/user-profile', component: UserProfileComponent },
-  { path: 'settings/change-password', component: ChangePasswordComponent },
-  { path: 'gallery', component: GalleryComponent },
-  { path: '**', component: PageNotFoundComponent },
-];
+
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -59,7 +46,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { SettingsComponent } from './settings/settings.component';
 import { UserService } from './user/user.service';
 import { GalleryComponent } from './gallery/gallery.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +63,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     ChangePasswordComponent,
     SettingsComponent,
     GalleryComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -105,7 +93,6 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     CommonModule,
     FileUploadModule,
     NgMultiSelectDropDownModule.forRoot(),
-    RouterModule.forRoot(routesConfig),
     BrowserAnimationsModule,
     RouterModule,
   ],
