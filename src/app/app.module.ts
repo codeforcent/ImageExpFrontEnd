@@ -28,8 +28,8 @@ import { MenuModule } from 'primeng/menu';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FileUploadModule } from 'primeng/fileupload';
 import { GalleriaModule } from 'primeng/galleria';
-
-
+import { ConnectionServiceModule } from 'ngx-connection-service';
+import {DialogModule} from 'primeng/dialog';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
@@ -95,6 +95,8 @@ import { SearchComponent } from './search/search.component';
     NgMultiSelectDropDownModule.forRoot(),
     BrowserAnimationsModule,
     RouterModule,
+    ConnectionServiceModule,
+    DialogModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [JsonPipe, CookieService, MessageService, UserService],

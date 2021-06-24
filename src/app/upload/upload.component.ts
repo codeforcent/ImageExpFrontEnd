@@ -62,6 +62,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
   item: string;
   height;
   clicked = false;
+  displayPosition: boolean = false;
+
+    position: string;
   constructor(
     private fb: FormBuilder,
     private _ngZone: NgZone,
@@ -146,12 +149,17 @@ export class UploadComponent implements OnInit, AfterViewInit {
       );
 
       if (
-        await this.avatar.then(
+        (await this.avatar.then(
+          (__zone_symbol__value) => __zone_symbol__value === ''
+        )) &&
+        this.username.then(
           (__zone_symbol__value) => __zone_symbol__value === ''
         )
       ) {
-        this.avatar =
-          'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
+        this.position = "top";
+        this.displayPosition = true;
+        // this.avatar =
+        //   'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
       }
       this.onload = false;
       // setTimeout(() => { }, 500);
@@ -370,4 +378,8 @@ export class UploadComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onClickDialog() {
+    this.displayPosition = false
+    this.router.navigate(['/settings']);
+  }
 }

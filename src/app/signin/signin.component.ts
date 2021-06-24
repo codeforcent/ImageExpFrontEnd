@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
 import { AppComponent } from '../app.component';
 import { UserService } from '../user/user.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
-
+// import { ConnectionService } from 'ng-connection-service';
+import { ConnectionService } from 'ngx-connection-service';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -28,13 +29,19 @@ export class SigninComponent implements OnInit {
 
   clicked;
   existed;
+  // isConnected = true;
+  // status = 'OFFLINE';
+  hasNetworkConnection: boolean;
+  hasInternetAccess: boolean;
+  status: string;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
     private app: AppComponent,
     // public userService: UserService,
-    private vigenereCipherService: VigenereCipherService
+    private vigenereCipherService: VigenereCipherService,
+    private connectionService: ConnectionService
   ) {
     this.formSignUp = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -57,8 +64,8 @@ export class SigninComponent implements OnInit {
       // if (
       //   this.app.cookieService.get('token') === this.userService.getUserByEmail().
       // ) {
-        // this.app.cookieService.delete('token');
-        this.router.navigate(['']);
+      // this.app.cookieService.delete('token');
+      this.router.navigate(['']);
       // }
     }
   }
@@ -107,22 +114,28 @@ export class SigninComponent implements OnInit {
             true
           )
         );
+        // this.connectionService.monitor().subscribe((isConnected) => {
+        //   this.isConnected = isConnected;
+        //   if (this.isConnected) {
+        //     console.log('Online');
+        //     this.status = 'ONLINE';
+        //     this.app.cookieService.set('status', this.status);
+        //   } else {
+        //     console.log('Offline');
+        //     this.status = 'OFFLINE';
+        //     this.app.cookieService.set('status', this.status);
+        //   }
+        // });
+        this.connectionService.monitor().subscribe((currentState) => {
+          this.hasNetworkConnection = currentState.hasNetworkConnection;
+          this.hasInternetAccess = currentState.hasInternetAccess;
+          if (this.hasNetworkConnection && this.hasInternetAccess) {
+            this.status = 'ONLINE';
+          } else {
+            this.status = 'OFFLINE';
+          }
+        });
 
-        // window.alert("this is encrypte " + this.app.cookieService.get('auth_token'));
-        // window.alert("this is decrypte " + this.vigenereCipherService.vigenereCipher(this.app.cookieService.get('auth_token'), '24DJBWID328FNSU32Z', false));
-        // this.app.cookieService.set('auth_token', token);
-        // window.alert(this.app.cookieService.get('token'))
-        // console.warn("token sign in", 123);
-        // var user = new User(
-        //   token,
-        //   this.formSignIn.get('email').value,
-        //   '',
-        //   '',
-        //   1
-        // );
-        // this.app.userService.addUser(user);
-        // window.alert(this.app.userService.getUserByToken(token));
-        // sessionStorage.setItem(this.app.cookieService.get('auth-token'), this.formSignIn.get('email').value);
         this.router.navigate(['']);
       } else {
         // setTimeout(() => { }, 500);
@@ -164,6 +177,19 @@ export class SigninComponent implements OnInit {
             true
           )
         );
+        // this.connectionService.monitor().subscribe((isConnected) => {
+        //   console.log("connection");
+        //   this.isConnected = isConnected;
+        //   if (this.isConnected) {
+        //     console.log('Online');
+        //     this.status = 'ONLINE';
+        //     this.app.cookieService.set('status', this.status);
+        //   } else {
+        //     console.log('Offline');
+        //     this.status = 'OFFLINE';
+        //     this.app.cookieService.set('status', this.status);
+        //   }
+        // });
         // var user = new User(
         //   token,
         //   this.formSignUp.get('email').value,
@@ -173,6 +199,22 @@ export class SigninComponent implements OnInit {
         // );
         // this.app.userService.addUser(user);
 
+        // set online status
+
+        // set online status when disconnecting
+        this.connectionService.monitor().subscribe((currentState) => {
+          this.hasNetworkConnection = currentState.hasNetworkConnection;
+          this.hasInternetAccess = currentState.hasInternetAccess;
+          if (this.hasNetworkConnection && this.hasInternetAccess) {
+            window.alert("online in signin");
+
+            this.status = 'ONLINE';
+          } else {
+
+            window.alert("offline in signin");
+            this.status = 'OFFLINE';
+          }
+        });
         this.router.navigate(['']);
       } else {
         // setTimeout(() => { }, 500);

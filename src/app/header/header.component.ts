@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-declare var require: any
+declare var require: any;
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AppComponent } from '../app.component';
 import { Router } from '@angular/router';
@@ -92,12 +92,11 @@ export class HeaderComponent implements OnInit {
     // window.alert("here is if");
   }
   async onSearch() {
-    var res = this.http.get("https://api.datamuse.com/words?rel_trg=li");
+    var res = this.http.get('https://api.datamuse.com/words?rel_trg=li');
     // https://api.datamuse.com/words?rel_trg=cat
     // https://api.datamuse.com/sug?s=cat
-    await res.toPromise().then(response =>{
-      console.log("response", response);
-
-    } );
+    await res.toPromise().then((response) => {
+      console.log('response', response);
+    });
   }
 }

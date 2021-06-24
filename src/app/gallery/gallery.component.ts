@@ -48,6 +48,7 @@ export class GalleryComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private galleryService: GalleryService
   ) {
+    console.log("status", this.app.cookieService.get("status"));
     this.formUploadPic = this.fb.group({
       pic: [''],
       pics: [''],
