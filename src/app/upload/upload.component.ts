@@ -147,20 +147,20 @@ export class UploadComponent implements OnInit, AfterViewInit {
         (__zone_symbol__value) =>
           (this.username = __zone_symbol__value.body.response.name)
       );
-
-      if (
-        (await this.avatar.then(
-          (__zone_symbol__value) => __zone_symbol__value === ''
-        )) &&
-        this.username.then(
-          (__zone_symbol__value) => __zone_symbol__value === ''
-        )
-      ) {
-        this.position = "top";
-        this.displayPosition = true;
-        // this.avatar =
-        //   'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
-      }
+      //   console.log("avatar", this.avatar);
+      // if (
+      //   (await this.avatar.then(
+      //     (__zone_symbol__value) => __zone_symbol__value === ''
+      //   )) &&
+      //   (await this.username.then(
+      //     (__zone_symbol__value) => __zone_symbol__value === ''
+      //   ))
+      // ) {
+      //   this.position = "top";
+      //   this.displayPosition = true;
+      //   this.avatar =
+      //     'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
+      // }
       this.onload = false;
       // setTimeout(() => { }, 500);
       // this.app.userService.addUser(user);

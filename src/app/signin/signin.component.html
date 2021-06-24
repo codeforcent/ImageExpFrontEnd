@@ -25,6 +25,7 @@
             placeholder="Email"
             formControlName="email"
             required
+            id="signInEmail"
           />
           <span></span>
 
@@ -54,6 +55,7 @@
             formControlName="password"
             [toggleMask]="true"
             required
+            inputId = "signInPassword"
           >
           </p-password>
           <span></span>
@@ -82,6 +84,7 @@
           value="Login"
           class="btn solid"
           (click)="onClickSignIn()"
+          id="signInSubmit"
         />
       </form>
 
@@ -109,6 +112,7 @@
             formControlName="email"
             required
             pInputText
+            id="signUpEmail"
           />
           <span></span>
 
@@ -159,6 +163,7 @@
             formControlName="password"
             required
             [toggleMask]="true"
+            inputId = "signUpPassword"
           >
           </p-password>
 
@@ -209,6 +214,7 @@
             formControlName="repassword"
             [toggleMask]="true"
             required
+            inputId = "signUpRepassword"
           >
           </p-password>
 
@@ -233,6 +239,7 @@
           value="Sign Up"
           class="btn solid"
           (click)="onClickSignUp()"
+          id="signUpSubmit"
         />
       </form>
     </div>
