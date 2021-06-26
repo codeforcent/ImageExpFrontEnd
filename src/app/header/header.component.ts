@@ -13,6 +13,7 @@ import { AppComponent } from '../app.component';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
+import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
 import { ConnService } from '../home/conn.service';
 @Component({
   selector: 'app-header',
@@ -26,18 +27,25 @@ export class HeaderComponent implements OnInit, AfterViewChecked, AfterContentCh
   avatar;
   email;
   username;
-
+status: OnlineStatusType;
+  OnlineStatusType = OnlineStatusType;
   constructor(
     private app: AppComponent,
     private router: Router,
     private userService: UserService,
     private vigenereCipherService: VigenereCipherService,
     private http: HttpClient,
-    private connService: ConnService
+    private connService: ConnService,
+    private onlineStatusService: OnlineStatusService
   ) {
+    this.onlineStatusService.status.subscribe((status: OnlineStatusType) => {
+      // use status
+      this.status = status;
+    });
     if (this.email !== undefined) {
+      console.log("status", this.status);
       console.log("pass");
-      this.connService.connect(this.email);
+      this.connService.connect(this.email, this.status);
      this.delay(500);
     }
     if (this.app.cookieService.check('auth-token')) {

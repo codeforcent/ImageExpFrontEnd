@@ -26,6 +26,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuModule } from 'primeng/menu';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { OnlineStatusModule } from 'ngx-online-status';
 import { FileUploadModule } from 'primeng/fileupload';
 import { GalleriaModule } from 'primeng/galleria';
 import { ConnectionServiceModule } from 'ngx-connection-service';
@@ -96,7 +97,8 @@ import { SearchComponent } from './search/search.component';
     BrowserAnimationsModule,
     RouterModule,
     ConnectionServiceModule,
-    DialogModule
+    DialogModule,
+    OnlineStatusModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [JsonPipe, CookieService, MessageService, UserService],

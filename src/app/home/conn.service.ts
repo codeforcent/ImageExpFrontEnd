@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ConnectionService } from 'ngx-connection-service';
+
 
 @Injectable({
   providedIn: 'root',
@@ -10,35 +10,17 @@ export class ConnService {
   hasInternetAccess: boolean;
   status: string;
   constructor(
-    private connectionService: ConnectionService,
     private http: HttpClient
   ) {}
-  connect(email) {
-    this.connectionService.monitor().subscribe((currentState) => {
-      this.hasNetworkConnection = currentState.hasNetworkConnection;
-      this.hasInternetAccess = currentState.hasInternetAccess;
-      if (this.hasNetworkConnection && this.hasInternetAccess) {
-        var data = {
+  connect(email, status) {
+     var data = {
           'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
           body: {
             email: email,
-            status: 'online',
+            status: status,
           },
         };
         this.changeStatus(data);
-        this.status = 'ONLINE';
-      } else {
-        var data = {
-          'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
-          body: {
-            email: email,
-            status: 'offline',
-          },
-        };
-        this.changeStatus(data);
-        this.status = 'OFFLINE';
-      }
-    });
   }
   async changeStatus(data) {
     const httpOptions: { headers; observe } = {
