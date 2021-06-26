@@ -13,7 +13,6 @@ import { AppComponent } from '../app.component';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
-import { OnlineStatusService, OnlineStatusType } from 'ngx-online-status';
 import { ConnService } from '../home/conn.service';
 @Component({
   selector: 'app-header',
@@ -27,27 +26,22 @@ export class HeaderComponent implements OnInit, AfterViewChecked, AfterContentCh
   avatar;
   email;
   username;
-status: OnlineStatusType;
-  OnlineStatusType = OnlineStatusType;
+
   constructor(
     private app: AppComponent,
     private router: Router,
     private userService: UserService,
     private vigenereCipherService: VigenereCipherService,
     private http: HttpClient,
-    private connService: ConnService,
-    private onlineStatusService: OnlineStatusService
+    private connService: ConnService
   ) {
-    this.onlineStatusService.status.subscribe((status: OnlineStatusType) => {
-      // use status
-      this.status = status;
-    });
-    if (this.email !== undefined) {
-      console.log("status", this.status);
-      console.log("pass");
-      this.connService.connect(this.email, this.status);
-     this.delay(500);
-    }
+
+    // if (this.email !== undefined) {
+    //   console.log("status", this.status);
+    //   console.log("pass");
+    //   this.connService.connect(this.email, this.status);
+    //  this.delay(500);
+    // }
     if (this.app.cookieService.check('auth-token')) {
       this.getInforUser();
       // this.user.emit();
@@ -60,19 +54,19 @@ status: OnlineStatusType;
   ngDoCheck(): void {
     //Called every time that the input properties of a component or a directive are checked. Use it to extend change detection by performing a custom check.
     //Add 'implements DoCheck' to the class.
-  
+
   }
   ngAfterViewChecked(): void {
-    
+
   }
   ngAfterContentChecked(): void {
     //Called after every check of the component's or directive's content.
     //Add 'implements AfterContentChecked' to the class.
-    
-    
+
+
   }
   ngOnInit(): void {
-      
+
   }
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
