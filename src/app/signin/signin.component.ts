@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from './auth.service';
 
@@ -7,15 +7,15 @@ import { Router } from '@angular/router';
 import { AppComponent } from '../app.component';
 import { UserService } from '../user/user.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
+import { ConnService } from '../home/conn.service';
 // import { ConnectionService } from 'ng-connection-service';
-import { ConnectionService } from 'ngx-connection-service';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css'],
   providers: [AuthService, UserService],
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent implements OnInit, AfterViewChecked {
   @ViewChild('p') p;
 
   formSignUp: FormGroup;
@@ -31,9 +31,7 @@ export class SigninComponent implements OnInit {
   existed;
   // isConnected = true;
   // status = 'OFFLINE';
-  hasNetworkConnection: boolean;
-  hasInternetAccess: boolean;
-  status: string;
+  email;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -41,7 +39,7 @@ export class SigninComponent implements OnInit {
     private app: AppComponent,
     // public userService: UserService,
     private vigenereCipherService: VigenereCipherService,
-    private connectionService: ConnectionService
+    private connService: ConnService
   ) {
     this.formSignUp = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -60,6 +58,7 @@ export class SigninComponent implements OnInit {
       email: ['', Validators.required],
       password: ['', Validators.required],
     });
+
     if (this.app.cookieService.check('auth-token')) {
       // if (
       //   this.app.cookieService.get('token') === this.userService.getUserByEmail().
@@ -71,6 +70,14 @@ export class SigninComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngAfterViewChecked(): void {
+    //Called after every check of the component's view. Applies to components only.
+    //Add 'implements AfterViewChecked' to the class.
+    if (this.email !== undefined) {
+      this.connService.connect(this.email);
+    }
+  }
   onClickSignIn() {
     this.clicked = true;
   }
@@ -96,15 +103,24 @@ export class SigninComponent implements OnInit {
     };
     if (this.formSignIn.valid) {
       var res = this.authService.signIn(data);
-      // var token = (
-      //   Math.floor(Math.random() * (999999 - 100000)) + 100000
-      // ).toString();
+
 
       if (
         (await res.then(
           (__zone_symbol__value) => __zone_symbol__value.body.success
         )) === true
       ) {
+
+
+        this.email = this.formSignIn.get('email').value;
+        var dat = {
+          'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+          body: {
+            email: this.formSignIn.get('email').value,
+            status: 'online',
+          },
+        };
+        this.connService.changeStatus(dat);
         // 24DJBWID328FNSU32Z
         this.app.cookieService.set(
           'auth-token',
@@ -126,15 +142,6 @@ export class SigninComponent implements OnInit {
         //     this.app.cookieService.set('status', this.status);
         //   }
         // });
-        this.connectionService.monitor().subscribe((currentState) => {
-          this.hasNetworkConnection = currentState.hasNetworkConnection;
-          this.hasInternetAccess = currentState.hasInternetAccess;
-          if (this.hasNetworkConnection && this.hasInternetAccess) {
-            this.status = 'ONLINE';
-          } else {
-            this.status = 'OFFLINE';
-          }
-        });
 
         this.router.navigate(['']);
       } else {
@@ -166,6 +173,15 @@ export class SigninComponent implements OnInit {
           (__zone_symbol__value) => __zone_symbol__value.body.success
         )) === true
       ) {
+        this.email = this.formSignUp.get('email').value;
+        var dat = {
+          'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+          body: {
+            email: this.formSignUp.get('email').value,
+            status: 'online',
+          },
+        };
+        this.connService.changeStatus(dat);
         // setTimeout(() => { }, 500);
         this.authService.signIn(data);
 
@@ -177,44 +193,7 @@ export class SigninComponent implements OnInit {
             true
           )
         );
-        // this.connectionService.monitor().subscribe((isConnected) => {
-        //   console.log("connection");
-        //   this.isConnected = isConnected;
-        //   if (this.isConnected) {
-        //     console.log('Online');
-        //     this.status = 'ONLINE';
-        //     this.app.cookieService.set('status', this.status);
-        //   } else {
-        //     console.log('Offline');
-        //     this.status = 'OFFLINE';
-        //     this.app.cookieService.set('status', this.status);
-        //   }
-        // });
-        // var user = new User(
-        //   token,
-        //   this.formSignUp.get('email').value,
-        //   '',
-        //   '',
-        //   1
-        // );
-        // this.app.userService.addUser(user);
 
-        // set online status
-
-        // set online status when disconnecting
-        this.connectionService.monitor().subscribe((currentState) => {
-          this.hasNetworkConnection = currentState.hasNetworkConnection;
-          this.hasInternetAccess = currentState.hasInternetAccess;
-          if (this.hasNetworkConnection && this.hasInternetAccess) {
-            window.alert("online in signin");
-
-            this.status = 'ONLINE';
-          } else {
-
-            window.alert("offline in signin");
-            this.status = 'OFFLINE';
-          }
-        });
         this.router.navigate(['']);
       } else {
         // setTimeout(() => { }, 500);

@@ -25,6 +25,8 @@ export class HeaderComponent implements OnInit {
     private vigenereCipherService: VigenereCipherService,
     private http: HttpClient
   ) {
+
+
     if (this.app.cookieService.check('auth-token')) {
       this.getInforUser();
       // this.user.emit();
@@ -58,6 +60,11 @@ export class HeaderComponent implements OnInit {
       (await res.then(
         (__zone_symbol__value) => __zone_symbol__value.body.success
       )) === true
+      &&
+      (await res.then(
+        (__zone_symbol__value) =>
+          __zone_symbol__value.body.response.status !== 'online'
+      ))
     ) {
       // setTimeout(() => { }, 500);
 

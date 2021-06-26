@@ -64,7 +64,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   clicked = false;
   displayPosition: boolean = false;
 
-    position: string;
+  position: string;
   constructor(
     private fb: FormBuilder,
     private _ngZone: NgZone,
@@ -147,20 +147,22 @@ export class UploadComponent implements OnInit, AfterViewInit {
         (__zone_symbol__value) =>
           (this.username = __zone_symbol__value.body.response.name)
       );
-      //   console.log("avatar", this.avatar);
-      // if (
-      //   (await this.avatar.then(
-      //     (__zone_symbol__value) => __zone_symbol__value === ''
-      //   )) &&
-      //   (await this.username.then(
-      //     (__zone_symbol__value) => __zone_symbol__value === ''
-      //   ))
-      // ) {
-      //   this.position = "top";
-      //   this.displayPosition = true;
-      //   this.avatar =
-      //     'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
-      // }
+
+      if (
+        (await this.avatar.then(
+          (__zone_symbol__value) => __zone_symbol__value === ''
+        )) &&
+        this.username.then(
+          (__zone_symbol__value) => __zone_symbol__value === ''
+        )
+      ) {
+        console.log('11');
+        this.position = 'top';
+        this.displayPosition = true;
+        this.onload = false;
+        // this.avatar =
+        //   'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
+      }
       this.onload = false;
       // setTimeout(() => { }, 500);
       // this.app.userService.addUser(user);
@@ -379,7 +381,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
 
   onClickDialog() {
-    this.displayPosition = false
+    this.displayPosition = false;
     this.router.navigate(['/settings']);
   }
 }
