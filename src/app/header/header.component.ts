@@ -35,6 +35,11 @@ export class HeaderComponent implements OnInit, AfterViewChecked, AfterContentCh
     private http: HttpClient,
     private connService: ConnService
   ) {
+    if (this.email !== undefined) {
+      console.log("pass");
+      this.connService.connect(this.email);
+     this.delay(500);
+    }
     if (this.app.cookieService.check('auth-token')) {
       this.getInforUser();
       // this.user.emit();
@@ -59,11 +64,7 @@ export class HeaderComponent implements OnInit, AfterViewChecked, AfterContentCh
     
   }
   ngOnInit(): void {
-      if (this.email !== undefined) {
-      console.log("pass");
-      this.connService.connect(this.email);
-     this.delay(500);
-    }
+      
   }
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
