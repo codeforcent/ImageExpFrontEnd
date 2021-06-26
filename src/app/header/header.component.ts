@@ -6,6 +6,8 @@ import {
   Output,
   EventEmitter,
   AfterViewChecked,
+  AfterContentChecked,
+  DoCheck
 } from '@angular/core';
 import { AppComponent } from '../app.component';
 import { Router } from '@angular/router';
@@ -17,7 +19,7 @@ import { ConnService } from '../home/conn.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit, AfterViewChecked {
+export class HeaderComponent implements OnInit, AfterViewChecked, AfterContentChecked, DoCheck {
   @Output('getUser') user = new EventEmitter<any>();
   clicked = false;
   logIn;
@@ -42,13 +44,30 @@ export class HeaderComponent implements OnInit, AfterViewChecked {
       this.router.navigate(['']);
     }
   }
+  ngDoCheck(): void {
+    //Called every time that the input properties of a component or a directive are checked. Use it to extend change detection by performing a custom check.
+    //Add 'implements DoCheck' to the class.
+  
+  }
   ngAfterViewChecked(): void {
-    if (this.email !== undefined) {
+    
+  }
+  ngAfterContentChecked(): void {
+    //Called after every check of the component's or directive's content.
+    //Add 'implements AfterContentChecked' to the class.
+    
+    
+  }
+  ngOnInit(): void {
+      if (this.email !== undefined) {
+      console.log("pass");
       this.connService.connect(this.email);
+     this.delay(500);
     }
   }
-
-  ngOnInit(): void {}
+  delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
   signOut() {
     console.log('email', this.email);
     var dat = {

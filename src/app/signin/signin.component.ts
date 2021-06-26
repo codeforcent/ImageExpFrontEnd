@@ -74,9 +74,7 @@ export class SigninComponent implements OnInit, AfterViewChecked {
   ngAfterViewChecked(): void {
     //Called after every check of the component's view. Applies to components only.
     //Add 'implements AfterViewChecked' to the class.
-    if (this.email !== undefined) {
-      this.connService.connect(this.email);
-    }
+   
   }
   onClickSignIn() {
     this.clicked = true;
@@ -171,9 +169,7 @@ export class SigninComponent implements OnInit, AfterViewChecked {
     };
     if (this.formSignUp.valid) {
       var res = this.authService.signUp(data);
-      // var token = (
-      //   Math.floor(Math.random() * (999999 - 100000)) + 100000
-      // ).toString();
+
       if (
         (await res.then(
           (__zone_symbol__value) => __zone_symbol__value.body.success
@@ -199,7 +195,7 @@ export class SigninComponent implements OnInit, AfterViewChecked {
             true
           )
         );
-
+            console.log("sign in sc");
         this.router.navigate(['']);
       } else {
         // setTimeout(() => { }, 500);
