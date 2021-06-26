@@ -103,51 +103,57 @@ export class SigninComponent implements OnInit, AfterViewChecked {
     };
     if (this.formSignIn.valid) {
       var res = this.authService.signIn(data);
-
-
       if (
-        (await res.then(
-          (__zone_symbol__value) => __zone_symbol__value.body.success
-        )) === true
+        await res.then(
+          (__zone_symbol__value) =>
+            __zone_symbol__value.body.response.status !== 'online'
+        )
       ) {
+        if (
+          (await res.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.success
+          )) === true
+        ) {
+          this.email = this.formSignIn.get('email').value;
+          var dat = {
+            'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+            body: {
+              email: this.formSignIn.get('email').value,
+              status: 'online',
+            },
+          };
+          this.connService.changeStatus(dat);
+          // 24DJBWID328FNSU32Z
+          this.app.cookieService.set(
+            'auth-token',
+            this.vigenereCipherService.vigenereCipher(
+              this.formSignIn.get('email').value,
+              '24DJBWID328FNSU32Z',
+              true
+            )
+          );
+          // this.connectionService.monitor().subscribe((isConnected) => {
+          //   this.isConnected = isConnected;
+          //   if (this.isConnected) {
+          //     console.log('Online');
+          //     this.status = 'ONLINE';
+          //     this.app.cookieService.set('status', this.status);
+          //   } else {
+          //     console.log('Offline');
+          //     this.status = 'OFFLINE';
+          //     this.app.cookieService.set('status', this.status);
+          //   }
+          // });
 
-
-        this.email = this.formSignIn.get('email').value;
-        var dat = {
-          'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
-          body: {
-            email: this.formSignIn.get('email').value,
-            status: 'online',
-          },
-        };
-        this.connService.changeStatus(dat);
-        // 24DJBWID328FNSU32Z
-        this.app.cookieService.set(
-          'auth-token',
-          this.vigenereCipherService.vigenereCipher(
-            this.formSignIn.get('email').value,
-            '24DJBWID328FNSU32Z',
-            true
-          )
-        );
-        // this.connectionService.monitor().subscribe((isConnected) => {
-        //   this.isConnected = isConnected;
-        //   if (this.isConnected) {
-        //     console.log('Online');
-        //     this.status = 'ONLINE';
-        //     this.app.cookieService.set('status', this.status);
-        //   } else {
-        //     console.log('Offline');
-        //     this.status = 'OFFLINE';
-        //     this.app.cookieService.set('status', this.status);
-        //   }
-        // });
-
-        this.router.navigate(['']);
+          this.router.navigate(['']);
+        } else {
+          // setTimeout(() => { }, 500);
+          this.onload = false;
+          this.signInSuccess = false;
+        }
       } else {
-        // setTimeout(() => { }, 500);
         this.onload = false;
-        this.signInSuccess = false;
+        this.router.navigate(['']);
       }
     } else {
       this.onload = false;

@@ -5,6 +5,7 @@ import { AppComponent } from '../app.component';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
+import { ConnService } from '../home/conn.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -23,10 +24,9 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private vigenereCipherService: VigenereCipherService,
-    private http: HttpClient
+    private http: HttpClient,
+    private connService: ConnService
   ) {
-
-
     if (this.app.cookieService.check('auth-token')) {
       this.getInforUser();
       // this.user.emit();
@@ -39,8 +39,18 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {}
   signOut() {
+    console.log("email", this.email);
+    var dat = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        email: this.email,
+        status: 'offline',
+      },
+    };
+    this.connService.changeStatus(dat);
     this.logIn = false;
     this.app.cookieService.delete('auth-token');
+
   }
 
   async getInforUser() {
@@ -60,11 +70,6 @@ export class HeaderComponent implements OnInit {
       (await res.then(
         (__zone_symbol__value) => __zone_symbol__value.body.success
       )) === true
-      &&
-      (await res.then(
-        (__zone_symbol__value) =>
-          __zone_symbol__value.body.response.status !== 'online'
-      ))
     ) {
       // setTimeout(() => { }, 500);
 
@@ -72,7 +77,10 @@ export class HeaderComponent implements OnInit {
         (__zone_symbol__value) =>
           (this.avatar = __zone_symbol__value.body.response.avatar)
       );
-
+      this.email = res.then(
+        (__zone_symbol__value) =>
+          (this.email = __zone_symbol__value.body.response.email)
+      );
       if (
         await this.avatar.then(
           (__zone_symbol__value) => __zone_symbol__value === ''
