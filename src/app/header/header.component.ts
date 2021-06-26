@@ -1,6 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 declare var require: any;
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  AfterViewChecked,
+} from '@angular/core';
 import { AppComponent } from '../app.component';
 import { Router } from '@angular/router';
 import { UserService } from '../user/user.service';
@@ -11,7 +17,7 @@ import { ConnService } from '../home/conn.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterViewChecked {
   @Output('getUser') user = new EventEmitter<any>();
   clicked = false;
   logIn;
@@ -36,10 +42,15 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['']);
     }
   }
+  ngAfterViewChecked(): void {
+    if (this.email !== undefined) {
+      this.connService.connect(this.email);
+    }
+  }
 
   ngOnInit(): void {}
   signOut() {
-    console.log("email", this.email);
+    console.log('email', this.email);
     var dat = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
@@ -50,7 +61,6 @@ export class HeaderComponent implements OnInit {
     this.connService.changeStatus(dat);
     this.logIn = false;
     this.app.cookieService.delete('auth-token');
-
   }
 
   async getInforUser() {
