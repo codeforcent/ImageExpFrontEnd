@@ -1,0 +1,65 @@
+<mat-progress-bar mode="indeterminate" value="40" *ngIf="onload">
+</mat-progress-bar>
+<p-dialog
+  header="Notification"
+  [(visible)]="displayPosition"
+  [position]="position"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+  [closeOnEscape] = "false"
+  [closable] = "false"
+>
+  <p>
+    Let give us your avatar and username before uploading
+  </p>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-check"
+      (click)="onClickDialog()"
+      label="Ok"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+<p-toast key="smsg" position="top-right"></p-toast>
+<div class="wrapper">
+  <header>
+      <a href="/gallery" class="button">
+          <img [src]="avatar" alt="Avatar" class="avatar">
+      </a>
+      <h1>{{username}}</h1>
+
+  </header>
+  <div class="sections">
+    <section>
+      <form action="" class="images" id="form1" [formGroup]="formUploadPic">
+
+        <p-fileUpload
+          name="demo[]"
+          (uploadHandler)="onUpload($event)"
+          [multiple]="true"
+          accept="image/*"
+          [maxFileSize]="1000000"
+          formControlName="pics"
+          [customUpload]="true"
+          #up
+        >
+          <ng-template pTemplate="content">
+            <ul *ngIf="uploadedFiles.length">
+              <li *ngFor="let file of uploadedFiles">
+                {{ file.name }} - {{ file.size }} bytes
+              </li>
+            </ul>
+          </ng-template>
+        </p-fileUpload>
+    </form>
+    </section>
+
+
+  </div>
+
+</div>
+

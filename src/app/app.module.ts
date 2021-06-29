@@ -37,7 +37,8 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { UserComponent } from './user/user.component';
 import { SigninComponent } from './signin/signin.component';
-
+import {ConfirmPopupModule} from 'primeng/confirmpopup';
+import { ConfirmationService } from 'primeng/api';
 import { ClickOutsideDirective } from './click-outside.directive';
 import { ImageComponent } from './image/image.component';
 import { UploadComponent } from './upload/upload.component';
@@ -48,6 +49,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { UserService } from './user/user.service';
 import { GalleryComponent } from './gallery/gallery.component';
 import { SearchComponent } from './search/search.component';
+import { UploadImgComponent } from './upload-img/upload-img.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +67,7 @@ import { SearchComponent } from './search/search.component';
     SettingsComponent,
     GalleryComponent,
     SearchComponent,
+    UploadImgComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -98,10 +101,11 @@ import { SearchComponent } from './search/search.component';
     RouterModule,
     ConnectionServiceModule,
     DialogModule,
-    OnlineStatusModule
+    OnlineStatusModule,
+    ConfirmPopupModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [JsonPipe, CookieService, MessageService, UserService],
+  providers: [JsonPipe, CookieService, MessageService, UserService, ConfirmationService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

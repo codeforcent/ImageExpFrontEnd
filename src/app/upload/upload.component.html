@@ -46,7 +46,8 @@
             border:
               (formUpload.get('img')?.invalid &&
                 formUpload.get('img')?.touched) ||
-              (clicked && formUpload.get('img')?.pristine)
+              (clicked && formUpload.get('img')?.pristine && img === null)
+
                 ? '2px dashed red'
                 : '2px dashed cadetblue'
           }"
@@ -69,8 +70,9 @@
               font-size: 0px;
             "
             formControlName="img"
+            value="img"
           />
-          <div class="inputOnImg" *ngIf="!uploaded">
+          <div class="inputOnImg" *ngIf="!uploaded && this.img === null">
             <i class="fas fa-upload"></i>
             <p class="text-center">
               Drag and drop or choose your file for uploading

@@ -47,4 +47,44 @@ export class GalleryService {
     });
     return respo;
   }
+  async deletePic(data) {
+    const httpOptions: { headers; observe } = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      observe: 'response',
+    };
+
+    var respo = null;
+    var res = await this.http.post(
+      'https://image-exp-backend.herokuapp.com/deletepicture',
+      data,
+      httpOptions
+    );
+    setTimeout(() => {}, 500);
+    await res.toPromise().then((response) => {
+      respo = response;
+    });
+    return respo;
+  }
+  async getImagesByUserId(data) {
+    const httpOptions: { headers; observe } = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      observe: 'response',
+    };
+
+    var respo = null;
+    var res = await this.http.post(
+      'https://image-exp-backend.herokuapp.com/getpicturesbyuserid',
+      data,
+      httpOptions
+    );
+    setTimeout(() => {}, 500);
+    await res.toPromise().then((response) => {
+      respo = response;
+    });
+    return respo;
+  }
 }

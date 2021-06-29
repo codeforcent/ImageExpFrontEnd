@@ -65,6 +65,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   displayPosition: boolean = false;
 
   position: string;
+  sub: any;
   constructor(
     private fb: FormBuilder,
     private _ngZone: NgZone,
@@ -76,6 +77,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
     private galleryService: GalleryService,
     private messageService: MessageService
   ) {
+    this.img = sessionStorage.getItem('img');
+    sessionStorage.removeItem('img');
+
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'item_id',
@@ -84,7 +88,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
       unSelectAllText: 'UnSelect All',
       allowSearchFilter: true,
     };
-    console.warn('result', this.cateList);
+
     this.formUpload = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
       img: ['', [Validators.required]],
@@ -134,106 +138,39 @@ export class UploadComponent implements OnInit, AfterViewInit {
       )) === true
     ) {
       // setTimeout(() => { }, 500);
-      this.userId = res.then(
+      this.userId = await res.then(
         (__zone_symbol__value) =>
           (this.userId = __zone_symbol__value.body.response.id)
       );
 
-      this.avatar = res.then(
+      this.avatar = await res.then(
         (__zone_symbol__value) =>
           (this.avatar = __zone_symbol__value.body.response.avatar)
       );
-      this.username = res.then(
+
+      this.username = await res.then(
         (__zone_symbol__value) =>
           (this.username = __zone_symbol__value.body.response.name)
       );
 
-      if (
-        (await this.avatar.then(
-          (__zone_symbol__value) => __zone_symbol__value === ''
-        )) &&
-        this.username.then(
-          (__zone_symbol__value) => __zone_symbol__value === ''
-        )
-      ) {
-        console.log('11');
+      if (this.avatar === '' || this.username === '') {
         this.position = 'top';
         this.displayPosition = true;
         this.onload = false;
-        // this.avatar =
-        //   'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
       }
-      this.onload = false;
-      // setTimeout(() => { }, 500);
-      // this.app.userService.addUser(user);
-      // sessionStorage.setItem(this.app.cookieService.get('auth-token'), user.getEmail());
-      // this.router.navigate(['']);
-    } else {
-      // setTimeout(() => { }, 500);
-      // this.onload = false;
-      // this.signUpSuccess = false;
 
+      this.onload = false;
+    } else {
       this.app.cookieService.delete('auth-token');
       this.router.navigate(['']);
       this.onload = false;
     }
   }
   async getAllCategories() {
-    // var data = {
-    //   'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
-    //   body: {
-    //     email: this.vigenereCipherService.vigenereCipher(
-    //       this.app.cookieService.get('auth-token'),
-    //       '24DJBWID328FNSU32Z',
-    //       false
-    //     ),
-    //   },
-    // };
     var res = await this.uploadService.getAllCategories();
     console.log('res', res);
 
     return res;
-    // if (
-    //   (await res.then(
-    //     (__zone_symbol__value) => __zone_symbol__value.body.success
-    //   )) === true
-    // ) {
-    //   // setTimeout(() => { }, 500);
-    //   this.userId = res.then(
-    //     (__zone_symbol__value) =>
-    //       (this.userId = __zone_symbol__value.body.response.userId)
-    //   );
-    //   this.avatar = res.then(
-    //     (__zone_symbol__value) =>
-    //       (this.avatar = __zone_symbol__value.body.response.avatar)
-    //   );
-    //   this.username = res.then(
-    //     (__zone_symbol__value) =>
-    //       (this.username = __zone_symbol__value.body.response.name)
-    //   );
-
-    //   if (
-    //     await this.avatar.then(
-    //       (__zone_symbol__value) => __zone_symbol__value === ''
-    //     )
-    //   ) {
-    //     this.avatar =
-    //       'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
-    //   }
-    //   this.onload = false;
-    //   // setTimeout(() => { }, 500);
-    //   // this.app.userService.addUser(user);
-    //   // sessionStorage.setItem(this.app.cookieService.get('auth-token'), user.getEmail());
-    //   // this.router.navigate(['']);
-    // } else {
-    //   // setTimeout(() => { }, 500);
-    //   // this.onload = false;
-    //   // this.signUpSuccess = false;
-
-    //   this.app.cookieService.delete('auth-token');
-    //   this.router.navigate(['']);
-    //   this.onload = false;
-    // }
   }
   onSelectedFile(e) {
     if (e.target.files) {
@@ -245,31 +182,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
       this.uploaded = true;
     }
   }
-  // onKeyUpTitle() {
-  //   console.log('height', this.scrollHeightTitle);
-  //   this.scrollHeightTitle = this.title?.nativeElement?.scrollHeight;
-  //   console.log('height', this.scrollHeightTitle);
-  // }
-  // onKeyUpDes() {
-  //   this.scrollHeightDes = this.des?.nativeElement?.scrollHeight;
-  // }
-  // onKeyUpBSTitle(ev) {
-  //   this.charCount = ev?.target?.value?.length;
-  //   // console.warn("len", ev?.target?.value?.length);
 
-  //   if (this.charCount % 27 === 0 && this.charCount > 0) {
-  //     this.scrollHeightTitle -= 35;
-  //   }
-  // }
-
-  // onKeyUpBSDes(type, size) {
-  //   if (
-  //     type.nativeElement?.value?.length % size === 0 &&
-  //     type.nativeElement?.value?.length > 0
-  //   ) {
-  //     this.scrollHeightTitle -= 30;
-  //   }
-  // }
   onItemSelect(item: any) {
     console.log('item', item);
   }
@@ -306,7 +219,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
       },
     };
     var res = this.uploadService.uploadPost(data);
-    console.log('res', res);
+
     if (
       (await res.then(
         (__zone_symbol__value) => __zone_symbol__value.body.success
@@ -322,7 +235,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
       //   1
       // );
       // this.app.userService.addUser(user);
-      console.log('onload sc');
+
       this.onload = false;
       this.messageService.add({
         key: 'smsg',
@@ -330,9 +243,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
         summary: 'Message',
         detail: 'Uploaded your post successfully',
       });
-      console.log('PicpICID', this.picId);
     } else {
-      console.log('onload f');
       // setTimeout(() => { }, 500);
     }
   }
@@ -346,9 +257,8 @@ export class UploadComponent implements OnInit, AfterViewInit {
     };
 
     if (this.formUpload.valid) {
-      console.log('upload ok');
       var res = this.galleryService.uploadPic(data);
-      console.log(res);
+
       // var token = (
       //   Math.floor(Math.random() * (999999 - 100000)) + 100000
       // ).toString();
@@ -371,7 +281,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
           (__zone_symbol__value) =>
             (this.picId = __zone_symbol__value.body.response.picId)
         );
-        console.log('PicpICID', this.picId);
       } else {
         // setTimeout(() => { }, 500);
       }

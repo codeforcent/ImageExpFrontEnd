@@ -54,3 +54,51 @@
     z-index: 1;
     min-height: 90px;
 }
+.DropdownControlled-module_root-2MA1A{
+  position: absolute;
+  align-items: baseline;
+  display: flex;
+  margin-right: 5px;
+  height: 100%;
+  width: 100%;
+  justify-content: flex-end;
+}
+.ItemActions_button-1IG6J{
+
+  -webkit-box-direction: normal;
+  color: #717790;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 0;
+  border-radius: 4px;
+  transition: background-color .2s linear,border-radius .2s linear;
+  position: relative;
+  padding: 5px;
+}
+svg {
+
+  -webkit-box-direction: normal;
+  color: #717790;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  z-index: 11;
+  position: relative;
+  width: 25px;
+  fill: #5a5f73;
+  transition: fill .2s linear;
+  height: 15px;
+}
+.gallery{
+  position: absolute;
+  display: initial;
+}
+:host>>>.dropdown-toggle::after{
+display:none;
+}
+.dropdown-item{
+  justify-content: center;
+}

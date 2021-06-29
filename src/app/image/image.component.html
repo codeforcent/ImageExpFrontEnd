@@ -1,28 +1,107 @@
-<a href="#">
-    <!-- [ngStyle]="{'background-image' : 'url('+ item.src +')'}" -->
-    <div class="gal-item overlay">
-        <img src="{{item.src}}" class="card-img gal-img" alt="..." [ngStyle]="hovered ? { 'opacity' : '0.4' } : { 'opacity' : '1' }" #gal_img>
-        <!-- <div [ngStyle]="hovered ? { 'top' : calHeight() } : { 'display' : 'none' }"> -->
-        <button type="button" class="btn btn-primary save-btn rounded-pill" [ngStyle]="hovered ? {'display' : 'inline-block' } : { 'display' : 'none' }">Save</button>
+<a >
+  <!-- [ngStyle]="{'background-image' : 'url('+ item.src +')'}" -->
+  <div class="gal-item overlay">
+    <img
+      src="{{ item.picture }}"
+      class="card-img gal-img"
+      alt="..."
+      [ngStyle]="hovered ? { opacity: '0.4' } : { opacity: '1' }"
+      #gal_img
+    />
+    <!-- <div [ngStyle]="hovered ? { 'top' : calHeight() } : { 'display' : 'none' }"> -->
+    <div class="home" style="display: none;">
+      <button
+        type="button"
+        class="btn btn-primary save-btn rounded-pill"
+        [ngStyle]="hovered ? { display: 'inline-block' } : { display: 'none' }"
+      >
+        Save
+      </button>
+      <a href="#">
+        <img
+          src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg"
+          class="avatar-img"
+          alt="..."
+          [ngStyle]="hovered ? { top: calHeight() } : { display: 'none' }"
+        />
+      </a>
+      <div
+        class="share"
+        [ngStyle]="
+          hovered
+            ? { top: calHeightIC(), display: 'inline-block' }
+            : { display: 'none' }
+        "
+      >
         <a href="#">
-            <img src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg" class="avatar-img" alt="..." [ngStyle]="hovered ? { 'top' : calHeight() } : { 'display' : 'none' }">
+          <i class="fas fa-share-square" style="color: black"></i>
         </a>
-        <div class="share" [ngStyle]="hovered ? { 'top' : calHeightIC(), 'display' : 'inline-block' } : { 'display' : 'none' }">
-            <a href="#">
-                <i class="fas fa-share-square" style="color: black"></i>
-            </a>
-
-        </div>
-        <div class="ellipsis" [ngStyle]="hovered ? { 'top' : calHeightIC(), 'display' : 'inline-block' } : { 'display' : 'none' }">
-            <a href="#">
-                <i class="fas fa-ellipsis-h" style="color: black"></i>
-            </a>
-
-        </div>
-        <!-- </div> -->
-
-
-
-
+      </div>
+      <div
+        class="ellipsis"
+        [ngStyle]="
+          hovered
+            ? { top: calHeightIC(), display: 'inline-block' }
+            : { display: 'none' }
+        "
+      >
+        <a href="#">
+          <i class="fas fa-ellipsis-h" style="color: black"></i>
+        </a>
+      </div>
     </div>
+    <div class="gallery" [ngStyle]="hovered ? { display: 'inline-block' } : { display: 'none' }">
+      <span
+        title="Actions"
+        data-test-id="action-menu"
+        class="
+          DropdownControlled-module_root-2MA1A
+          ItemActions_menu-7PC3W ItemActions_menuSmall-rJ2pl
+          MenuAction-module_root-1boK4
+
+        "
+        ngbDropdown
+        data-direction="top left"
+        ><span
+          class="ItemActions_button-1IG6J"
+
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          dropdownIcon="pi pi-chevron-down"
+          ngbDropdownToggle
+
+          ><svg viewBox="0 0 29 7">
+            <circle cx="3.5" cy="3.5" r="3.5"></circle>
+            <circle cx="14.5" cy="3.5" r="3.5"></circle>
+            <circle cx="25.5" cy="3.5" r="3.5"></circle>
+          </svg>
+        </span>
+        <div
+          class="DropdownControlled-module_content-3YeM_ "
+          ngbDropdownMenu
+          role="menu"
+          data-direction="top left"
+          aria-labelledby="dropdownMenuButton"
+          style="padding: 5px"
+        >
+          <a
+            href="/post"
+            ngbDropdownItem
+            (click)="saveImgToCookie(item.picture)"
+            >Post this image</a
+          >
+        </div>
+        <p-confirmPopup></p-confirmPopup>
+        <span
+          ngbDropdownItem
+          (click)="deleteImg($event, item.id)"
+          pButton
+          style="display: flex; width: fit-content; z-index: 3"
+          ><i class="far fa-trash-alt"></i
+        ></span>
+      </span>
+    </div>
+    <!-- </div> -->
+  </div>
 </a>

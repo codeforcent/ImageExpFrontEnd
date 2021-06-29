@@ -8,7 +8,7 @@ export class PhotoService {
 
   getImages() {
     return this.http
-      .get('https://image-exp-backend.herokuapp.com/getallpictures')
+      .get('https://image-exp-backend.herokuapp.com/getpicturesbyuserid')
       .toPromise()
       .then((res) => res);
     // .then((data) => {

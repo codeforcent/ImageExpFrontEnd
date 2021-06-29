@@ -1,3 +1,4 @@
+import { UploadImgComponent } from './upload-img/upload-img.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChangePasswordComponent } from './change-password/change-password.component';
@@ -12,7 +13,7 @@ import { UserComponent } from './user/user.component';
 const routes: Routes = [
   { path: 'userLogin', component: SigninComponent },
   { path: '', component: HomeComponent },
-  { path: 'post', component: UploadComponent },
+  { path: 'post', component: UploadComponent},
   {
     path: 'user/:id',
     component: UserComponent,
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'settings/user-profile', component: UserProfileComponent },
   { path: 'settings/change-password', component: ChangePasswordComponent },
   { path: 'gallery', component: GalleryComponent },
+  { path: 'uploadImg', component: UploadImgComponent },
   { path: '**', component: PageNotFoundComponent },
 ];
 @NgModule({

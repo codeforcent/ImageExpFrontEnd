@@ -49,6 +49,7 @@
         "ngx-online-status": "^1.0.1",
         "ngx-progressbar": "^6.1.1",
         "path": "^0.12.7",
+        "popper.js": "^1.16.1",
         "powerthesaurus-api": "^2.0.3",
         "primeicons": "^4.1.0",
         "primeng": "^12.0.0-rc.1",
