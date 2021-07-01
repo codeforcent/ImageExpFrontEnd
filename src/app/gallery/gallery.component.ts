@@ -1,16 +1,14 @@
+import { AppService } from './../app.service';
 import { Router } from '@angular/router';
-import { AppComponent } from './../app.component';
+
 import { VigenereCipherService } from './../vigenere-cipher.service';
 
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Galleria } from 'primeng/galleria';
 
-import { UserService } from '../user/user.service';
+import { CookieService } from 'ngx-cookie-service';
+import { forkJoin } from 'rxjs';
 
-import { GalleryService } from './gallery.service';
-
-// import {  delay } from 'rxjs/operators';
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.component.html',
@@ -25,7 +23,8 @@ export class GalleryComponent implements OnInit {
   username;
   avatar;
   onload = false;
-  uploadedImages: any = [];
+  user;
+  uploadedImages;
   postedImages: any = [];
   showThumbnails: boolean;
 
@@ -38,207 +37,172 @@ export class GalleryComponent implements OnInit {
   hoveredItem;
   position: string;
 
-  @ViewChild('galleria') galleria: Galleria;
   constructor(
     private fb: FormBuilder,
-    private userService: UserService,
-    private vigenereCipherService: VigenereCipherService,
-    private app: AppComponent,
-    private router: Router,
-    private cd: ChangeDetectorRef,
 
-    private galleryService: GalleryService
+    private vigenereCipherService: VigenereCipherService,
+    private cookie: CookieService,
+    private router: Router,
+
+    private service: AppService
   ) {
     this.formUploadPic = this.fb.group({
       pic: [''],
       pics: [''],
     });
     this.onload = true;
-    if (this.app.cookieService.check('auth-token')) {
+    if (this.cookie.check('auth-token')) {
       this.getInforUser();
     } else {
       this.onload = false;
       this.router.navigate(['']);
     }
   }
-  responsiveOptions: any[] = [
-    {
-      breakpoint: '1024px',
-      numVisible: 5,
-    },
-    {
-      breakpoint: '768px',
-      numVisible: 3,
-    },
-    {
-      breakpoint: '560px',
-      numVisible: 1,
-    },
-  ];
-  async ngOnInit() {
-    this.bindDocumentListeners();
+
+  async ngOnInit() {}
+  uniqueArray2(arr) {
+    var a = [];
+    for (var i = 0, l = arr.length; i < l; i++)
+      if (a.indexOf(arr[i]) === -1 && arr[i] !== '') a.push(arr[i]);
+    console.log('arr', a);
+    return a;
+  }
+  getUnique(originalArray, prop) {
+    var newArray = [];
+    var lookupObject = {};
+
+    for (var i in originalArray) {
+      lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+
+    for (i in lookupObject) {
+      newArray.push(lookupObject[i]);
+    }
+    console.log('getUniqe', newArray);
+    return newArray;
   }
   async getInforUser() {
+    await this.getUserByEmail();
+    this.userId = this.user.id;
+    this.username = this.user.name;
+    this.avatar = this.user.avatar;
+    if (this.avatar === '' || this.username === '') {
+      this.position = 'top';
+      this.displayPosition = true;
+      this.onload = false;
+    }
+    await this.getAllListImages();
+
+    this.onload = false;
+  }
+  async getImages(listId) {
+    var images = [];
+    for (var id in listId) {
+      var request = this.getPictureById(listId[id].id);
+      forkJoin([request]).subscribe((results) => {
+        images.push(results[0]);
+      });
+    }
+    return images;
+  }
+
+  async getAllListImages() {
+    var list1 = this.getPostedPicturesByUserId();
+    var list2 = this.getUploadedPicturesByUserId();
+    forkJoin([list1, list2]).subscribe(async (results) => {
+      this.postedImages = await this.getImages(results[0]);
+      this.uploadedImages = await this.getImages(results[1]);
+    });
+  }
+  async getUserByEmail() {
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
         email: this.vigenereCipherService.vigenereCipher(
-          this.app.cookieService.get('auth-token'),
+          this.cookie.get('auth-token'),
           '24DJBWID328FNSU32Z',
           false
         ),
       },
     };
-    var res = this.userService.getInforUser(data);
-
-    if (
-      (await res.then(
-        (__zone_symbol__value) => __zone_symbol__value.body.success
-      )) === true
-    ) {
-      // setTimeout(() => { }, 500);
-      this.userId = await res.then(
-        (__zone_symbol__value) =>
-          (this.userId = __zone_symbol__value.body.response.id)
+    var response = this.service.sendRequest('getuserbyemail', data);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      this.user = await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
       );
-      console.log('id', this.userId);
-      this.avatar = await res.then(
-        (__zone_symbol__value) =>
-          (this.avatar = __zone_symbol__value.body.response.avatar)
-      );
-      this.username = await res.then(
-        (__zone_symbol__value) =>
-          (this.username = __zone_symbol__value.body.response.name)
-      );
-      this.onload = true;
-
-      if (this.avatar === '' || this.username === '') {
-        this.position = 'top';
-        this.displayPosition = true;
-        this.onload = false;
-      }
-      await this.getAllImages();
-
-      this.onload = false;
     } else {
-      this.app.cookieService.delete('auth-token');
+      this.cookie.delete('auth-token');
       this.router.navigate(['']);
-      // this.onload = false;
     }
   }
-
-  private async getAllImages() {
-    var dat = {
+  async getPostedPicturesByUserId() {
+    var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
         id: this.userId,
       },
     };
-
-    this.uploadedImages = await this.galleryService
-      .getImagesByUserId(dat)
-      .then((__zone_symbol__value) => __zone_symbol__value.body.response);
-    console.log(this.uploadedImages);
+    var response = this.service.sendRequest('getpostsbyuserid', data);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+    }
   }
 
+  private async getUploadedPicturesByUserId() {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        id: this.userId,
+        'with-content': false,
+      },
+    };
+    var response = this.service.sendRequest('getpicturesbyuserid', data);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+    }
+  }
+
+  async getPictureById(picId) {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        id: picId,
+      },
+    };
+    var response = this.service.sendRequest('getpicturebyid', data);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+    } else {
+      return null;
+    }
+  }
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
-  async updateList(ev) {
+  async updateUploadedPictures(ev) {
     if (ev === true) {
-      await this.getAllImages();
-    }
-    console.log(ev);
-  }
-
-  onThumbnailButtonClick() {
-    this.showThumbnails = !this.showThumbnails;
-  }
-
-  toggleFullScreen() {
-    if (this.fullscreen) {
-      this.closePreviewFullScreen();
-    } else {
-      this.openPreviewFullScreen();
-    }
-    this.cd.detach();
-  }
-
-  openPreviewFullScreen() {
-    let elem = this.galleria.element.nativeElement.querySelector('.p-galleria');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem['mozRequestFullScreen']) {
-      /* Firefox */
-      elem['mozRequestFullScreen']();
-    } else if (elem['webkitRequestFullscreen']) {
-      /* Chrome, Safari & Opera */
-      elem['webkitRequestFullscreen']();
-    } else if (elem['msRequestFullscreen']) {
-      /* IE/Edge */
-      elem['msRequestFullscreen']();
+      this.getAllListImages();
     }
   }
 
-  onFullScreenChange() {
-    this.fullscreen = !this.fullscreen;
-    this.cd.detectChanges();
-    this.cd.reattach();
-  }
-
-  closePreviewFullScreen() {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document['mozCancelFullScreen']) {
-      document['mozCancelFullScreen']();
-    } else if (document['webkitExitFullscreen']) {
-      document['webkitExitFullscreen']();
-    } else if (document['msExitFullscreen']) {
-      document['msExitFullscreen']();
-    }
-  }
-
-  bindDocumentListeners() {
-    this.onFullScreenListener = this.onFullScreenChange.bind(this);
-    document.addEventListener('fullscreenchange', this.onFullScreenListener);
-    document.addEventListener('mozfullscreenchange', this.onFullScreenListener);
-    document.addEventListener(
-      'webkitfullscreenchange',
-      this.onFullScreenListener
-    );
-    document.addEventListener('msfullscreenchange', this.onFullScreenListener);
-  }
-
-  unbindDocumentListeners() {
-    document.removeEventListener('fullscreenchange', this.onFullScreenListener);
-    document.removeEventListener(
-      'mozfullscreenchange',
-      this.onFullScreenListener
-    );
-    document.removeEventListener(
-      'webkitfullscreenchange',
-      this.onFullScreenListener
-    );
-    document.removeEventListener(
-      'msfullscreenchange',
-      this.onFullScreenListener
-    );
-    this.onFullScreenListener = null;
-  }
-
-  ngOnDestroy() {
-    this.unbindDocumentListeners();
-  }
-
-  galleriaClass() {
-    return `custom-galleria ${this.fullscreen ? 'fullscreen' : ''}`;
-  }
-
-  fullScreenIcon() {
-    return `pi ${
-      this.fullscreen ? 'pi-window-minimize' : 'pi-window-maximize'
-    }`;
-  }
   onClickDialog() {
     this.displayPosition = false;
     this.router.navigate(['/settings']);

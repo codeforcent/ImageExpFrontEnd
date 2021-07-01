@@ -11,12 +11,10 @@
   [baseZIndex]="10000"
   [draggable]="false"
   [resizable]="false"
-  [closeOnEscape] = "false"
-  [closable] = "false"
+  [closeOnEscape]="false"
+  [closable]="false"
 >
-  <p>
-    Let give us your avatar and username before uploading
-  </p>
+  <p>Let give us your avatar and username before uploading</p>
   <ng-template pTemplate="footer">
     <p-button
       icon="pi pi-check"
@@ -28,12 +26,27 @@
 </p-dialog>
 <p-toast key="smsg" position="top-right"></p-toast>
 <div class="container-fluid">
-  <form (ngSubmit)="onPost()" [formGroup]="formUpload">
-    <input
-      type="submit"
-      value="Upload"
-      class="btn btn-danger rounded-pill solid"
-    />
+  <form [formGroup]="formUpload">
+    <ng-template *ngIf="mode === 'update'; then update; else upload"
+      >]
+    </ng-template>
+
+    <ng-template #update>
+      <input
+        type="submit"
+        value="Update"
+        class="btn btn-danger rounded-pill solid"
+        (click)="onUpdate()"
+      />
+    </ng-template>
+    <ng-template #upload>
+      <input
+        type="submit"
+        value="Upload"
+        class="btn btn-danger rounded-pill solid"
+        (click)="onPost()"
+      />
+    </ng-template>
     <div class="row">
       <div class="col-lg-4 upImg">
         <!-- [ngStyle]="
@@ -47,7 +60,6 @@
               (formUpload.get('img')?.invalid &&
                 formUpload.get('img')?.touched) ||
               (clicked && formUpload.get('img')?.pristine && img === null)
-
                 ? '2px dashed red'
                 : '2px dashed cadetblue'
           }"
@@ -71,6 +83,7 @@
             "
             formControlName="img"
             value="img"
+            [attr.disabled]="mode==='update'?'':null"
           />
           <div class="inputOnImg" *ngIf="!uploaded && this.img === null">
             <i class="fas fa-upload"></i>
@@ -133,7 +146,7 @@
           </div>
           <div class="own">
             <img [src]="avatar" class="avatar-img" alt="..." />
-            <span class="username">{{username}}</span>
+            <span class="username">{{ username }}</span>
           </div>
 
           <!--
@@ -159,10 +172,11 @@
             style="width: 100%"
             formControlName="cates"
             panelStyle="border: 2px solid red"
+            [displaySelectedLabel]="true"
           >
             <ng-template
               let-value
-              pTemplate="selectedCates"
+              pTemplate="selectedItems"
               (change)="onChange()"
             >
               <div
@@ -230,7 +244,7 @@
 
         <tag-input
           [theme]="'bootstrap'"
-          [ngModel]="[]"
+          [ngModel]="items"
           [placeholder]="'+ New keyword(s)'"
           [secondaryPlaceholder]="'+ Add keywords'"
           name="items"

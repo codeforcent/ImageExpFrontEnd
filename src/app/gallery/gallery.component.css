@@ -132,6 +132,7 @@ label:hover {
   transition: 0.6s;
   transform: scale(1);
   position: relative;
+  padding: 20px;
 }
 
 #check1:checked ~ .container-fluid .photo-gallery .liked,

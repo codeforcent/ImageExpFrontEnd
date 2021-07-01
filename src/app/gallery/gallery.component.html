@@ -47,9 +47,11 @@
           <app-image
             [item]="img"
             [hovered]="img === hoveredItem"
+            [modeOverlay]="'post'"
+            [posted] = "true"
             (mouseover)="onMouseover(img)"
             (mouseleave)="onMouseleave()"
-            (deleted)="updateList($event)"
+            (deleted)="updateUploadedPictures($event)"
           ></app-image>
         </div>
       </div>
@@ -77,9 +79,11 @@
           <app-image
             [item]="img"
             [hovered]="img === hoveredItem"
+            [modeOverlay]="'upload'"
+            [posted] = "false"
             (mouseover)="onMouseover(img)"
             (mouseleave)="onMouseleave()"
-            (deleted)="updateList($event)"
+            (deleted)="updateUploadedPictures($event)"
           ></app-image>
         </div>
       </div>

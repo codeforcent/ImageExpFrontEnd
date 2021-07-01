@@ -12,6 +12,8 @@ import { UserService } from '../user/user.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
 import { GalleryService } from '../gallery/gallery.service';
 import { MessageService, SelectItem } from 'primeng/api';
+import { AppService } from '../app.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-upload',
@@ -33,14 +35,14 @@ export class UploadComponent implements OnInit, AfterViewInit {
   dropdownList = [];
   selectedItems = [];
   autocompleteItems = [
-    { display: 'Javascript', value: 'Javascript' },
-    { display: 'Typescript', value: 'Typescript' },
+    // { display: 'Javascript', value: 'Javascript' },
+    // { display: 'Typescript', value: 'Typescript' },
   ];
   dragAndDropObjects = [
-    { display: 'Javascript', value: 'Javascript' },
-    { display: 'Typescript', value: 'Typescript' },
-    { display: 'w', value: 'w' },
-    { display: 'a', value: 'a' },
+    // { display: 'Javascript', value: 'Javascript' },
+    // { display: 'Typescript', value: 'Typescript' },
+    // { display: 'w', value: 'w' },
+    // { display: 'a', value: 'a' },
   ];
   dropdownSettings: IDropdownSettings;
   title1 = '';
@@ -57,7 +59,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   onload = false;
   list;
   selectedCates = [];
-  items: SelectItem[];
+  items: SelectItem[] = [];
 
   item: string;
   height;
@@ -66,6 +68,8 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   position: string;
   sub: any;
+  listCateId = [];
+  mode;
   constructor(
     private fb: FormBuilder,
     private _ngZone: NgZone,
@@ -75,9 +79,12 @@ export class UploadComponent implements OnInit, AfterViewInit {
     private vigenereCipherService: VigenereCipherService,
     private uploadService: UploadService,
     private galleryService: GalleryService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private service: AppService
   ) {
     this.img = sessionStorage.getItem('img');
+    this.picId = sessionStorage.getItem('id');
+    this.mode = sessionStorage.getItem('mode');
     sessionStorage.removeItem('img');
 
     this.dropdownSettings = {
@@ -96,6 +103,42 @@ export class UploadComponent implements OnInit, AfterViewInit {
       des: ['', Validators.maxLength(250)],
       keywords: ['', Validators.required],
     });
+    if (sessionStorage.getItem('title') !== null) {
+      this.formUpload.setValue({
+        title: sessionStorage.getItem('title'),
+        img: this.img,
+        cates: sessionStorage.getItem('cates'),
+        des: sessionStorage.getItem('des'),
+        keywords: sessionStorage.getItem('keyword'),
+      });
+
+      var list = sessionStorage.getItem('cateId').split(',');
+      for (var item in list) {
+        this.listCateId.push(+list[+item]);
+      }
+      list = sessionStorage.getItem('keyword').split(',');
+      console.log(sessionStorage.getItem('keyword').split(','));
+      for (var item in list) {
+        console.log(item);
+        this.autocompleteItems.push({
+          display: list[+item],
+          value: list[+item],
+        });
+        this.dragAndDropObjects.push({
+          display: list[+item],
+          value: list[+item],
+        });
+        this.items.push({
+          label: list[+item],
+          value: list[+item],
+        });
+      }
+
+      console.log(this.mode);
+      console.log(this.autocompleteItems);
+      console.log(this.dragAndDropObjects);
+    }
+
     this.onload = true;
     if (this.app.cookieService.check('auth-token')) {
       this.getInforUser();
@@ -111,6 +154,84 @@ export class UploadComponent implements OnInit, AfterViewInit {
   async ngOnInit() {
     this.cateList = await this.getAllCategories();
     this.cateList.forEach((category) => this.dropdownList.push(category));
+
+    this.getSelectedListCategory(this.listCateId, this.selectedCates);
+  }
+  async getSelectedListCategory(listId, listItem) {
+    var i = 0;
+    while (i < listId.length) {
+      var item1,
+        item2,
+        item3,
+        item4,
+        item5 = undefined;
+      console.log(listId.length);
+      item1 = this.getCategoryById(listId[i]);
+      if (++i < listId.length) {
+        item2 = this.getCategoryById(listId[i]);
+        if (++i < listId.length) {
+          item3 = this.getCategoryById(listId[i]);
+          if (++i < listId.length) {
+            item4 = this.getCategoryById(listId[i]);
+            if (++i < listId.length) {
+              console.log('e', i);
+              item5 = this.getCategoryById(listId[i]);
+            }
+          }
+        }
+      }
+
+      if (item5 !== undefined) {
+        forkJoin([item1, item2, item3, item4, item5]).subscribe((results) => {
+          listItem.push(results[0]);
+          listItem.push(results[1]);
+          listItem.push(results[2]);
+          listItem.push(results[3]);
+          listItem.push(results[4]);
+        });
+      } else if (item4 !== undefined) {
+        forkJoin([item1, item2, item3, item4]).subscribe((results) => {
+          listItem.push(results[0]);
+          listItem.push(results[1]);
+          listItem.push(results[2]);
+          listItem.push(results[3]);
+        });
+      } else if (item3 !== undefined) {
+        forkJoin([item1, item2, item3]).subscribe((results) => {
+          listItem.push(results[0]);
+          listItem.push(results[1]);
+          listItem.push(results[2]);
+        });
+      } else if (item2 !== undefined) {
+        forkJoin([item1, item2]).subscribe((results) => {
+          listItem.push(results[0]);
+          listItem.push(results[1]);
+        });
+      } else {
+        listItem.push(item1);
+      }
+
+      i++;
+    }
+  }
+  async getCategoryById(id) {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        id: id,
+      },
+    };
+    console.log('get', data);
+    var response = this.service.sendRequest('getcategorybyid', data);
+    console.log(response);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+    }
   }
   onChange() {
     console.warn('we', this.selectedCates);
@@ -168,7 +289,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
   async getAllCategories() {
     var res = await this.uploadService.getAllCategories();
-    console.log('res', res);
 
     return res;
   }
@@ -202,20 +322,33 @@ export class UploadComponent implements OnInit, AfterViewInit {
       .subscribe(() => this.autosize.resizeToFitContent(true));
   }
   async onPost() {
+    console.log();
     this.onload = true;
     this.clicked = true;
 
-    await this.onUploadPic();
+    if (this.picId === null) {
+      await this.onUploadPic();
+    }
 
+    var listCategoryId: number[] = [];
+    for (var e in this.formUpload.get('cates').value) {
+      listCategoryId.push(this.formUpload.get('cates').value[e].id);
+    }
+
+    var listKeywords: string[] = [];
+    for (var k in this.formUpload.get('keywords').value) {
+      listKeywords.push(this.formUpload.get('keywords').value[k].value);
+    }
+    console.log("categoryId",listCategoryId);
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
         userId: this.userId,
-        picId: this.picId,
-        title: this.title,
-        description: this.des,
-        categoryId: this.cates,
-        keywords: this.keywords,
+        picId: +this.picId,
+        title: this.formUpload.get('title').value,
+        description: this.formUpload.get('des').value,
+        categoryId: listCategoryId,
+        keyword: listKeywords.join(','),
       },
     };
     var res = this.uploadService.uploadPost(data);
@@ -225,17 +358,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
         (__zone_symbol__value) => __zone_symbol__value.body.success
       )) === true
     ) {
-      // setTimeout(() => { }, 500);
-
-      // var user = new User(
-      //   token,
-      //   this.formSignUp.get('email').value,
-      //   '',
-      //   '',
-      //   1
-      // );
-      // this.app.userService.addUser(user);
-
       this.onload = false;
       this.messageService.add({
         key: 'smsg',
@@ -245,6 +367,55 @@ export class UploadComponent implements OnInit, AfterViewInit {
       });
     } else {
       // setTimeout(() => { }, 500);
+    }
+  }
+  async onUpdate() {
+    var listCategoryId: number[] = [];
+    for (var e in this.formUpload.get('cates').value) {
+      listCategoryId.push(this.formUpload.get('cates').value[e].id);
+    }
+
+    var listKeywords: string[] = [];
+    for (var k in this.formUpload.get('keywords').value) {
+      listKeywords.push(this.formUpload.get('keywords').value[k].value);
+    }
+    console.log("postId", sessionStorage.getItem('id'));
+    console.log("title",this.formUpload.get('title').value);
+    console.log("description",this.formUpload.get('des').value);
+    console.log("categoryId",listCategoryId);
+    console.log("keyword",listKeywords.join(','));
+    var id = +sessionStorage.getItem('id');
+    console.log("id", id);
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        postId: id,
+        title: this.formUpload.get('title').value,
+        description: this.formUpload.get('des').value,
+        categoryId: listCategoryId,
+        keyword: listKeywords.join(','),
+      },
+    };
+    console.log(data);
+    var response = this.service.sendRequest('updatepost', data);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      sessionStorage.clear();
+      this.messageService.add({
+        key: 'smsg',
+        severity: 'success',
+        summary: 'Message',
+        detail: 'Updated your post successfully',
+      });
+    } else {
+      this.messageService.add({
+        key: 'smsg',
+        severity: 'error',
+        summary: 'Message',
+        detail: 'Updated your post unsuccessfully',
+      });
     }
   }
   async onUploadPic() {
@@ -267,16 +438,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
           (__zone_symbol__value) => __zone_symbol__value.body.success
         )) === true
       ) {
-        // setTimeout(() => { }, 500);
-
-        // var user = new User(
-        //   token,
-        //   this.formSignUp.get('email').value,
-        //   '',
-        //   '',
-        //   1
-        // );
-        // this.app.userService.addUser(user);
         this.picId = await res.then(
           (__zone_symbol__value) =>
             (this.picId = __zone_symbol__value.body.response.picId)

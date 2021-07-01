@@ -119,7 +119,7 @@ export class UploadImgComponent implements OnInit {
 
       uploadFiles.push(base64data);
     }
-
+    console.log(uploadFiles);
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {

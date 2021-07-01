@@ -92,7 +92,7 @@ svg {
   transition: fill .2s linear;
   height: 15px;
 }
-.gallery{
+.upload, .post{
   position: absolute;
   display: initial;
 }

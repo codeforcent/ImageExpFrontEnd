@@ -1,3 +1,4 @@
+import { AppService } from './../app.service';
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { ViewChild } from '@angular/core';
@@ -11,6 +12,8 @@ import { GalleryService } from '../gallery/gallery.service';
 export class ImageComponent implements OnInit {
   @Input() item;
   @Input() hovered;
+  @Input() modeOverlay;
+  @Input() posted;
   @Output() deleted = new EventEmitter<boolean>();
   @ViewChild('gal_img') gal_img;
 
@@ -19,23 +22,61 @@ export class ImageComponent implements OnInit {
   itemSelected = new EventEmitter<any>();
 
   selectedItem: any;
+  post;
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private galleryService: GalleryService
+    private galleryService: GalleryService,
+    private service: AppService
   ) {}
 
-  ngOnInit(): void {}
+  async ngOnInit() {
+    if (this.posted) {
+      this.getPostById();
+    }
+  }
+  async getPostById() {
+    console.log('id', this.item.id);
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        id: this.item.id,
+      },
+    };
+    var response = this.service.sendRequest('getpostbyid', data);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    console.log(isSuccess);
+    if (isSuccess) {
+      this.post = await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+      console.log('post', this.post);
+    }
+  }
   calHeight() {
     return this.gal_img?.nativeElement?.height - 50 + 'px';
   }
   calHeightIC() {
     return this.gal_img?.nativeElement?.height - 35 + 'px';
   }
-  async saveImgToCookie(pic) {
+  saveUploadedImgToCookie(id, pic) {
+    sessionStorage.setItem('id', id);
     sessionStorage.setItem('img', pic);
   }
+  savePostedImgToCookie(pic) {
+    sessionStorage.setItem('title', this.post.title);
+    sessionStorage.setItem('des', this.post.description);
+    sessionStorage.setItem('id', this.post.id);
+    sessionStorage.setItem('img', pic);
+
+    sessionStorage.setItem('cateId', this.post.categoryId);
+    sessionStorage.setItem('keyword', this.post.keyword);
+    sessionStorage.setItem('mode', 'update');
+  }
   async deleteImg(ev, id) {
+    console.log("id in delete",id);
     this.confirmationService.confirm({
       target: ev.target,
       message: 'Are you sure that you want to proceed?',
@@ -77,17 +118,4 @@ export class ImageComponent implements OnInit {
       },
     });
   }
-  // private async getAllImages() {
-  //   var dat = {
-  //     'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
-  //     body: {
-  //       id: this.item.userId,
-  //     },
-  //   };
-
-  //   this.images = await this.galleryService
-  //     .getImagesByUserId(dat)
-  //     .then((__zone_symbol__value) => __zone_symbol__value.body.response);
-  //   console.log(this.images);
-  // }
 }
