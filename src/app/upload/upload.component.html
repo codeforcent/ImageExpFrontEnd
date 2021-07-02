@@ -49,11 +49,6 @@
     </ng-template>
     <div class="row">
       <div class="col-lg-4 upImg">
-        <!-- [ngStyle]="
-        uploaded
-          ? { border: '0' }
-          : { border: 'border: 2px dashed cadetblue;' }
-      " -->
         <div
           [ngStyle]="{
             border:
@@ -83,7 +78,7 @@
             "
             formControlName="img"
             value="img"
-            [attr.disabled]="mode==='update'?'':null"
+            [attr.disabled]="mode === 'update' ? '' : null"
           />
           <div class="inputOnImg" *ngIf="!uploaded && this.img === null">
             <i class="fas fa-upload"></i>
@@ -149,18 +144,6 @@
             <span class="username">{{ username }}</span>
           </div>
 
-          <!--
-          <ng-multiselect-dropdown
-            [placeholder]="'Choose your topic(s)'"
-            [settings]="dropdownSettings"
-            [data]="dropdownList"
-            [(ngModel)]="selectedItems"
-            (onSelect)="onItemSelect($event)"
-            (onSelectAll)="onSelectAll($event)"
-
-            formControlName="cates"
-          >
-          </ng-multiselect-dropdown> -->
           <p-multiSelect
             [options]="cateList"
             [(ngModel)]="selectedCates"
@@ -207,7 +190,7 @@
             class="form-text error-text"
             >Choose at least 1 category</small
           >
-          <!--  -->
+
           <div class="input-field">
             <mat-form-field>
               <textarea

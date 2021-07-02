@@ -1,4 +1,4 @@
-<mat-progress-bar mode="indeterminate" value="40" *ngIf="onload">
+<mat-progress-bar mode="indeterminate" value="40" *ngIf="loading">
 </mat-progress-bar>
 <p-dialog
   header="Notification"
@@ -9,12 +9,10 @@
   [baseZIndex]="10000"
   [draggable]="false"
   [resizable]="false"
-  [closeOnEscape] = "false"
-  [closable] = "false"
+  [closeOnEscape]="false"
+  [closable]="false"
 >
-  <p>
-    Let give us your avatar and username before uploading
-  </p>
+  <p>Let give us your avatar and username before uploading</p>
   <ng-template pTemplate="footer">
     <p-button
       icon="pi pi-check"
@@ -27,16 +25,14 @@
 <p-toast key="smsg" position="top-right"></p-toast>
 <div class="wrapper">
   <header>
-      <a href="/gallery" class="button">
-          <img [src]="avatar" alt="Avatar" class="avatar">
-      </a>
-      <h1>{{username}}</h1>
-
+    <a href="/gallery" class="button">
+      <img [src]="avatar" alt="Avatar" class="avatar" />
+    </a>
+    <h1>{{ username }}</h1>
   </header>
   <div class="sections">
     <section>
       <form action="" class="images" id="form1" [formGroup]="formUploadPic">
-
         <p-fileUpload
           name="demo[]"
           (uploadHandler)="onUpload($event)"
@@ -55,11 +51,7 @@
             </ul>
           </ng-template>
         </p-fileUpload>
-    </form>
+      </form>
     </section>
-
-
   </div>
-
 </div>
-

@@ -28,14 +28,21 @@ export class ImageComponent implements OnInit {
     private messageService: MessageService,
     private galleryService: GalleryService,
     private service: AppService
-  ) {}
+  )
+  {
+    console.log("item", this.item);
+    console.log("modeOverlay", this.modeOverlay);
+    console.log("posted", this.posted);
+  }
 
   async ngOnInit() {
     if (this.posted) {
-      this.getPostById();
+      this.post = await this.getPostByPicId();
+
     }
+
   }
-  async getPostById() {
+  async getPostByPicId() {
     console.log('id', this.item.id);
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
@@ -43,16 +50,16 @@ export class ImageComponent implements OnInit {
         id: this.item.id,
       },
     };
-    var response = this.service.sendRequest('getpostbyid', data);
+    var response = this.service.sendRequest('getpostbypicid', data);
     var isSuccess = await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.success
     );
     console.log(isSuccess);
     if (isSuccess) {
-      this.post = await response.then(
+      return await response.then(
         (__zone_symbol__value) => __zone_symbol__value.body.response
       );
-      console.log('post', this.post);
+
     }
   }
   calHeight() {
@@ -66,6 +73,7 @@ export class ImageComponent implements OnInit {
     sessionStorage.setItem('img', pic);
   }
   savePostedImgToCookie(pic) {
+    console.log("post", this.post);
     sessionStorage.setItem('title', this.post.title);
     sessionStorage.setItem('des', this.post.description);
     sessionStorage.setItem('id', this.post.id);
@@ -118,4 +126,5 @@ export class ImageComponent implements OnInit {
       },
     });
   }
+
 }

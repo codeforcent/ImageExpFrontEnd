@@ -22,21 +22,14 @@ export class GalleryComponent implements OnInit {
   userId;
   username;
   avatar;
-  onload = false;
+
   user;
-  uploadedImages;
+  uploadedImages: any = [];
   postedImages: any = [];
-  showThumbnails: boolean;
-
-  fullscreen: boolean = false;
-
-  activeIndex: number = 0;
-
-  onFullScreenListener: any;
   displayPosition: boolean = false;
   hoveredItem;
   position: string;
-
+  loading;
   constructor(
     private fb: FormBuilder,
 
@@ -50,36 +43,19 @@ export class GalleryComponent implements OnInit {
       pic: [''],
       pics: [''],
     });
-    this.onload = true;
+
     if (this.cookie.check('auth-token')) {
       this.getInforUser();
     } else {
-      this.onload = false;
       this.router.navigate(['']);
     }
   }
 
   async ngOnInit() {}
-  uniqueArray2(arr) {
-    var a = [];
-    for (var i = 0, l = arr.length; i < l; i++)
-      if (a.indexOf(arr[i]) === -1 && arr[i] !== '') a.push(arr[i]);
-    console.log('arr', a);
-    return a;
-  }
-  getUnique(originalArray, prop) {
-    var newArray = [];
-    var lookupObject = {};
 
-    for (var i in originalArray) {
-      lookupObject[originalArray[i][prop]] = originalArray[i];
-    }
-
-    for (i in lookupObject) {
-      newArray.push(lookupObject[i]);
-    }
-    console.log('getUniqe', newArray);
-    return newArray;
+  setLoading(promise: Promise<any>) {
+    this.loading = true;
+    promise.then(() => (this.loading = false));
   }
   async getInforUser() {
     await this.getUserByEmail();
@@ -89,30 +65,49 @@ export class GalleryComponent implements OnInit {
     if (this.avatar === '' || this.username === '') {
       this.position = 'top';
       this.displayPosition = true;
-      this.onload = false;
     }
-    await this.getAllListImages();
+    var listOfListPic = await this.getAllListImages(
+      this.getPostedPicturesByUserId(),
+      this.getUploadedPicturesByUserId()
+    );
+    await this.delay(500);
 
-    this.onload = false;
+    this.postedImages = listOfListPic.shift();
+    this.uploadedImages = listOfListPic.shift();
   }
-  async getImages(listId) {
+  async getImages(listId, mode) {
     var images = [];
     for (var id in listId) {
-      var request = this.getPictureById(listId[id].id);
-      forkJoin([request]).subscribe((results) => {
-        images.push(results[0]);
-      });
+      if (mode === 'post') {
+        var request = this.getPictureById(listId[id].picId);
+        forkJoin([request]).subscribe((results) => {
+          images.push(results[0]);
+        });
+      } else if (mode === 'upload') {
+        var request = this.getPictureById(listId[id].id);
+        forkJoin([request]).subscribe((results) => {
+          images.push(results[0]);
+        });
+      }
     }
+
     return images;
   }
 
-  async getAllListImages() {
-    var list1 = this.getPostedPicturesByUserId();
-    var list2 = this.getUploadedPicturesByUserId();
-    forkJoin([list1, list2]).subscribe(async (results) => {
-      this.postedImages = await this.getImages(results[0]);
-      this.uploadedImages = await this.getImages(results[1]);
+  async getAllListImages(...args) {
+    var listItem = [];
+    var i = 0;
+    forkJoin([...args]).subscribe(async (results) => {
+      while (i < args.length) {
+        if (i == 0) {
+          listItem.push(await this.getImages(await results[i++], 'post'));
+        } else {
+          listItem.push(await this.getImages(await results[i++], 'upload'));
+        }
+      }
     });
+
+    return listItem;
   }
   async getUserByEmail() {
     var data = {
@@ -126,6 +121,7 @@ export class GalleryComponent implements OnInit {
       },
     };
     var response = this.service.sendRequest('getuserbyemail', data);
+    this.setLoading(response);
     var isSuccess = await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.success
     );
@@ -146,6 +142,7 @@ export class GalleryComponent implements OnInit {
       },
     };
     var response = this.service.sendRequest('getpostsbyuserid', data);
+    this.setLoading(response);
     var isSuccess = await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.success
     );
@@ -165,6 +162,7 @@ export class GalleryComponent implements OnInit {
       },
     };
     var response = this.service.sendRequest('getpicturesbyuserid', data);
+    this.setLoading(response);
     var isSuccess = await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.success
     );
@@ -183,6 +181,7 @@ export class GalleryComponent implements OnInit {
       },
     };
     var response = this.service.sendRequest('getpicturebyid', data);
+    this.setLoading(response);
     var isSuccess = await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.success
     );

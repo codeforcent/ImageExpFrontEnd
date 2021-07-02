@@ -4,8 +4,9 @@ import { Router } from '@angular/router';
 import { AppComponent } from '../app.component';
 import { VigenereCipherService } from '../vigenere-cipher.service';
 import { UserService } from '../user/user.service';
-import { GalleryService } from '../gallery/gallery.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AppService } from '../app.service';
+import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-upload-img',
   templateUrl: './upload-img.component.html',
@@ -13,41 +14,36 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class UploadImgComponent implements OnInit {
   @ViewChild('up') up;
-  onload = false;
   uploadedFiles: any[] = [];
   userId;
   avatar;
   username;
   formUploadPic: FormGroup;
   displayPosition: boolean = false;
-
   position: string;
+  loading;
   constructor(
     private messageService: MessageService,
     private app: AppComponent,
     private vigenereCipherService: VigenereCipherService,
     private router: Router,
     private userService: UserService,
-    private galleryService: GalleryService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private service: AppService
   ) {
-
     this.formUploadPic = this.fb.group({
-      pics: ['']
+      pics: [''],
     });
-    this.onload = true;
+
     if (this.app.cookieService.check('auth-token')) {
       this.getInforUser();
-
-      // this.user.emit();
     } else {
-      // window.alert("here is else");
-      this.onload = false;
       this.router.navigate(['']);
     }
   }
 
   ngOnInit(): void {}
+
   async getInforUser() {
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
@@ -60,13 +56,12 @@ export class UploadImgComponent implements OnInit {
       },
     };
     var res = this.userService.getInforUser(data);
-
+    this.setLoading(res);
     if (
       (await res.then(
         (__zone_symbol__value) => __zone_symbol__value.body.success
       )) === true
     ) {
-      // setTimeout(() => { }, 500);
       this.userId = await res.then(
         (__zone_symbol__value) =>
           (this.userId = __zone_symbol__value.body.response.id)
@@ -81,31 +76,20 @@ export class UploadImgComponent implements OnInit {
           (this.username = __zone_symbol__value.body.response.name)
       );
 
-      if (
-       this.avatar === '' || this.username === ''
-      ) {
+      if (this.avatar === '' || this.username === '') {
         this.position = 'top';
         this.displayPosition = true;
-        this.onload = false;
       }
-      this.onload = false;
-      // setTimeout(() => { }, 500);
-      // this.app.userService.addUser(user);
-      // sessionStorage.setItem(this.app.cookieService.get('auth-token'), user.getEmail());
-      // this.router.navigate(['']);
     } else {
-      // setTimeout(() => { }, 500);
-      // this.onload = false;
-      // this.signUpSuccess = false;
-
       this.app.cookieService.delete('auth-token');
       this.router.navigate(['']);
-      this.onload = false;
     }
   }
+  setLoading(promise: Promise<any>) {
+    this.loading = true;
+    promise.then(() => (this.loading = false));
+  }
   async onUpload(event) {
-    this.onload = true;
-
     var uploadFiles = [];
     for (let file of event.files) {
       var base64data;
@@ -114,45 +98,51 @@ export class UploadImgComponent implements OnInit {
       reader.onloadend = () => {
         base64data = reader.result;
       };
-
       await this.delay(500);
-
       uploadFiles.push(base64data);
     }
-    console.log(uploadFiles);
+    console.log("upFiles", uploadFiles);
+    this.addManyPictures(uploadFiles);
+    this.up.clear();
+  }
+  async addPicture(pic) {
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
         userId: this.userId,
-        pictures: uploadFiles,
+        picture: pic,
       },
     };
-    var res = this.galleryService.uploadPics(data);
-
-    if (
-      (await res.then(
-        (__zone_symbol__value) => __zone_symbol__value.body.success
-      )) === true
-    ) {
-
-      this.onload = false;
+    var response = this.service.sendRequest('addpicture', data);
+    this.setLoading(response);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
       this.messageService.add({
         key: 'smsg',
         severity: 'success',
         summary: 'Message',
         detail: 'Uploaded picture successfully',
       });
-      this.up.clear();
-
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
     } else {
-      this.onload = false;
       this.messageService.add({
         key: 'smsg',
         severity: 'error',
         summary: 'Message',
         detail: 'Uploaded picture unsuccessfully',
       });
-
+      return null;
+    }
+  }
+  async addManyPictures(listPic) {
+    for (var pic in listPic) {
+      console.log("pic",listPic[pic]);
+      var request = this.addPicture(listPic[pic]);
+      forkJoin([request]).subscribe();
     }
   }
   delay(ms: number) {

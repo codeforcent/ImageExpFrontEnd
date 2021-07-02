@@ -1,5 +1,5 @@
 import { UploadService } from './upload.service';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ViewChild, Input, NgZone } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
@@ -20,7 +20,7 @@ import { forkJoin } from 'rxjs';
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.css'],
 })
-export class UploadComponent implements OnInit, AfterViewInit {
+export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('title') title;
   @ViewChild('des') des;
   @ViewChild('cate') cate;
@@ -85,7 +85,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.img = sessionStorage.getItem('img');
     this.picId = sessionStorage.getItem('id');
     this.mode = sessionStorage.getItem('mode');
-    sessionStorage.removeItem('img');
 
     this.dropdownSettings = {
       singleSelection: false,
@@ -117,9 +116,8 @@ export class UploadComponent implements OnInit, AfterViewInit {
         this.listCateId.push(+list[+item]);
       }
       list = sessionStorage.getItem('keyword').split(',');
-      console.log(sessionStorage.getItem('keyword').split(','));
+
       for (var item in list) {
-        console.log(item);
         this.autocompleteItems.push({
           display: list[+item],
           value: list[+item],
@@ -133,10 +131,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
           value: list[+item],
         });
       }
-
-      console.log(this.mode);
-      console.log(this.autocompleteItems);
-      console.log(this.dragAndDropObjects);
+      sessionStorage.clear();
     }
 
     this.onload = true;
@@ -155,64 +150,18 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.cateList = await this.getAllCategories();
     this.cateList.forEach((category) => this.dropdownList.push(category));
 
-    this.getSelectedListCategory(this.listCateId, this.selectedCates);
+    this.selectedCates = await this.getSelectedListCategory(this.listCateId);
   }
-  async getSelectedListCategory(listId, listItem) {
-    var i = 0;
-    while (i < listId.length) {
-      var item1,
-        item2,
-        item3,
-        item4,
-        item5 = undefined;
-      console.log(listId.length);
-      item1 = this.getCategoryById(listId[i]);
-      if (++i < listId.length) {
-        item2 = this.getCategoryById(listId[i]);
-        if (++i < listId.length) {
-          item3 = this.getCategoryById(listId[i]);
-          if (++i < listId.length) {
-            item4 = this.getCategoryById(listId[i]);
-            if (++i < listId.length) {
-              console.log('e', i);
-              item5 = this.getCategoryById(listId[i]);
-            }
-          }
-        }
-      }
-
-      if (item5 !== undefined) {
-        forkJoin([item1, item2, item3, item4, item5]).subscribe((results) => {
-          listItem.push(results[0]);
-          listItem.push(results[1]);
-          listItem.push(results[2]);
-          listItem.push(results[3]);
-          listItem.push(results[4]);
-        });
-      } else if (item4 !== undefined) {
-        forkJoin([item1, item2, item3, item4]).subscribe((results) => {
-          listItem.push(results[0]);
-          listItem.push(results[1]);
-          listItem.push(results[2]);
-          listItem.push(results[3]);
-        });
-      } else if (item3 !== undefined) {
-        forkJoin([item1, item2, item3]).subscribe((results) => {
-          listItem.push(results[0]);
-          listItem.push(results[1]);
-          listItem.push(results[2]);
-        });
-      } else if (item2 !== undefined) {
-        forkJoin([item1, item2]).subscribe((results) => {
-          listItem.push(results[0]);
-          listItem.push(results[1]);
-        });
-      } else {
-        listItem.push(item1);
-      }
-
-      i++;
+  async getSelectedListCategory(listId) {
+    var listItem = [];
+    for (var id in listId) {
+      var request = this.getCategoryById(listId[id]);
+      forkJoin([request]).subscribe((results) => {
+        listItem.push(results[0]);
+      });
     }
+
+    return listItem;
   }
   async getCategoryById(id) {
     var data = {
@@ -221,9 +170,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
         id: id,
       },
     };
-    console.log('get', data);
     var response = this.service.sendRequest('getcategorybyid', data);
-    console.log(response);
     var isSuccess = await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.success
     );
@@ -232,9 +179,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
         (__zone_symbol__value) => __zone_symbol__value.body.response
       );
     }
-  }
-  onChange() {
-    console.warn('we', this.selectedCates);
   }
   async ngAfterViewInit() {}
   delay(ms: number) {
@@ -322,7 +266,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
       .subscribe(() => this.autosize.resizeToFitContent(true));
   }
   async onPost() {
-    console.log();
     this.onload = true;
     this.clicked = true;
 
@@ -339,7 +282,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
     for (var k in this.formUpload.get('keywords').value) {
       listKeywords.push(this.formUpload.get('keywords').value[k].value);
     }
-    console.log("categoryId",listCategoryId);
+
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
@@ -379,13 +322,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
     for (var k in this.formUpload.get('keywords').value) {
       listKeywords.push(this.formUpload.get('keywords').value[k].value);
     }
-    console.log("postId", sessionStorage.getItem('id'));
-    console.log("title",this.formUpload.get('title').value);
-    console.log("description",this.formUpload.get('des').value);
-    console.log("categoryId",listCategoryId);
-    console.log("keyword",listKeywords.join(','));
+
     var id = +sessionStorage.getItem('id');
-    console.log("id", id);
+
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
@@ -396,7 +335,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
         keyword: listKeywords.join(','),
       },
     };
-    console.log(data);
+
     var response = this.service.sendRequest('updatepost', data);
     var isSuccess = await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.success
@@ -453,5 +392,10 @@ export class UploadComponent implements OnInit, AfterViewInit {
   onClickDialog() {
     this.displayPosition = false;
     this.router.navigate(['/settings']);
+  }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    sessionStorage.clear();
   }
 }
