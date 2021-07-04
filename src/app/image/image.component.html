@@ -1,5 +1,4 @@
 <a>
-  <!-- [ngStyle]="{'background-image' : 'url('+ item.src +')'}" -->
   <div class="gal-item overlay">
     <img
       src="{{ item.picture }}"
@@ -8,7 +7,6 @@
       [ngStyle]="hovered ? { opacity: '0.4' } : { opacity: '1' }"
       #gal_img
     />
-    <!-- <div [ngStyle]="hovered ? { 'top' : calHeight() } : { 'display' : 'none' }"> -->
     <div
       class="home"
       [ngStyle]="

@@ -3,7 +3,6 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { GalleryService } from '../gallery/gallery.service';
 @Component({
   selector: 'app-image',
   templateUrl: './image.component.html',
@@ -26,24 +25,15 @@ export class ImageComponent implements OnInit {
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private galleryService: GalleryService,
     private service: AppService
-  )
-  {
-    console.log("item", this.item);
-    console.log("modeOverlay", this.modeOverlay);
-    console.log("posted", this.posted);
-  }
+  ) {}
 
   async ngOnInit() {
     if (this.posted) {
       this.post = await this.getPostByPicId();
-
     }
-
   }
   async getPostByPicId() {
-    console.log('id', this.item.id);
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
@@ -54,12 +44,11 @@ export class ImageComponent implements OnInit {
     var isSuccess = await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.success
     );
-    console.log(isSuccess);
+
     if (isSuccess) {
       return await response.then(
         (__zone_symbol__value) => __zone_symbol__value.body.response
       );
-
     }
   }
   calHeight() {
@@ -73,24 +62,20 @@ export class ImageComponent implements OnInit {
     sessionStorage.setItem('img', pic);
   }
   savePostedImgToCookie(pic) {
-    console.log("post", this.post);
     sessionStorage.setItem('title', this.post.title);
     sessionStorage.setItem('des', this.post.description);
     sessionStorage.setItem('id', this.post.id);
     sessionStorage.setItem('img', pic);
-
     sessionStorage.setItem('cateId', this.post.categoryId);
     sessionStorage.setItem('keyword', this.post.keyword);
     sessionStorage.setItem('mode', 'update');
   }
   async deleteImg(ev, id) {
-    console.log("id in delete",id);
     this.confirmationService.confirm({
       target: ev.target,
       message: 'Are you sure that you want to proceed?',
       icon: 'pi pi-exclamation-triangle',
       accept: async () => {
-        //confirm action
         var data = {
           'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
           body: {
@@ -98,13 +83,12 @@ export class ImageComponent implements OnInit {
             userId: this.item.userId,
           },
         };
-        var res = this.galleryService.deletePic(data);
+        var response = this.service.sendRequest('deletepicture', data);
         if (
-          (await res.then(
+          (await response.then(
             (__zone_symbol__value) => __zone_symbol__value.body.success
           )) === true
         ) {
-          // await this.getAllImages();
           this.deleted.emit(true);
           this.messageService.add({
             key: 'smsg',
@@ -121,10 +105,7 @@ export class ImageComponent implements OnInit {
           });
         }
       },
-      reject: () => {
-        //reject action
-      },
+      reject: () => {},
     });
   }
-
 }

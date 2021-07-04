@@ -46,7 +46,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { SettingsComponent } from './settings/settings.component';
-import { UserService } from './user/user.service';
 import { GalleryComponent } from './gallery/gallery.component';
 import { SearchComponent } from './search/search.component';
 import { UploadImgComponent } from './upload-img/upload-img.component';
@@ -105,7 +104,7 @@ import { UploadImgComponent } from './upload-img/upload-img.component';
     ConfirmPopupModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [JsonPipe, CookieService, MessageService, UserService, ConfirmationService],
+  providers: [JsonPipe, CookieService, MessageService, ConfirmationService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

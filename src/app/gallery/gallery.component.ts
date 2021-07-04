@@ -1,11 +1,8 @@
 import { AppService } from './../app.service';
 import { Router } from '@angular/router';
-
 import { VigenereCipherService } from './../vigenere-cipher.service';
-
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-
 import { CookieService } from 'ngx-cookie-service';
 import { forkJoin } from 'rxjs';
 
@@ -17,12 +14,10 @@ import { forkJoin } from 'rxjs';
 export class GalleryComponent implements OnInit {
   exploreCards = [];
   maxFileSize: number = 1000000;
-
   formUploadPic: FormGroup;
   userId;
   username;
   avatar;
-
   user;
   uploadedImages: any = [];
   postedImages: any = [];
@@ -32,19 +27,16 @@ export class GalleryComponent implements OnInit {
   loading;
   constructor(
     private fb: FormBuilder,
-
     private vigenereCipherService: VigenereCipherService,
-    private cookie: CookieService,
+    private cookieService: CookieService,
     private router: Router,
-
     private service: AppService
   ) {
     this.formUploadPic = this.fb.group({
       pic: [''],
       pics: [''],
     });
-
-    if (this.cookie.check('auth-token')) {
+    if (this.cookieService.check('auth-token')) {
       this.getInforUser();
     } else {
       this.router.navigate(['']);
@@ -58,7 +50,7 @@ export class GalleryComponent implements OnInit {
     promise.then(() => (this.loading = false));
   }
   async getInforUser() {
-    await this.getUserByEmail();
+    this.user = await this.getUserByEmail();
     this.userId = this.user.id;
     this.username = this.user.name;
     this.avatar = this.user.avatar;
@@ -114,7 +106,7 @@ export class GalleryComponent implements OnInit {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
         email: this.vigenereCipherService.vigenereCipher(
-          this.cookie.get('auth-token'),
+          this.cookieService.get('auth-token'),
           '24DJBWID328FNSU32Z',
           false
         ),
@@ -126,11 +118,11 @@ export class GalleryComponent implements OnInit {
       (__zone_symbol__value) => __zone_symbol__value.body.success
     );
     if (isSuccess) {
-      this.user = await response.then(
+      return await response.then(
         (__zone_symbol__value) => __zone_symbol__value.body.response
       );
     } else {
-      this.cookie.delete('auth-token');
+      this.cookieService.delete('auth-token');
       this.router.navigate(['']);
     }
   }

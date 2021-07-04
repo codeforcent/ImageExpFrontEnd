@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { forkJoin } from 'rxjs';
 import { AppService } from '../app.service';
+import { VigenereCipherService } from '../vigenere-cipher.service';
 
 @Component({
   selector: 'app-home',
@@ -12,15 +15,57 @@ export class HomeComponent implements OnInit {
   hoveredItem;
   listPic: any[];
   loading;
-  constructor(private service: AppService) {}
+  user;
+  userId;
+  constructor(
+    private service: AppService,
+    private cookieService: CookieService,
+    private vigenereCipherService: VigenereCipherService,
+    private router: Router
+  ) {
+    if (this.cookieService.check('auth-token')) {
+      this.getInforUser();
+    } else {
+      this.router.navigate(['']);
+    }
+  }
 
-  async ngOnInit() {
+  async ngOnInit() {}
+  async getInforUser() {
+    this.user = await this.getUserByEmail();
+    this.userId = this.user.id;
     var listId = await this.getAllPost();
-    console.log('l', listId);
     this.listPic = await this.getPicture(listId);
-    await this.delay(500);
     const isNull = (element) => element === null;
+    const isMe = (element) => element.userId === this.userId;
     this.listPic.splice(this.listPic.findIndex(isNull), 1);
+    await this.delay(1500);
+    this.listPic.splice(this.listPic.findIndex(isMe), 1);
+  }
+  async getUserByEmail() {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        email: this.vigenereCipherService.vigenereCipher(
+          this.cookieService.get('auth-token'),
+          '24DJBWID328FNSU32Z',
+          false
+        ),
+      },
+    };
+    var response = this.service.sendRequest('getuserbyemail', data);
+    this.setLoading(response);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+    } else {
+      this.cookieService.delete('auth-token');
+      this.router.navigate(['']);
+    }
   }
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));

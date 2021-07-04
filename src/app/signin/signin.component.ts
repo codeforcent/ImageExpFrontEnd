@@ -1,45 +1,31 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from './auth.service';
-
-import { ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppComponent } from '../app.component';
-import { UserService } from '../user/user.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
-import { ConnService } from '../home/conn.service';
-// import { ConnectionService } from 'ng-connection-service';
+import { CookieService } from 'ngx-cookie-service';
+import { AppService } from '../app.service';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css'],
-  providers: [AuthService, UserService],
+  providers: [],
 })
-export class SigninComponent implements OnInit, AfterViewChecked {
-  @ViewChild('p') p;
-
+export class SigninComponent implements OnInit {
   formSignUp: FormGroup;
   formSignIn: FormGroup;
   signMode = true;
-
-  isSignedIn = false;
-  onload = false;
   signUpSuccess = true;
   signInSuccess = true;
-
   clicked;
   existed;
-  // isConnected = true;
-  // status = 'OFFLINE';
   email;
+  loading;
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
     private router: Router,
-    private app: AppComponent,
-    // public userService: UserService,
     private vigenereCipherService: VigenereCipherService,
-    private connService: ConnService
+    private cookieService: CookieService,
+    private service: AppService
   ) {
     this.formSignUp = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -59,23 +45,13 @@ export class SigninComponent implements OnInit, AfterViewChecked {
       password: ['', Validators.required],
     });
 
-    if (this.app.cookieService.check('auth-token')) {
-      // if (
-      //   this.app.cookieService.get('token') === this.userService.getUserByEmail().
-      // ) {
-      // this.app.cookieService.delete('token');
+    if (this.cookieService.check('auth-token')) {
       this.router.navigate(['']);
-      // }
     }
   }
 
   ngOnInit(): void {}
 
-  ngAfterViewChecked(): void {
-    //Called after every check of the component's view. Applies to components only.
-    //Add 'implements AfterViewChecked' to the class.
-   
-  }
   onClickSignIn() {
     this.clicked = true;
   }
@@ -91,7 +67,6 @@ export class SigninComponent implements OnInit, AfterViewChecked {
     this.signMode = true;
   }
   async onSubmitSignIn() {
-    this.onload = true;
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
@@ -100,15 +75,16 @@ export class SigninComponent implements OnInit, AfterViewChecked {
       },
     };
     if (this.formSignIn.valid) {
-      var res = this.authService.signIn(data);
+      var response = this.service.sendRequest('loginuser', data);
+      this.setLoading(response);
       if (
-        await res.then(
+        await response.then(
           (__zone_symbol__value) =>
             __zone_symbol__value.body.response.status !== 'online'
         )
       ) {
         if (
-          (await res.then(
+          (await response.then(
             (__zone_symbol__value) => __zone_symbol__value.body.success
           )) === true
         ) {
@@ -120,9 +96,10 @@ export class SigninComponent implements OnInit, AfterViewChecked {
               status: 'online',
             },
           };
-          this.connService.changeStatus(dat);
+          var res = this.service.sendRequest('changestatus', dat);
+          this.setLoading(res);
           // 24DJBWID328FNSU32Z
-          this.app.cookieService.set(
+          this.cookieService.set(
             'auth-token',
             this.vigenereCipherService.vigenereCipher(
               this.formSignIn.get('email').value,
@@ -130,36 +107,21 @@ export class SigninComponent implements OnInit, AfterViewChecked {
               true
             )
           );
-          // this.connectionService.monitor().subscribe((isConnected) => {
-          //   this.isConnected = isConnected;
-          //   if (this.isConnected) {
-          //     console.log('Online');
-          //     this.status = 'ONLINE';
-          //     this.app.cookieService.set('status', this.status);
-          //   } else {
-          //     console.log('Offline');
-          //     this.status = 'OFFLINE';
-          //     this.app.cookieService.set('status', this.status);
-          //   }
-          // });
-
           this.router.navigate(['']);
         } else {
-          // setTimeout(() => { }, 500);
-          this.onload = false;
           this.signInSuccess = false;
         }
       } else {
-        this.onload = false;
         this.router.navigate(['']);
       }
     } else {
-      this.onload = false;
     }
   }
+  setLoading(promise: Promise<any>) {
+    this.loading = true;
+    promise.then(() => (this.loading = false));
+  }
   async onSubmitSignUp() {
-    this.onload = true;
-
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
@@ -168,10 +130,10 @@ export class SigninComponent implements OnInit, AfterViewChecked {
       },
     };
     if (this.formSignUp.valid) {
-      var res = this.authService.signUp(data);
-
+      var response = this.service.sendRequest('registeruser', data);
+      this.setLoading(response);
       if (
-        (await res.then(
+        (await response.then(
           (__zone_symbol__value) => __zone_symbol__value.body.success
         )) === true
       ) {
@@ -183,11 +145,10 @@ export class SigninComponent implements OnInit, AfterViewChecked {
             status: 'online',
           },
         };
-        this.connService.changeStatus(dat);
-        // setTimeout(() => { }, 500);
-        this.authService.signIn(data);
-
-        this.app.cookieService.set(
+        var res = this.service.sendRequest('changestatus', dat);
+        this.setLoading(res);
+        this.service.sendRequest('loginuser', data);
+        this.cookieService.set(
           'auth-token',
           this.vigenereCipherService.vigenereCipher(
             this.formSignUp.get('email').value,
@@ -195,16 +156,12 @@ export class SigninComponent implements OnInit, AfterViewChecked {
             true
           )
         );
-            console.log("sign in sc");
         this.router.navigate(['']);
       } else {
-        // setTimeout(() => { }, 500);
         this.existed = true;
-        this.onload = false;
         this.signUpSuccess = false;
       }
     } else {
-      this.onload = false;
     }
   }
 }
