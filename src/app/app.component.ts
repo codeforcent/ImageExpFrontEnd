@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ConnectionService } from 'ng-connection-service';
 import { CookieService } from 'ngx-cookie-service';
-import { User } from '../model/user';
 import firebase from 'firebase/app';
 // import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -14,11 +13,10 @@ export class AppComponent {
   title = 'DrawEX';
   status = 'ONLINE';
   isConnected = true;
-  public user: User;
 
   constructor(
     public connectionService: ConnectionService,
-    public cookieService: CookieService,
+    public cookieService: CookieService
   ) {
     const firebaseConfig = {};
     firebase.initializeApp(firebaseConfig);
