@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
-* {
+/* * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-}
+} */
 
 .container-fluid,
 input {
@@ -149,14 +149,6 @@ form.sign-in-form {
 :host>>>.p-inputtext:enabled:focus {
     box-shadow: none;
 }
-
-
-/*
-:host>>>.ng-dirty.ng-invalid,
-.ng-touched.ng-invalid {
-    border: 2px solid red !important;
-    box-shadow: 0 0 5px 1px rgba(255, 0, 0, 0.2) inset !important;
-} */
 
 .input-field span:nth-child(3) {
     background-color: none;
@@ -355,7 +347,15 @@ form.sign-in-form {
 .popover {
     z-index: 1080;
 }
-
+app-verifyemail{
+  z-index: 1000;
+  position: absolute;
+  top: -1rem;
+  width: 100%;
+  justify-content: center;
+  align-content: center;
+  display: flex;
+}
 @media (max-width: 870px) {
     .container-fluid {
         min-height: 800px;

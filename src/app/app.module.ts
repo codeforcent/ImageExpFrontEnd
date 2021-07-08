@@ -49,6 +49,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { SearchComponent } from './search/search.component';
 import { UploadImgComponent } from './upload-img/upload-img.component';
+import { VerifyemailComponent } from './verifyemail/verifyemail.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { UploadImgComponent } from './upload-img/upload-img.component';
     GalleryComponent,
     SearchComponent,
     UploadImgComponent,
+    VerifyemailComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

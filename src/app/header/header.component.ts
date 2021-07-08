@@ -28,11 +28,11 @@ export class HeaderComponent implements OnInit {
       this.getInforUser();
     } else {
       this.logIn = false;
-      this.router.navigate(['']);
+
     }
   }
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+
   }
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));

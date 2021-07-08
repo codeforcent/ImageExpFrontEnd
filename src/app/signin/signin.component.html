@@ -55,7 +55,7 @@
             formControlName="password"
             [toggleMask]="true"
             required
-            inputId = "signInPassword"
+            inputId="signInPassword"
           >
           </p-password>
           <span></span>
@@ -100,9 +100,8 @@
             'error-box':
               (formSignUp.get('email')?.dirty &&
                 formSignUp.get('email')?.invalid) ||
-              (clicked && existed && formSignUp.get('email')?.dirty)
-              || formSignUp.get('email')?.errors?.required &&
-              clicked
+              (clicked && existed && formSignUp.get('email')?.dirty) ||
+              (formSignUp.get('email')?.errors?.required && clicked)
           }"
         >
           <i class="fas fa-envelope"></i>
@@ -163,7 +162,7 @@
             formControlName="password"
             required
             [toggleMask]="true"
-            inputId = "signUpPassword"
+            inputId="signUpPassword"
           >
           </p-password>
 
@@ -192,7 +191,7 @@
             *ngIf="
               formSignUp.get('password')?.errors?.pattern &&
               !formSignUp.get('password')?.errors?.minlength &&
-                !formSignUp.get('password')?.errors?.maxlength
+              !formSignUp.get('password')?.errors?.maxlength
             "
             class="form-text error-text"
             >Password cannot contain special character(s)</small
@@ -214,7 +213,7 @@
             formControlName="repassword"
             [toggleMask]="true"
             required
-            inputId = "signUpRepassword"
+            inputId="signUpRepassword"
           >
           </p-password>
 
@@ -284,3 +283,9 @@
     </div>
   </div>
 </div>
+<app-verifyemail
+  *ngIf="verified"
+  [(email)]="email"
+  (verifiedSignUp)="onVerifySignUp($event)"
+  (verifiedSignIn)="onVerifySignIn($event)"
+></app-verifyemail>

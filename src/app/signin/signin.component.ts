@@ -20,6 +20,7 @@ export class SigninComponent implements OnInit {
   existed;
   email;
   loading;
+  verified = false;
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -89,25 +90,33 @@ export class SigninComponent implements OnInit {
           )) === true
         ) {
           this.email = this.formSignIn.get('email').value;
-          var dat = {
+          var dt = {
             'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
             body: {
               email: this.formSignIn.get('email').value,
-              status: 'online',
             },
           };
-          var res = this.service.sendRequest('changestatus', dat);
+          var res = this.service.sendRequest('getverifystate', dt);
           this.setLoading(res);
-          // 24DJBWID328FNSU32Z
-          this.cookieService.set(
-            'auth-token',
-            this.vigenereCipherService.vigenereCipher(
-              this.formSignIn.get('email').value,
-              '24DJBWID328FNSU32Z',
-              true
-            )
-          );
-          this.router.navigate(['']);
+          if (
+            (await res.then(
+              (__zone_symbol__value) => __zone_symbol__value.body.response.state
+            )) === false
+          ) {
+            console.log("email before send code", this.email);
+            var dat = {
+              'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+              body: {
+                email: this.email,
+              },
+            };
+            var response = this.service.sendRequest('sendverifycode', dat);
+            this.setLoading(response);
+            this.verified = true;
+          } else {
+            this.verified = false;
+            this.onSignIn();
+          }
         } else {
           this.signInSuccess = false;
         }
@@ -116,6 +125,9 @@ export class SigninComponent implements OnInit {
       }
     } else {
     }
+  }
+  delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
   setLoading(promise: Promise<any>) {
     this.loading = true;
@@ -142,26 +154,100 @@ export class SigninComponent implements OnInit {
           'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
           body: {
             email: this.formSignUp.get('email').value,
-            status: 'online',
           },
         };
-        var res = this.service.sendRequest('changestatus', dat);
-        this.setLoading(res);
-        this.service.sendRequest('loginuser', data);
-        this.cookieService.set(
-          'auth-token',
-          this.vigenereCipherService.vigenereCipher(
-            this.formSignUp.get('email').value,
-            '24DJBWID328FNSU32Z',
-            true
-          )
-        );
-        this.router.navigate(['']);
+        var response = this.service.sendRequest('sendverifycode', dat);
+        this.setLoading(response);
+        this.verified = true;
       } else {
+        this.verified = false;
         this.existed = true;
         this.signUpSuccess = false;
       }
     } else {
     }
+  }
+  onVerifySignUp(ev) {
+    if (ev == true) {
+      var dt = {
+        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        body: {
+          email: this.email,
+          state: true,
+        },
+      };
+      var res = this.service.sendRequest('setverifystate', dt);
+      this.setLoading(res);
+
+      var data = {
+        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        body: {
+          email: this.email,
+          status: 'online',
+        },
+      };
+      var response = this.service.sendRequest('changestatus', data);
+      this.setLoading(response);
+      var dat = {
+        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        body: {
+          email: this.email,
+          password: this.formSignIn.get('password').value,
+        },
+      };
+      this.service.sendRequest('loginuser', dat);
+      this.cookieService.set(
+        'auth-token',
+        this.vigenereCipherService.vigenereCipher(
+          this.formSignUp.get('email').value,
+          '24DJBWID328FNSU32Z',
+          true
+        )
+      );
+      this.router.navigate(['']);
+    }
+  }
+  onVerifySignIn(ev) {
+    if (ev == true) {
+      this.onSignIn();
+    }
+  }
+  onSignIn() {
+    var dt = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        email: this.email,
+        state: true,
+      },
+    };
+    var res = this.service.sendRequest('setverifystate', dt);
+    this.setLoading(res);
+
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        email: this.email,
+        status: 'online',
+      },
+    };
+    var response = this.service.sendRequest('changestatus', data);
+    this.setLoading(response);
+    var dat = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        email: this.email,
+        password: this.formSignIn.get('password').value,
+      },
+    };
+    this.service.sendRequest('loginuser', dat);
+    this.cookieService.set(
+      'auth-token',
+      this.vigenereCipherService.vigenereCipher(
+        this.formSignIn.get('email').value,
+        '24DJBWID328FNSU32Z',
+        true
+      )
+    );
+    this.router.navigate(['']);
   }
 }
