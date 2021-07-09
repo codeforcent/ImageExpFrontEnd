@@ -43,6 +43,15 @@
           style="color: red"
           >Verification code is required</small
         >
+        <small
+          *ngIf="
+            clicked &&
+            !verified &&
+            !formVerifyEmail.get('code')?.errors?.required
+          "
+          style="color: red"
+          >Verification code is incorrect</small
+        >
         <br />
         <button
           type="submit"

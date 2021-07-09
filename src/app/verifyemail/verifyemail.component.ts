@@ -13,7 +13,8 @@ export class VerifyemailComponent implements OnInit {
   @Output() verifiedSignUp = new EventEmitter<boolean>();
   @Output() verifiedSignIn = new EventEmitter<boolean>();
   formVerifyEmail;
-
+  clicked = false;
+  verified;
   constructor(private fb: FormBuilder, private service: AppService) {
     this.formVerifyEmail = this.fb.group({
       email: this.email,
@@ -23,6 +24,7 @@ export class VerifyemailComponent implements OnInit {
 
   ngOnInit(): void {}
   async onSubmitVerifyEmail() {
+    this.clicked = true;
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
@@ -31,18 +33,19 @@ export class VerifyemailComponent implements OnInit {
       },
     };
     var response = this.service.sendRequest('checkverifycode', data);
-    console.log('check verify code', response);
     if (
       (await response.then(
         (__zone_symbol__value) => __zone_symbol__value.body.success
       )) === true
     ) {
+      this.verified = true;
       if (this.mode === 'signUp') {
         this.verifiedSignUp.emit(true);
       } else if (this.mode === 'signIn') {
         this.verifiedSignIn.emit(true);
       }
     } else {
+      this.verified = false;
       if (this.mode === 'signUp') {
         this.verifiedSignUp.emit(false);
       } else if (this.mode === 'signIn') {
