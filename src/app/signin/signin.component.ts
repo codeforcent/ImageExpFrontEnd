@@ -20,7 +20,8 @@ export class SigninComponent implements OnInit {
   existed;
   email;
   loading;
-  verified = false;
+  verifiedSignUp = false;
+  verifiedSignIn = false;
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -103,7 +104,6 @@ export class SigninComponent implements OnInit {
               (__zone_symbol__value) => __zone_symbol__value.body.response.state
             )) === false
           ) {
-            console.log("email before send code", this.email);
             var dat = {
               'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
               body: {
@@ -112,9 +112,9 @@ export class SigninComponent implements OnInit {
             };
             var response = this.service.sendRequest('sendverifycode', dat);
             this.setLoading(response);
-            this.verified = true;
+            this.verifiedSignIn = true;
           } else {
-            this.verified = false;
+            this.verifiedSignIn = false;
             this.onSignIn();
           }
         } else {
@@ -158,9 +158,9 @@ export class SigninComponent implements OnInit {
         };
         var response = this.service.sendRequest('sendverifycode', dat);
         this.setLoading(response);
-        this.verified = true;
+        this.verifiedSignUp = true;
       } else {
-        this.verified = false;
+        this.verifiedSignUp = false;
         this.existed = true;
         this.signUpSuccess = false;
       }
@@ -169,6 +169,7 @@ export class SigninComponent implements OnInit {
   }
   onVerifySignUp(ev) {
     if (ev == true) {
+      console.log('verify sign up');
       var dt = {
         'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
         body: {

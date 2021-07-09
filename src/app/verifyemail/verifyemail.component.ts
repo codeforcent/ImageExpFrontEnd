@@ -9,6 +9,7 @@ import { AppService } from '../app.service';
 })
 export class VerifyemailComponent implements OnInit {
   @Input() email;
+  @Input() mode;
   @Output() verifiedSignUp = new EventEmitter<boolean>();
   @Output() verifiedSignIn = new EventEmitter<boolean>();
   formVerifyEmail;
@@ -35,18 +36,21 @@ export class VerifyemailComponent implements OnInit {
         (__zone_symbol__value) => __zone_symbol__value.body.success
       )) === true
     ) {
-      console.log('verify sc');
-      this.verifiedSignUp.emit(true);
-      this.verifiedSignIn.emit(true);
+      if (this.mode === 'signUp') {
+        this.verifiedSignUp.emit(true);
+      } else if (this.mode === 'signIn') {
+        this.verifiedSignIn.emit(true);
+      }
     } else {
-      console.log('verify unsc');
-      this.verifiedSignUp.emit(false);
-      this.verifiedSignIn.emit(false);
+      if (this.mode === 'signUp') {
+        this.verifiedSignUp.emit(true);
+      } else if (this.mode === 'signIn') {
+        this.verifiedSignIn.emit(true);
+      }
     }
   }
   async onSubmitResendCode() {
-    console.log('email in verify', this.email);
-    console.log('resend', this.email);
+
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {

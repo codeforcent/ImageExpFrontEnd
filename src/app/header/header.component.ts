@@ -11,7 +11,7 @@ import { AppService } from '../app.service';
 })
 export class HeaderComponent implements OnInit {
   clicked = false;
-  logIn;
+  logIn = false;
   avatar;
   email;
   username;
@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit {
       this.avatar =
         'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
     }
-    this.logIn = true;
+
   }
   async getUserByEmail() {
     var data = {
@@ -77,6 +77,7 @@ export class HeaderComponent implements OnInit {
       (__zone_symbol__value) => __zone_symbol__value.body.success
     );
     if (isSuccess) {
+      this.logIn = true;
       return await response.then(
         (__zone_symbol__value) => __zone_symbol__value.body.response
       );
