@@ -46,7 +46,7 @@
         <small
           *ngIf="
             clicked &&
-            !verified &&
+            verified == false &&
             !formVerifyEmail.get('code')?.errors?.required
           "
           style="color: red"

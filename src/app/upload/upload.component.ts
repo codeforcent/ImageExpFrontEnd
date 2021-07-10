@@ -103,10 +103,12 @@ export class UploadComponent implements OnInit {
       this.router.navigate(['']);
     }
   }
-
+  /**
+   * on init
+   */
   async ngOnInit() {
     this.cateList = await this.getAllCategories();
-    this.cateList.forEach((category) => this.dropdownList.push(category));
+    this.cateList.forEach((cate) => this.dropdownList.push(cate));
     this.selectedCates = await this.getSelectedListCategory(this.listCateId);
   }
   async getSelectedListCategory(listId) {
@@ -151,9 +153,11 @@ export class UploadComponent implements OnInit {
     }
   }
   async getAllCategories() {
-    var response = await this.service.sendRequest('getallcategories', '');
+    var response = this.service.sendRequest('getallcategories', '');
     this.setLoading(response);
-    return response;
+    return await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body
+    );
   }
   onSelectedFile(e) {
     if (e.target.files) {

@@ -32,15 +32,14 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit() {}
   async getInforUser() {
+    const isMe = (element) => element.userId === this.userId;
     this.user = await this.getUserByEmail();
     this.userId = this.user.id;
     var listId = await this.getAllPost();
+    if (listId.findIndex(isMe) > -1) {
+      listId.splice(listId.findIndex(isMe), 1);
+    }
     this.listPic = await this.getPicture(listId);
-    const isNull = (element) => element === null;
-    const isMe = (element) => element.userId === this.userId;
-    this.listPic.splice(this.listPic.findIndex(isNull), 1);
-    await this.delay(1500);
-    this.listPic.splice(this.listPic.findIndex(isMe), 1);
   }
   async getUserByEmail() {
     var data = {
@@ -91,6 +90,7 @@ export class HomeComponent implements OnInit {
         images.push(results[0]);
       });
     }
+    await this.delay(1000);
     return images;
   }
   async getPictureById(picId) {

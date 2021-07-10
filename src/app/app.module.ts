@@ -50,6 +50,7 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { SearchComponent } from './search/search.component';
 import { UploadImgComponent } from './upload-img/upload-img.component';
 import { VerifyemailComponent } from './verifyemail/verifyemail.component';
+import { PostdetailComponent } from './postdetail/postdetail.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { VerifyemailComponent } from './verifyemail/verifyemail.component';
     SearchComponent,
     UploadImgComponent,
     VerifyemailComponent,
+    PostdetailComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
