@@ -13,13 +13,14 @@ export class ImageComponent implements OnInit {
   @Input() hovered;
   @Input() modeOverlay;
   @Input() posted;
+  @Input() userId;
   @Output() deleted = new EventEmitter<boolean>();
+  @Output() saved = new EventEmitter<boolean>();
   @ViewChild('gal_img') gal_img;
-
+  avatar;
   btn_top: any;
   src: string;
   itemSelected = new EventEmitter<any>();
-
   selectedItem: any;
   post;
   constructor(
@@ -32,6 +33,13 @@ export class ImageComponent implements OnInit {
     if (this.posted) {
       this.post = await this.getPostByPicId();
     }
+
+    var us = await this.getUserById(this.item.userId);
+
+    this.avatar = us.avatar;
+  }
+  delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
   async getPostByPicId() {
     var data = {
@@ -107,5 +115,40 @@ export class ImageComponent implements OnInit {
       },
       reject: () => {},
     });
+  }
+  async onSave() {
+    var isSuccess = await this.addPicture(this.userId, this.item.picture);
+    console.log('isS', isSuccess);
+    this.saved.emit(isSuccess);
+  }
+  async addPicture(userId, picture) {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        userId: userId,
+        picture: picture,
+      },
+    };
+    var response = this.service.sendRequest('addpicture', data);
+    return await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+  }
+  async getUserById(id: number) {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        id: id,
+      },
+    };
+    var response = this.service.sendRequest('getuserbyid', data);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+    }
   }
 }

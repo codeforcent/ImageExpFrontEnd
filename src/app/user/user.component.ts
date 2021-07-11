@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AppService } from '../app.service';
+import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -17,6 +18,8 @@ export class UserComponent implements OnInit {
   sub: any;
   otherUser;
   user;
+  postedImages: any = [];
+  hoveredItem;
   constructor(
     private vigenereCipherService: VigenereCipherService,
     private router: Router,
@@ -34,12 +37,15 @@ export class UserComponent implements OnInit {
     }
   }
 
-  async ngOnInit() {}
+  async ngOnInit() {
+    var listPost = await this.getPostedPicturesByUserId();
+    this.postedImages = await this.getListImages(listPost);
+  }
 
   async getInforUsers() {
     this.user = await this.getUserByEmail();
     if (this.user.id === this.id) {
-      this.router.navigate(['']);
+      this.router.navigate(['/gallery']);
     }
     this.otherUser = await this.getUserById(this.id);
     this.username = this.otherUser.name;
@@ -93,5 +99,59 @@ export class UserComponent implements OnInit {
   setLoading(promise: Promise<any>) {
     this.loading = true;
     promise.then(() => (this.loading = false));
+  }
+  onMouseover(item) {
+    this.hoveredItem = item;
+  }
+  onMouseleave() {
+    this.hoveredItem = null;
+  }
+  async getPostedPicturesByUserId() {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        id: this.id,
+      },
+    };
+    var response = this.service.sendRequest('getpostsbyuserid', data);
+    this.setLoading(response);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+    }
+  }
+  async getListImages(listPost) {
+    var listItem = [];
+    for (var post in listPost) {
+      var request = this.getPictureById(listPost[post].picId);
+      forkJoin([request]).subscribe((result) => {
+        listItem.push(result);
+      });
+    }
+    return listItem;
+  }
+  async getPictureById(picId) {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        id: picId,
+      },
+    };
+    var response = this.service.sendRequest('getpicturebyid', data);
+    this.setLoading(response);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+    } else {
+      return null;
+    }
   }
 }

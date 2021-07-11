@@ -4,7 +4,7 @@
   *ngIf="loading"
 ></mat-progress-bar>
 <app-header></app-header>
-
+<p-toast key="smsg" position="top-right"></p-toast>
 <div class="container-fluid">
   <div class="card-columns">
     <div class="gal" *ngFor="let item of listPic">
@@ -12,9 +12,11 @@
         [item]="item"
         [hovered]="item === hoveredItem"
         [modeOverlay]="'home'"
-        [posted] = "true"
+        [posted]="true"
+        [userId]="userId"
         (mouseover)="onMouseover(item)"
         (mouseleave)="onMouseleave()"
+        (saved)="savePicture($event)"
       ></app-image>
     </div>
   </div>

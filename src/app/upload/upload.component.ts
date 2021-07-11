@@ -97,6 +97,9 @@ export class UploadComponent implements OnInit {
       }
       sessionStorage.clear();
     }
+    if (sessionStorage.getItem('id') !== null) {
+      sessionStorage.clear();
+    }
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
     } else {

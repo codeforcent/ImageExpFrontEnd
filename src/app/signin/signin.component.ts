@@ -22,6 +22,7 @@ export class SigninComponent implements OnInit {
   loading;
   verifiedSignUp = false;
   verifiedSignIn = false;
+  value3;
   constructor(
     private fb: FormBuilder,
     private router: Router,

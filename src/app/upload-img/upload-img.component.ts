@@ -132,7 +132,6 @@ export class UploadImgComponent implements OnInit {
   }
   async addManyPictures(listPic) {
     for (var pic in listPic) {
-      console.log('pic', listPic[pic]);
       var request = this.addPicture(listPic[pic]);
       forkJoin([request]).subscribe();
     }

@@ -13,7 +13,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { CookieService } from 'ngx-cookie-service';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { PasswordModule } from 'primeng/password';
+
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -31,6 +31,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { GalleriaModule } from 'primeng/galleria';
 import { ConnectionServiceModule } from 'ngx-connection-service';
 import {DialogModule} from 'primeng/dialog';
+import { PasswordModule } from 'primeng/password';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
@@ -85,7 +86,6 @@ import { PostdetailComponent } from './postdetail/postdetail.component';
     TextFieldModule,
     MDBBootstrapModule,
     DragDropModule,
-    PasswordModule,
     ButtonModule,
     InputTextModule,
     AutoCompleteModule,
@@ -105,7 +105,8 @@ import { PostdetailComponent } from './postdetail/postdetail.component';
     ConnectionServiceModule,
     DialogModule,
     OnlineStatusModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    PasswordModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [JsonPipe, CookieService, MessageService, ConfirmationService],

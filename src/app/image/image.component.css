@@ -8,7 +8,6 @@
 .overlay {
     z-index: 2;
     position: relative;
-    margin-bottom: 20px;
 }
 
 .avatar-img {
@@ -92,7 +91,7 @@ svg {
   transition: fill .2s linear;
   height: 15px;
 }
-.upload, .post{
+.upload, .post, .user{
   position: absolute;
   display: initial;
 }

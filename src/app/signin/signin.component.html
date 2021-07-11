@@ -10,6 +10,7 @@
         [formGroup]="formSignIn"
       >
         <h2 class="title">Sign In</h2>
+
         <div
           class="input-field"
           [ngClass]="{
@@ -56,6 +57,7 @@
             [toggleMask]="true"
             required
             inputId="signInPassword"
+            [feedback]="false"
           >
           </p-password>
           <span></span>
@@ -70,11 +72,11 @@
             >Password is required</small
           >
         </div>
-        <div style="width: 88%" class="forget-a">
+        <!-- <div style="width: 88%" class="forget-a">
           <a href="#" style="text-decoration: none; float: right"
             >Forget password?</a
           >
-        </div>
+        </div> -->
 
         <small *ngIf="!signInSuccess" class="form-text error-text"
           >Invalid email or password</small
@@ -214,6 +216,7 @@
             [toggleMask]="true"
             required
             inputId="signUpRepassword"
+            [feedback]="false"
           >
           </p-password>
 

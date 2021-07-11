@@ -3,7 +3,7 @@
     <a href="#">
       <img
         id="logo"
-        src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg"
+        src="../../assets/Annotation_2021-07-08_173437-removebg-preview.png"
         alt=""
       />
     </a>
@@ -23,90 +23,6 @@
         <span class="input-group-append" style="margin-left: 0.5px"> </span>
       </div>
     </form>
-    <div
-      class="btn-group notification"
-      ngbDropdown
-      display="dynamic"
-      placement="bottom-left"
-    >
-      <button
-        type="button"
-        class="border-0"
-        id="dropdownMenuButton"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-        style="background-color: rgba(20, 140, 177, 0)"
-        data-offset="-10,0"
-      >
-        <i class="fas fa-bell fa-2x" aria-hidden="true" ngbDropdownToggle></i>
-      </button>
-
-      <div ngbDropdownMenu>
-        <a
-          href="#"
-          class="list-group-item list-group-item-action border-0"
-          ngbDropdownItem
-        >
-          <div class="row">
-            <div class="col-md-2">
-              <img
-                class="avatar-mess"
-                src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg"
-                alt="avatar-mess"
-              />
-            </div>
-            <div class="col-md-10">
-              <div class="d-flex w-100 justify-content-between">
-                <p class="mb-1">Notification</p>
-                <small class="text-muted">3 days ago</small>
-              </div>
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-
-    <div
-      ngbDropdown
-      class="btn-group message"
-      display="dynamic"
-      placement="bottom"
-    >
-      <button
-        type="button"
-        class="border-0"
-        style="background-color: rgba(20, 140, 177, 0)"
-        data-offset="-100,0"
-      >
-        <i class="far fa-comment-dots fa-2x" ngbDropdownToggle></i>
-      </button>
-      <div ngbDropdownMenu>
-        <a
-          href="#"
-          class="list-group-item list-group-item-action border-0"
-          ngbDropdownItem
-        >
-          <div class="row">
-            <div class="col-md-2">
-              <img
-                class="avatar-mess"
-                src="https://avatar-ex-swe.nixcdn.com/playlist/2015/03/23/1/0/e/8/1427099001196_500.jpg"
-                alt="avatar-mess"
-              />
-            </div>
-            <div class="col-md-10">
-              <div class="d-flex w-100 justify-content-between">
-                <p class="mb-1">User Nickname</p>
-                <small class="text-muted">3 days ago</small>
-              </div>
-
-              <small class="text-muted">Message...</small>
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
 
     <div container="body" class="avatar" *ngIf="logIn === true">
       <a href="/gallery">

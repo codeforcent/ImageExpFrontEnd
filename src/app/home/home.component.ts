@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { MessageService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
 import { AppService } from '../app.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
@@ -21,7 +22,8 @@ export class HomeComponent implements OnInit {
     private service: AppService,
     private cookieService: CookieService,
     private vigenereCipherService: VigenereCipherService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
@@ -116,5 +118,22 @@ export class HomeComponent implements OnInit {
   setLoading(promise: Promise<any>) {
     this.loading = true;
     promise.then(() => (this.loading = false));
+  }
+  savePicture(ev) {
+    if (ev === true) {
+      this.messageService.add({
+        key: 'smsg',
+        severity: 'success',
+        summary: 'Message',
+        detail: 'Save image successfully',
+      });
+    } else {
+      this.messageService.add({
+        key: 'smsg',
+        severity: 'success',
+        summary: 'Message',
+        detail: 'Save image unsuccessfully',
+      });
+    }
   }
 }
