@@ -1,9 +1,9 @@
+import { AppService } from '../app.service';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { VigenereCipherService } from '../vigenere-cipher.service';
-import { CookieService } from 'ngx-cookie-service';
-import { AppService } from '../app.service';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -16,13 +16,21 @@ export class SigninComponent implements OnInit {
   signMode = true;
   signUpSuccess = true;
   signInSuccess = true;
-  clicked;
-  existed;
-  email;
-  loading;
+  clicked: boolean;
+  existed: boolean;
+  email: any;
+  loading: boolean;
   verifiedSignUp = false;
   verifiedSignIn = false;
-  value3;
+  /**
+   * Creates an instance of SigninComponent.
+   * @param {FormBuilder} fb
+   * @param {Router} router
+   * @param {VigenereCipherService} vigenereCipherService
+   * @param {CookieService} cookieService
+   * @param {AppService} service
+   * @memberof SigninComponent
+   */
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -69,7 +77,15 @@ export class SigninComponent implements OnInit {
     this.clicked = false;
     this.signMode = true;
   }
-  async onSubmitSignIn() {
+
+  /**
+   * Determines whether submit sign in on
+   * Sign in when user submit formSignIn
+   * Catch if account is online or unverified
+   * @return {*}  {Promise<void>}
+   * @memberof SigninComponent
+   */
+  async onSubmitSignIn(): Promise<void> {
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
@@ -124,17 +140,33 @@ export class SigninComponent implements OnInit {
       } else {
         this.router.navigate(['']);
       }
-    } else {
     }
   }
-  delay(ms: number) {
+  /**
+   * Delay function
+   * @param {number} ms
+   * @return {*}  {Promise<unknown>}
+   * @memberof SigninComponent
+   */
+  delay(ms: number): Promise<unknown> {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
-  setLoading(promise: Promise<any>) {
+  /**
+   * Change loading status
+   * @param {Promise<any>} promise
+   * @memberof SigninComponent
+   */
+  setLoading(promise: Promise<any>): void {
     this.loading = true;
     promise.then(() => (this.loading = false));
   }
-  async onSubmitSignUp() {
+  /**
+   * Sign up when user submit formSignUp
+   * Catch if account is unverified
+   * @return {*}  {Promise<void>}
+   * @memberof SigninComponent
+   */
+  async onSubmitSignUp(): Promise<void> {
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
@@ -165,12 +197,16 @@ export class SigninComponent implements OnInit {
         this.existed = true;
         this.signUpSuccess = false;
       }
-    } else {
     }
   }
-  onVerifySignUp(ev) {
+  /**
+   * Catch event that user have submitted formVerifyEmail
+   * If verifying is successful, change verify state and user status, then log in
+   * @param {*} ev
+   * @memberof SigninComponent
+   */
+  onVerifySignUp(ev: boolean): void {
     if (ev == true) {
-      console.log('verify sign up');
       var dt = {
         'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
         body: {
@@ -180,7 +216,6 @@ export class SigninComponent implements OnInit {
       };
       var res = this.service.sendRequest('setverifystate', dt);
       this.setLoading(res);
-
       var data = {
         'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
         body: {
@@ -209,12 +244,22 @@ export class SigninComponent implements OnInit {
       this.router.navigate(['']);
     }
   }
-  onVerifySignIn(ev) {
+  /**
+   * Catch event that user have submitted formVerifyEmail
+   * If verifying is successful, call onSignIn()
+   * @param {*} ev
+   * @memberof SigninComponent
+   */
+  onVerifySignIn(ev: boolean): void {
     if (ev == true) {
       this.onSignIn();
     }
   }
-  onSignIn() {
+  /**
+   * Change verify state and user status, then log in
+   * @memberof SigninComponent
+   */
+  onSignIn(): void {
     var dt = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
