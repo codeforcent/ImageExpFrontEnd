@@ -73,6 +73,7 @@ body {
 .like-section img {
     width: 13%;
     height: auto;
+    cursor: pointer;
 }
 
 .message-section {

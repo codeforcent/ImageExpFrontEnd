@@ -1,30 +1,54 @@
+<mat-progress-bar mode="indeterminate" value="40" *ngIf="loading">
+</mat-progress-bar>
+<app-header></app-header>
+<p-dialog
+  header="Notification"
+  [(visible)]="displayPosition"
+  [position]="position"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+  [closeOnEscape]="false"
+  [closable]="false"
+>
+  <p-toast key="smsg" position="top-right"></p-toast>
+  <p>Let give us your avatar and username before uploading</p>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-check"
+      (click)="onClickDialog()"
+      label="Ok"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
 <body>
   <div class="wrapper">
     <div class="pic-section">
-      <img src="img/C5HJIFPUEAAdLGt.jpg" alt="Picture" />
+      <img [src]="picture.picture" alt="Picture" />
     </div>
 
     <div class="detail-section">
       <div class="owner-section">
-        <a href="https://www.google.com/">
+        <a href="user/{{postUser.id}}">
           <!-- Link to user gallery -->
-          <img alt="Owner" src="img/1af56d3594e8fdbc772f740141375eda.jpg" />
+          <img alt="Owner" [src]="postUser.avatar" />
         </a>
-        <span> By <a href="https://www.google.com/">[Owner name]</a></span>
+        <span> By <a href="user/{{postUser.id}}">{{postUser.name}}</a></span>
       </div>
       <div class="like-section">
         <img
-          src="img/heart-removebg-preview.png"
+          [src]="likeBtn"
           alt="Like"
           class="like"
-          onclick="changeLike(this)"
+         (click)="onChangeLikeBtn()"
         /><span> 123 Like</span>
       </div>
       <div class="message-section">
         <p>
-          Decription of the owner: this is Exmaple : <br />"Hello, You are
-          almost ready to get started. Check your mail and enter the
-          verification code to become one of DrawIt members. "
+         {{post.description}}
         </p>
       </div>
       <div class="comment-section">

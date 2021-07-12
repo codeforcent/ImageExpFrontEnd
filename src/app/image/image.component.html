@@ -20,7 +20,7 @@
       class="home"
       [ngStyle]="
         hovered && modeOverlay === 'home'
-          ? { display: 'inline-block' }
+          ? { display: 'flex' }
           : { display: 'none' }
       "
     >
@@ -32,6 +32,7 @@
       >
         Save
       </button>
+
       <a href="/user/{{ item.userId }}">
         <img
           [src]="avatar"
@@ -40,31 +41,22 @@
           [ngStyle]="hovered ? { top: calHeight() } : { display: 'none' }"
         />
       </a>
-      <div
-        class="ellipsis"
-        [ngStyle]="
-          hovered
-            ? { top: calHeightIC(), display: 'inline-block' }
-            : { display: 'none' }
-        "
-        ngbDropdown
-      >
-        <a href="#" ngbDropdownToggle>
+      <div class="ellipsis" ngbDropdown  placement="top-left">
+        <button ngbDropdownToggle class="btn">
           <i class="fas fa-ellipsis-h" style="color: black"></i>
-        </a>
+        </button>
         <div
           class="DropdownControlled-module_content-3YeM_"
           ngbDropdownMenu
           role="menu"
-          data-direction="top left"
-          aria-labelledby="dropdownMenuButton"
           style="padding: 5px"
+          aria-labelledby="dropdownConfig"
         >
           <a
-            href="/post"
+            href="/postDetail/{{item.id}}"
             ngbDropdownItem
             (click)="saveUploadedImgToCookie(item.id, item.picture)"
-            >Post this image</a
+            >View this post</a
           >
         </div>
       </div>
