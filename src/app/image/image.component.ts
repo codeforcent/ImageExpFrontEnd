@@ -33,9 +33,7 @@ export class ImageComponent implements OnInit {
     if (this.posted) {
       this.post = await this.getPostByPicId();
     }
-
     var us = await this.getUserById(this.item.userId);
-
     this.avatar = us.avatar;
   }
   delay(ms: number) {
