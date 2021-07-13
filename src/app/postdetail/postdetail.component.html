@@ -24,6 +24,7 @@
     ></p-button>
   </ng-template>
 </p-dialog>
+<p-toast key="smsg" position="top-right"></p-toast>
 <body>
   <div class="wrapper">
     <div class="pic-section">
@@ -32,30 +33,58 @@
 
     <div class="detail-section">
       <div class="owner-section">
-        <a href="user/{{postUser.id}}">
+        <a href="user/{{ postUser.id }}">
           <!-- Link to user gallery -->
           <img alt="Owner" [src]="postUser.avatar" />
         </a>
-        <span> By <a href="user/{{postUser.id}}">{{postUser.name}}</a></span>
+        <span>
+          By <a href="user/{{ postUser.id }}">{{ postUser.name }}</a></span
+        >
       </div>
       <div class="like-section">
         <img
           [src]="likeBtn"
           alt="Like"
           class="like"
-         (click)="onChangeLikeBtn()"
-        /><span> 123 Like</span>
+          (click)="onChangeLikeBtn()"
+        /><span>{{ likeCount }} Like</span>
       </div>
       <div class="message-section">
         <p>
-         {{post.description}}
+          {{ post.description }}
         </p>
       </div>
+      <div class="comment-form">
+        <img alt="Owner" [src]="postUser.avatar" />
+        <form [formGroup]="formComment">
+          <textarea
+            class="textbox"
+            name="comment"
+            placeholder="Type your's comment"
+            formControlName="content"
+          >
+          </textarea>
+          <small
+            style="color: red"
+            *ngIf="this.formComment.get('content')?.errors?.required && clicked"
+            >Comment is required</small
+          >
+          <button type="submit" value="comment" (click)="onComment()">
+            Comment
+          </button>
+        </form>
+      </div>
       <div class="comment-section">
-        <p>Cooment</p>
-        <p>Cooment</p>
-        <p>Cooment</p>
-        <p>Cooment</p>
+        <div class="comment" *ngFor="let comment of listComments; let i = index">
+          <a href="https://www.google.com/">
+            <!-- Link to comment user gallery -->
+            <img alt="User" [src]="listOwnerComment[i].avatar" />
+          </a>
+          <span
+            ><a href="https://www.google.com/">{{listOwnerComment[i].name}}</a>:
+            {{ comment.comment }}</span
+          >
+        </div>
       </div>
     </div>
   </div>
