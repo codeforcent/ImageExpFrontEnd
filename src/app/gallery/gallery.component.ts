@@ -189,8 +189,16 @@ export class GalleryComponent implements OnInit {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
   async updateUploadedPictures(ev) {
+    console.log('deleted', ev);
     if (ev === true) {
-      this.getAllListImages();
+      var listOfListPic = await this.getAllListImages(
+        this.getPostedPicturesByUserId(),
+        this.getUploadedPicturesByUserId()
+      );
+      await this.delay(500);
+
+      this.postedImages = listOfListPic.shift();
+      this.uploadedImages = listOfListPic.shift();
     }
   }
 

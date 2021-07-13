@@ -22,7 +22,9 @@
 .selected .gal-img {
     opacity: 0.4;
 }
-
+.gal-item{
+  margin-bottom: 20px;
+}
 /* .selected .overlay * {
     display: inline-block;
 } */

@@ -16,14 +16,7 @@
       #gal_img
       *ngIf="modeOverlay === 'user'"
     />
-    <div
-      class="home"
-      [ngStyle]="
-        hovered && modeOverlay === 'home'
-          ? { display: 'flex' }
-          : { display: 'none' }
-      "
-    >
+    <div class="home" *ngIf="hovered && modeOverlay === 'home'">
       <button
         type="button"
         class="btn btn-primary save-btn rounded-pill"
@@ -41,7 +34,7 @@
           [ngStyle]="hovered ? { top: calHeight() } : { display: 'none' }"
         />
       </a>
-      <div class="ellipsis" ngbDropdown  placement="top-left">
+      <div class="ellipsis" ngbDropdown placement="top-left">
         <button ngbDropdownToggle class="btn">
           <i class="fas fa-ellipsis-h" style="color: black"></i>
         </button>
@@ -53,7 +46,7 @@
           aria-labelledby="dropdownConfig"
         >
           <a
-            href="/postDetail/{{post.id}}"
+            href="/postDetail/{{ post.id }}"
             ngbDropdownItem
             (click)="saveUploadedImgToCookie(item.id, item.picture)"
             >View this post</a
@@ -61,14 +54,8 @@
         </div>
       </div>
     </div>
-    <div
-      class="upload"
-      [ngStyle]="
-        hovered && modeOverlay === 'upload'
-          ? { display: 'inline-block' }
-          : { display: 'none' }
-      "
-    >
+
+    <div class="upload" *ngIf="hovered && modeOverlay === 'upload'">
       <span
         title="Actions"
         data-test-id="action-menu"
@@ -107,24 +94,20 @@
             >Post this image</a
           >
         </div>
-        <p-confirmPopup></p-confirmPopup>
-        <span
-          ngbDropdownItem
-          (click)="deleteImg($event, item.id)"
-          pButton
-          style="display: flex; width: fit-content; z-index: 3"
-          ><i class="far fa-trash-alt"></i
-        ></span>
+        <button
+        (click)="deleteImg($event, item.id)"
+        pButton
+        style="display:flex; align-items:center; justify-content:center;"
+      >
+        <i class="pi pi-trash"></i>
+      </button>
       </span>
     </div>
-    <div
-      class="post"
-      [ngStyle]="
-        hovered && modeOverlay === 'post'
-          ? { display: 'inline-block' }
-          : { display: 'none' }
-      "
-    >
+    <p-confirmPopup
+    [showTransitionOptions]="'100ms'"
+    [hideTransitionOptions]="'100ms'"
+  ></p-confirmPopup>
+    <div class="post" *ngIf="hovered && modeOverlay === 'post'">
       <span
         title="Actions"
         data-test-id="action-menu"
@@ -163,7 +146,7 @@
             >Update this post</a
           >
         </div>
-        <p-confirmPopup></p-confirmPopup>
+
         <span
           ngbDropdownItem
           (click)="deleteImg($event, item.id)"
@@ -173,14 +156,11 @@
         ></span>
       </span>
     </div>
-    <div
-      class="user"
-      [ngStyle]="
-        hovered && modeOverlay === 'user'
-          ? { display: 'inline-block' }
-          : { display: 'none' }
-      "
-    >
+    <p-confirmPopup
+    [showTransitionOptions]="'100ms'"
+    [hideTransitionOptions]="'100ms'"
+  ></p-confirmPopup>
+    <div class="user" *ngIf="hovered && modeOverlay === 'user'">
       <span
         title="Actions"
         data-test-id="action-menu"

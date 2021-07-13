@@ -75,7 +75,7 @@
       </form>
 
       <div class="card-columns">
-        <div class="gal" *ngFor="let img of uploadedImages">
+        <div class="gal" *ngFor="let img of uploadedImages" >
           <app-image
             [item]="img"
             [hovered]="img === hoveredItem"
@@ -84,6 +84,7 @@
             (mouseover)="onMouseover(img)"
             (mouseleave)="onMouseleave()"
             (deleted)="updateUploadedPictures($event)"
+
           ></app-image>
         </div>
       </div>

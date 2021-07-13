@@ -370,15 +370,12 @@ svg {
   height: 15px;
 }
 .card-columns {
-  column-count: 5;
-  margin-right: 30px;
-  margin-left: 23px;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
+  column-count: 4;
 
 }
 .gal{
   height: fit-content;
+
 }
 app-image{
   margin-bottom: 5px;

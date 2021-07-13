@@ -27,7 +27,9 @@ export class ImageComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private service: AppService
-  ) {}
+  ) {
+
+  }
 
   async ngOnInit() {
     if (this.posted) {
@@ -77,6 +79,7 @@ export class ImageComponent implements OnInit {
     sessionStorage.setItem('mode', 'update');
   }
   async deleteImg(ev, id) {
+
     this.confirmationService.confirm({
       target: ev.target,
       message: 'Are you sure that you want to proceed?',
@@ -149,4 +152,5 @@ export class ImageComponent implements OnInit {
       );
     }
   }
+
 }
