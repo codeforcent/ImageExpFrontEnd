@@ -132,7 +132,7 @@ export class UserProfileComponent implements OnInit {
       },
     };
 
-    if (this.formUserProfile.get('username').value !== '') {
+    if (this.formUserProfile.get('username').value !== '' && this.formUserProfile.get('username').valid) {
       var response = this.service.sendRequest('updateuser', data);
       this.setLoading(response);
       if (
