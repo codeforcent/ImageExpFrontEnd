@@ -102,43 +102,43 @@ export class SigninComponent implements OnInit {
       //       __zone_symbol__value.body.response.status !== 'online'
       //   )
       // ) {
+      if (
+        (await response.then(
+          (__zone_symbol__value) => __zone_symbol__value.body.success
+        )) === true
+      ) {
+        this.email = this.formSignIn.get('email').value;
+        var dt = {
+          'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+          body: {
+            email: this.formSignIn.get('email').value,
+          },
+        };
+        var res = this.service.sendRequest('getverifystate', dt);
+        this.setLoading(res);
         if (
-          (await response.then(
-            (__zone_symbol__value) => __zone_symbol__value.body.success
-          )) === true
+          (await res.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.state
+          )) === false
         ) {
-          this.email = this.formSignIn.get('email').value;
-          var dt = {
+          var dat = {
             'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
             body: {
-              email: this.formSignIn.get('email').value,
+              email: this.email,
             },
           };
-          var res = this.service.sendRequest('getverifystate', dt);
-          this.setLoading(res);
-          if (
-            (await res.then(
-              (__zone_symbol__value) => __zone_symbol__value.body.response.state
-            )) === false
-          ) {
-            var dat = {
-              'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
-              body: {
-                email: this.email,
-              },
-            };
-            var response = this.service.sendRequest('sendverifycode', dat);
-            this.setLoading(response);
-            this.verifiedSignIn = true;
-          } else {
-            this.verifiedSignIn = false;
-            this.onSignIn();
-          }
+          var response = this.service.sendRequest('sendverifycode', dat);
+          this.setLoading(response);
+          this.verifiedSignIn = true;
         } else {
-          this.signInSuccess = false;
+          this.verifiedSignIn = false;
+          this.onSignIn();
         }
+      } else {
+        this.signInSuccess = false;
+      }
       // } else {
-        // this.router.navigate(['']);
+      // this.router.navigate(['']);
       // }
     }
   }
@@ -174,7 +174,11 @@ export class SigninComponent implements OnInit {
         password: this.formSignUp.get('password').value,
       },
     };
-    if (this.formSignUp.valid) {
+    if (
+      this.formSignUp.valid &&
+      this.formSignUp.get('password').value ===
+        this.formSignUp.get('repassword').value
+    ) {
       var response = this.service.sendRequest('registeruser', data);
       this.setLoading(response);
       if (

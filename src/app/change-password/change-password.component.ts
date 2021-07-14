@@ -129,38 +129,44 @@ export class ChangePasswordComponent implements OnInit {
       this.cookieService.delete('auth-token');
       this.router.navigate(['']);
     }
-    var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
-      body: {
-        email: this.email,
-        password: this.formChangePass.get('password').value,
-        newpassword: this.formChangePass.get('newpassword').value,
-      },
-    };
-    var response = this.service.sendRequest('changeuserpassword', data);
-    this.setLoading(response);
     if (
-      (await response.then(
-        (__zone_symbol__value) => __zone_symbol__value.body.success
-      )) === true
+      this.formChangePass.valid &&
+      this.formChangePass.get('newpassword').value ===
+        this.formChangePass.get('renewpassword').value
     ) {
-      this.messageService.add({
-        key: 'smsg',
-        severity: 'success',
-        summary: 'Message',
-        detail: 'Changed password successfully',
-      });
-      this.isCorrect = true;
+      var data = {
+        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        body: {
+          email: this.email,
+          password: this.formChangePass.get('password').value,
+          newpassword: this.formChangePass.get('newpassword').value,
+        },
+      };
+      var response = this.service.sendRequest('changeuserpassword', data);
+      this.setLoading(response);
+      if (
+        (await response.then(
+          (__zone_symbol__value) => __zone_symbol__value.body.success
+        )) === true
+      ) {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'success',
+          summary: 'Message',
+          detail: 'Changed password successfully',
+        });
+        this.isCorrect = true;
 
-      location.reload();
-    } else {
-      this.isCorrect = false;
-      this.messageService.add({
-        key: 'smsg',
-        severity: 'error',
-        summary: 'Message',
-        detail: 'Changed password unsuccessfully',
-      });
+        location.reload();
+      } else {
+        this.isCorrect = false;
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'error',
+          summary: 'Message',
+          detail: 'Changed password unsuccessfully',
+        });
+      }
     }
   }
 }
