@@ -230,12 +230,14 @@ export class PostdetailComponent implements OnInit {
     };
     var response = this.service.sendRequest('addcomment', data);
     this.setLoading(response);
-    console.log('res', response);
+
     if (
       (await response.then(
         (__zone_symbol__value) => __zone_symbol__value.body.success
       )) === true
     ) {
+      this.listComments = await this.getCommentByPostId();
+      this.listOwnerComment = await this.getListOwnerComment(this.listComments);
       this.messageService.add({
         key: 'smsg',
         severity: 'success',

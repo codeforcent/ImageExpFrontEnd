@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener  } from '@angular/core';
 import { ViewChild, NgZone } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -336,4 +336,8 @@ export class UploadComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     sessionStorage.clear();
   }
+  @HostListener('window:unload', ['$event'])
+    unloadHandler() {
+        window.sessionStorage.clear();
+    }
 }
