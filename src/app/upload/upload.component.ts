@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ViewChild, NgZone } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -16,7 +16,7 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.css'],
 })
-export class UploadComponent implements OnInit {
+export class UploadComponent implements OnInit, OnDestroy {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   formUpload: FormGroup;
   uploaded = false;
@@ -95,11 +95,8 @@ export class UploadComponent implements OnInit {
           value: list[+item],
         });
       }
-      sessionStorage.clear();
     }
-    if (sessionStorage.getItem('id') !== null) {
-      sessionStorage.clear();
-    }
+
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
     } else {
@@ -255,6 +252,7 @@ export class UploadComponent implements OnInit {
         keyword: listKeywords.join(','),
       },
     };
+    console.log('data', data);
     var response = this.service.sendRequest('updatepost', data);
     this.setLoading(response);
     var isSuccess = await response.then(
@@ -334,5 +332,8 @@ export class UploadComponent implements OnInit {
   onClickDialog() {
     this.displayPosition = false;
     this.router.navigate(['/settings']);
+  }
+  ngOnDestroy() {
+    sessionStorage.clear();
   }
 }

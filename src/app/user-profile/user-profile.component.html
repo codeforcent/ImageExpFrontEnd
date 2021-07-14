@@ -6,7 +6,12 @@
   <app-settings></app-settings>
   <div class="forms-container">
     <div class="input-name">
-      <form action="#" class="input-name-form" [formGroup]="formUserProfile">
+      <form
+        action="#"
+        class="input-name-form"
+        [formGroup]="formUserProfile"
+        id="formUserProfile"
+      >
         <div class="upImg">
           <img
             [src]="
@@ -27,6 +32,7 @@
             (mouseenter)="hovered = true"
             (mouseleave)="hovered = false"
             (change)="onSelectedFile($event)"
+            id="avatar"
           />
           <div class="inputOnImg" [style.opacity]="hovered ? 1 : 0">
             <i class="fas fa-plus fa-2x"></i>
@@ -50,6 +56,7 @@
             "
             formControlName="username"
             required
+            id="username"
           />
           <small
             *ngIf="
@@ -71,6 +78,7 @@
           value="Save"
           class="btn solid"
           (click)="onSubmitUpdateUser()"
+          id="saveBtn"
         />
       </form>
     </div>

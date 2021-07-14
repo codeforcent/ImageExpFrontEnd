@@ -96,12 +96,12 @@ export class SigninComponent implements OnInit {
     if (this.formSignIn.valid) {
       var response = this.service.sendRequest('loginuser', data);
       this.setLoading(response);
-      if (
-        await response.then(
-          (__zone_symbol__value) =>
-            __zone_symbol__value.body.response.status !== 'online'
-        )
-      ) {
+      // if (
+      //   await response.then(
+      //     (__zone_symbol__value) =>
+      //       __zone_symbol__value.body.response.status !== 'online'
+      //   )
+      // ) {
         if (
           (await response.then(
             (__zone_symbol__value) => __zone_symbol__value.body.success
@@ -137,9 +137,9 @@ export class SigninComponent implements OnInit {
         } else {
           this.signInSuccess = false;
         }
-      } else {
-        this.router.navigate(['']);
-      }
+      // } else {
+        // this.router.navigate(['']);
+      // }
     }
   }
   /**
