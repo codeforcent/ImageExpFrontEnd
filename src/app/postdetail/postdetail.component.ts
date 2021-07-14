@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { forkJoin, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AppService } from '../app.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
 
@@ -28,6 +28,7 @@ export class PostdetailComponent implements OnInit {
   clicked = false;
   listComments;
   listOwnerComment;
+  disabled;
   constructor(
     private route: ActivatedRoute,
     private service: AppService,
@@ -61,7 +62,7 @@ export class PostdetailComponent implements OnInit {
     this.likeCount = await this.countLike();
     this.listComments = await this.getCommentByPostId();
     this.listOwnerComment = await this.getListOwnerComment(this.listComments);
-    console.log("listOwnerComment", this.listOwnerComment);
+    console.log('listOwnerComment', this.listOwnerComment);
   }
   private async countLike() {
     var data = {
@@ -117,12 +118,13 @@ export class PostdetailComponent implements OnInit {
   }
   async onChangeLikeBtn() {
     if (this.likeBtn === '../../assets/heart-removebg-preview.png') {
+      this.likeCount++;
       this.likeBtn = '../../assets/heart__1_-removebg-preview.png';
     } else {
+      this.likeCount--;
       this.likeBtn = '../../assets/heart-removebg-preview.png';
     }
     this.toggleLike();
-    this.likeCount = await this.countLike();
   }
   async toggleLike() {
     var data = {
@@ -267,10 +269,7 @@ export class PostdetailComponent implements OnInit {
     var listUser = [];
     for (var comment in listComment) {
       var request = this.getUserById(listComment[comment].userId);
-
-      forkJoin([request]).subscribe((results) => {
-        listUser.push(results[0]);
-      });
+      listUser.push(await request);
     }
 
     return listUser;
