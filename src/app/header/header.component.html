@@ -7,22 +7,31 @@
         alt=""
       />
     </a>
-    <form class="search-form" (ngSubmit)="onSearch()">
-      <div class="input-group input-group-lg">
-        <span
-          class="ico ico-mglass"
-          [ngClass]="clicked ? { 'ico-mglass': false } : { 'ico-mglass': true }"
-        ></span>
-        <input
-          type="text"
-          class="form-control rounded-pill"
-          [placeholder]="clicked ? 'Search' : '    Search'"
-          (click)="clicked = true"
-          (clickOutside)="clicked = false"
-        />
-        <span class="input-group-append" style="margin-left: 0.5px"> </span>
-      </div>
-    </form>
+    <!-- <div class="searchfield"> -->
+      <form class="search-form" (ngSubmit)="onSearch()">
+        <div class="input-group input-group-lg">
+          <span
+            class="ico ico-mglass"
+            [ngClass]="
+              clicked ? { 'ico-mglass': false } : { 'ico-mglass': true }
+            "
+          ></span>
+          <input
+            type="text"
+            class="form-control rounded-pill"
+            [placeholder]="clicked ? 'Search' : '    Search'"
+            (click)="clicked = true"
+            (clickOutside)="clicked = false"
+          />
+          <span class="input-group-append" style="margin-left: 0.5px"> </span>
+        </div>
+      </form>
+      <!-- <div class="catefield">
+        <div class="eachcate">
+          <button>Cate1</button>
+        </div>
+      </div> -->
+    <!-- </div> -->
 
     <div container="body" class="avatar" *ngIf="logIn === true">
       <a href="/gallery">

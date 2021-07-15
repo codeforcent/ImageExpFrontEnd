@@ -1,1 +1,40 @@
-<p>search works!</p>
+<mat-progress-bar
+  mode="indeterminate"
+  value="40"
+  *ngIf="loading"
+></mat-progress-bar>
+<app-header></app-header>
+<p-toast key="smsg" position="top-right"></p-toast>
+<div class="container-fluid">
+  <div class="card-columns">
+    <div class="gal" *ngFor="let item of listPic">
+      <app-image
+        [item]="item"
+        [hovered]="item === hoveredItem"
+        [modeOverlay]="'home'"
+        [posted]="true"
+        [userId]="userId"
+        (mouseover)="onMouseover(item)"
+        (mouseleave)="onMouseleave()"
+        (saved)="savePicture($event)"
+      ></app-image>
+    </div>
+  </div>
+
+  <a href="/post">
+    <div
+      class="pin"
+      (mouseover)="hoveredPin = true"
+      (mouseleave)="hoveredPin = false"
+    >
+      <i
+        class="fas fa-plus"
+        [ngStyle]="
+          hoveredPin
+            ? { color: 'rgb(150, 150, 150)' }
+            : { color: 'rgba(255,255,255, 0.9)' }
+        "
+      ></i>
+    </div>
+  </a>
+</div>

@@ -15,6 +15,8 @@ export class VerifyemailComponent implements OnInit {
   formVerifyEmail;
   clicked = false;
   verified;
+  displayPosition: boolean = false;
+  position;
   constructor(private fb: FormBuilder, private service: AppService) {
     this.formVerifyEmail = this.fb.group({
       email: this.email,
@@ -24,6 +26,10 @@ export class VerifyemailComponent implements OnInit {
 
   ngOnInit(): void {}
   async onSubmitVerifyEmail() {
+    if (sessionStorage.getItem('242dshY2H2YDU3BU3FDEF') !== '_4374gdHGE73BBGH' || sessionStorage.getItem('242dshY2H2YDU3BU3FDEF') == null) {
+      this.position = 'top';
+      this.displayPosition = true;
+    }
     this.clicked = true;
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
@@ -61,5 +67,9 @@ export class VerifyemailComponent implements OnInit {
       },
     };
     this.service.sendRequest('sendverifycode', data);
+  }
+  onClickDialog() {
+    this.displayPosition = false;
+    location.reload();
   }
 }

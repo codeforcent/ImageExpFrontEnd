@@ -1,3 +1,26 @@
+<p-dialog
+  header="Notification"
+  [(visible)]="displayPosition"
+  [position]="position"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+  [closeOnEscape]="false"
+  [closable]="false"
+>
+  <p-toast key="smsg" position="top-right"></p-toast>
+  <p>Please verify your account in the browser you connected with us</p>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-check"
+      (click)="onClickDialog()"
+      label="Ok"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
+</p-dialog>
 <body>
   <div class="wrapper">
     <header>

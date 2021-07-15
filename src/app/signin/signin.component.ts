@@ -121,6 +121,7 @@ export class SigninComponent implements OnInit {
             (__zone_symbol__value) => __zone_symbol__value.body.response.state
           )) === false
         ) {
+
           var dat = {
             'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
             body: {
@@ -131,6 +132,7 @@ export class SigninComponent implements OnInit {
           this.setLoading(response);
           this.verifiedSignIn = true;
         } else {
+          sessionStorage.clear();
           this.verifiedSignIn = false;
           this.onSignIn();
         }
@@ -186,6 +188,7 @@ export class SigninComponent implements OnInit {
           (__zone_symbol__value) => __zone_symbol__value.body.success
         )) === true
       ) {
+        sessionStorage.setItem('242dshY2H2YDU3BU3FDEF', '_4374gdHGE73BBGH');
         this.email = this.formSignUp.get('email').value;
         var dat = {
           'secret-key': 'd7sTPQBxmSv8OmHdgjS5',

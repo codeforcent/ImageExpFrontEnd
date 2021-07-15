@@ -34,15 +34,15 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit() {}
   async getInforUser() {
-    const isMe = (element) => element.userId === this.userId;
+    // const isMe = (element) => element.userId === this.userId;
     this.user = await this.getUserByEmail();
     this.userId = this.user.id;
     var listId = await this.getAllPost();
-    if (this.user !== null) {
-      if (listId.findIndex(isMe) > -1) {
-        listId.splice(listId.findIndex(isMe), 1);
-      }
-    }
+    // if (this.user !== null) {
+    //   if (listId.findIndex(isMe) > -1) {
+    //     listId.splice(listId.findIndex(isMe), 1);
+    //   }
+    // }
 
     this.listPic = await this.getPicture(listId);
   }
