@@ -21,6 +21,7 @@ export class GalleryComponent implements OnInit {
   user;
   uploadedImages: any = [];
   postedImages: any = [];
+  likeImages: any = [];
   displayPosition: boolean = false;
   hoveredItem;
   position: string;
@@ -58,13 +59,16 @@ export class GalleryComponent implements OnInit {
       this.position = 'top';
       this.displayPosition = true;
     }
+
     var listOfListPic = await this.getAllListImages(
       this.getPostedPicturesByUserId(),
+      this.getLikedPosts(),
       this.getUploadedPicturesByUserId()
     );
     await this.delay(500);
 
     this.postedImages = listOfListPic.shift();
+    this.likeImages = listOfListPic.shift();
     this.uploadedImages = listOfListPic.shift();
   }
   async getImages(listId, mode) {
@@ -82,20 +86,18 @@ export class GalleryComponent implements OnInit {
         });
       }
     }
-
     return images;
   }
 
   async getAllListImages(...args) {
     var listItem = [];
     var i = 0;
+
     forkJoin([...args]).subscribe(async (results) => {
       while (i < args.length) {
-        if (i == 0) {
-          listItem.push(await this.getImages(await results[i++], 'post'));
-        } else {
-          listItem.push(await this.getImages(await results[i++], 'upload'));
-        }
+        listItem.push(await this.getImages(await results[i++], 'post'));
+        listItem.push(await this.getImages(await results[i++], 'post'));
+        listItem.push(await this.getImages(await results[i++], 'upload'));
       }
     });
 
@@ -189,15 +191,15 @@ export class GalleryComponent implements OnInit {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
   async updateUploadedPictures(ev) {
-    console.log('deleted', ev);
     if (ev === true) {
       var listOfListPic = await this.getAllListImages(
         this.getPostedPicturesByUserId(),
+        this.getLikedPosts(),
         this.getUploadedPicturesByUserId()
       );
       await this.delay(500);
-
       this.postedImages = listOfListPic.shift();
+      this.likeImages = listOfListPic.shift();
       this.uploadedImages = listOfListPic.shift();
     }
   }
@@ -211,5 +213,23 @@ export class GalleryComponent implements OnInit {
   }
   onMouseleave() {
     this.hoveredItem = null;
+  }
+  async getLikedPosts() {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        userId: this.user.id,
+      },
+    };
+    var response = this.service.sendRequest('getlikedposts', data);
+    this.setLoading(response);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+    }
   }
 }

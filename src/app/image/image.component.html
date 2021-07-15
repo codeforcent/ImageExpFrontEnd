@@ -95,18 +95,18 @@
           >
         </div>
         <button
-        (click)="deleteImg($event, item.id)"
-        pButton
-        style="display:flex; align-items:center; justify-content:center;"
-      >
-        <i class="pi pi-trash"></i>
-      </button>
+          (click)="deleteImg($event, item.id)"
+          pButton
+          style="display: flex; align-items: center; justify-content: center"
+        >
+          <i class="pi pi-trash"></i>
+        </button>
       </span>
     </div>
     <p-confirmPopup
-    [showTransitionOptions]="'100ms'"
-    [hideTransitionOptions]="'100ms'"
-  ></p-confirmPopup>
+      [showTransitionOptions]="'100ms'"
+      [hideTransitionOptions]="'100ms'"
+    ></p-confirmPopup>
     <div class="post" *ngIf="hovered && modeOverlay === 'post'">
       <span
         title="Actions"
@@ -155,7 +155,7 @@
 
         <span
           ngbDropdownItem
-          (click)="deleteImg($event, item.id)"
+          (click)="deletePost($event)"
           pButton
           style="display: flex; width: fit-content; z-index: 3"
           ><i class="far fa-trash-alt"></i
@@ -163,9 +163,9 @@
       </span>
     </div>
     <p-confirmPopup
-    [showTransitionOptions]="'100ms'"
-    [hideTransitionOptions]="'100ms'"
-  ></p-confirmPopup>
+      [showTransitionOptions]="'100ms'"
+      [hideTransitionOptions]="'100ms'"
+    ></p-confirmPopup>
     <div class="user" *ngIf="hovered && modeOverlay === 'user'">
       <span
         title="Actions"
@@ -199,7 +199,7 @@
           style="padding: 5px"
         >
           <a
-            href="/post"
+            href="/postDetail/{{ post.id }}"
             ngbDropdownItem
             (click)="savePostedImgToCookie(item.picture)"
             >View this post</a
@@ -207,5 +207,58 @@
         </div>
       </span>
     </div>
+    <div class="post" *ngIf="hovered && modeOverlay === 'like'">
+      <span
+        title="Actions"
+        data-test-id="action-menu"
+        class="
+          DropdownControlled-module_root-2MA1A
+          ItemActions_menu-7PC3W ItemActions_menuSmall-rJ2pl
+          MenuAction-module_root-1boK4
+        "
+        ngbDropdown
+        data-direction="top left"
+        ><span
+          class="ItemActions_button-1IG6J"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+          dropdownIcon="pi pi-chevron-down"
+          ngbDropdownToggle
+          ><svg viewBox="0 0 29 7">
+            <circle cx="3.5" cy="3.5" r="3.5"></circle>
+            <circle cx="14.5" cy="3.5" r="3.5"></circle>
+            <circle cx="25.5" cy="3.5" r="3.5"></circle>
+          </svg>
+        </span>
+        <div
+          class="DropdownControlled-module_content-3YeM_"
+          ngbDropdownMenu
+          role="menu"
+          data-direction="top left"
+          aria-labelledby="dropdownMenuButton"
+          style="padding: 5px"
+        >
+          <a
+            href="/postDetail/{{ post.id }}"
+            ngbDropdownItem
+            (click)="savePostedImgToCookie(item.picture)"
+            >View this post</a
+          >
+        </div>
+
+        <span
+          ngbDropdownItem
+          (click)="deleteLikePost($event)"
+          pButton
+          style="display: flex; width: fit-content; z-index: 3"
+          ><i class="far fa-trash-alt"></i
+        ></span>
+      </span>
+    </div>
+    <p-confirmPopup
+      [showTransitionOptions]="'100ms'"
+      [hideTransitionOptions]="'100ms'"
+    ></p-confirmPopup>
   </div>
 </a>

@@ -20,6 +20,7 @@ export class UserComponent implements OnInit {
   user;
   postedImages: any = [];
   hoveredItem;
+  likedImages;
   constructor(
     private vigenereCipherService: VigenereCipherService,
     private router: Router,
@@ -38,8 +39,15 @@ export class UserComponent implements OnInit {
   }
 
   async ngOnInit() {
-    var listPost = await this.getPostedPicturesByUserId();
-    this.postedImages = await this.getListImages(listPost);
+    var listOfListPic = await this.getAllListImages(
+      this.getPostedPicturesByUserId(),
+      this.getLikedPosts()
+    );
+
+    setTimeout(() => {
+      this.postedImages = listOfListPic.shift();
+      this.likedImages = listOfListPic.shift();
+    }, 500);
   }
 
   async getInforUsers() {
@@ -153,5 +161,36 @@ export class UserComponent implements OnInit {
     } else {
       return null;
     }
+  }
+  async getLikedPosts() {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        userId: this.id,
+      },
+    };
+    var response = this.service.sendRequest('getlikedposts', data);
+    this.setLoading(response);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+    }
+  }
+  async getAllListImages(...args) {
+    var listItem = [];
+    var i = 0;
+
+    forkJoin([...args]).subscribe(async (results) => {
+      while (i < args.length) {
+        listItem.push(await this.getListImages(await results[i++]));
+        listItem.push(await this.getListImages(await results[i++]));
+      }
+    });
+
+    return listItem;
   }
 }

@@ -62,7 +62,7 @@ export class PostdetailComponent implements OnInit {
     this.likeCount = await this.countLike();
     this.listComments = await this.getCommentByPostId();
     this.listOwnerComment = await this.getListOwnerComment(this.listComments);
-    console.log('listOwnerComment', this.listOwnerComment);
+
   }
   private async countLike() {
     var data = {

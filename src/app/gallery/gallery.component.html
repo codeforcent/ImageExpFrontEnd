@@ -48,7 +48,7 @@
             [item]="img"
             [hovered]="img === hoveredItem"
             [modeOverlay]="'post'"
-            [posted] = "true"
+            [posted]="true"
             (mouseover)="onMouseover(img)"
             (mouseleave)="onMouseleave()"
             (deleted)="updateUploadedPictures($event)"
@@ -57,7 +57,19 @@
       </div>
     </div>
     <div class="pic liked">
-      <img src="../../assets/test2.jpg" alt="" />
+      <div class="card-columns">
+        <div class="gal" *ngFor="let img of likeImages">
+          <app-image
+            [item]="img"
+            [hovered]="img === hoveredItem"
+            [modeOverlay]="'like'"
+            [posted]="true"
+            (mouseover)="onMouseover(img)"
+            (mouseleave)="onMouseleave()"
+            (deleted)="updateUploadedPictures($event)"
+          ></app-image>
+        </div>
+      </div>
     </div>
 
     <div class="pic uploaded">
@@ -75,21 +87,18 @@
       </form>
 
       <div class="card-columns">
-        <div class="gal" *ngFor="let img of uploadedImages" >
+        <div class="gal" *ngFor="let img of uploadedImages">
           <app-image
             [item]="img"
             [hovered]="img === hoveredItem"
             [modeOverlay]="'upload'"
-            [posted] = "false"
+            [posted]="false"
             (mouseover)="onMouseover(img)"
             (mouseleave)="onMouseleave()"
             (deleted)="updateUploadedPictures($event)"
-
           ></app-image>
         </div>
       </div>
-
-
     </div>
   </div>
 </div>

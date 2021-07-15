@@ -27,27 +27,41 @@ export class ImageComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private service: AppService
-  ) {
-
-  }
+  ) {}
 
   async ngOnInit() {
     if (this.posted) {
       this.post = await this.getPostByPicId();
     }
-    var us = await this.getUserById(this.item.userId);
-    this.avatar = us.avatar;
+    if (this.modeOverlay === 'user') {
+      var us = await this.getUserById(this.item[0].userId);
+      this.avatar = us.avatar;
+    } else {
+      var us = await this.getUserById(this.item.userId);
+      this.avatar = us.avatar;
+    }
   }
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
   async getPostByPicId() {
-    var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
-      body: {
-        id: this.item.id,
-      },
-    };
+    var data;
+    if (this.modeOverlay === 'user') {
+      data = {
+        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        body: {
+          id: this.item[0].id,
+        },
+      };
+    } else {
+      data = {
+        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        body: {
+          id: this.item.id,
+        },
+      };
+    }
+
     var response = this.service.sendRequest('getpostbypicid', data);
     var isSuccess = await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.success
@@ -79,7 +93,6 @@ export class ImageComponent implements OnInit {
     sessionStorage.setItem('mode', 'update');
   }
   async deleteImg(ev, id) {
-
     this.confirmationService.confirm({
       target: ev.target,
       message: 'Are you sure that you want to proceed?',
@@ -152,5 +165,80 @@ export class ImageComponent implements OnInit {
       );
     }
   }
-
+  async deletePost(ev) {
+    this.confirmationService.confirm({
+      target: ev.target,
+      message: 'Are you sure that you want to proceed?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: async () => {
+        var data = {
+          'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+          body: {
+            postId: this.post.id,
+            userId: this.item.userId,
+          },
+        };
+        var response = this.service.sendRequest('deletepostforuser', data);
+        if (
+          (await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.success
+          )) === true
+        ) {
+          this.deleted.emit(true);
+          this.messageService.add({
+            key: 'smsg',
+            severity: 'success',
+            summary: 'Message',
+            detail: 'Delete post successfully',
+          });
+        } else {
+          this.messageService.add({
+            key: 'smsg',
+            severity: 'error',
+            summary: 'Message',
+            detail: 'Delete post unsuccessfully',
+          });
+        }
+      },
+      reject: () => {},
+    });
+  }
+  async deleteLikePost(ev) {
+    this.confirmationService.confirm({
+      target: ev.target,
+      message: 'Are you sure that you want to proceed?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: async () => {
+        var data = {
+          'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+          body: {
+            postId: this.post.id,
+            userId: this.item.userId,
+          },
+        };
+        var response = this.service.sendRequest('togglelike', data);
+        if (
+          (await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.success
+          )) === true
+        ) {
+          this.deleted.emit(true);
+          this.messageService.add({
+            key: 'smsg',
+            severity: 'success',
+            summary: 'Message',
+            detail: 'Delete post successfully',
+          });
+        } else {
+          this.messageService.add({
+            key: 'smsg',
+            severity: 'error',
+            summary: 'Message',
+            detail: 'Delete post unsuccessfully',
+          });
+        }
+      },
+      reject: () => {},
+    });
+  }
 }
