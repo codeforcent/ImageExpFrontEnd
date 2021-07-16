@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener  } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ViewChild, NgZone } from '@angular/core';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -16,7 +16,7 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.css'],
 })
-export class UploadComponent implements OnInit, OnDestroy {
+export class UploadComponent implements OnInit {
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
   formUpload: FormGroup;
   uploaded = false;
@@ -333,11 +333,9 @@ export class UploadComponent implements OnInit, OnDestroy {
     this.displayPosition = false;
     this.router.navigate(['/settings']);
   }
-  ngOnDestroy() {
-    sessionStorage.clear();
-  }
+
   @HostListener('window:unload', ['$event'])
-    unloadHandler() {
-        window.sessionStorage.clear();
-    }
+  unloadHandler() {
+    window.sessionStorage.clear();
+  }
 }

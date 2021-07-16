@@ -1,4 +1,4 @@
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -36,7 +36,8 @@ export class PostdetailComponent implements OnInit {
     private cookieService: CookieService,
     private vigenereCipherService: VigenereCipherService,
     private fb: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
     this.sub = this.route.params.subscribe((params) => {
       this.id = +params['id'];
@@ -62,7 +63,6 @@ export class PostdetailComponent implements OnInit {
     this.likeCount = await this.countLike();
     this.listComments = await this.getCommentByPostId();
     this.listOwnerComment = await this.getListOwnerComment(this.listComments);
-
   }
   private async countLike() {
     var data = {
@@ -262,7 +262,6 @@ export class PostdetailComponent implements OnInit {
     };
     var response = this.service.sendRequest('getcommentsbypostid', data);
     this.setLoading(response);
-    console.log('res', response);
     return await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.response
     );
@@ -275,5 +274,63 @@ export class PostdetailComponent implements OnInit {
     }
 
     return listUser;
+  }
+  confirmDelete(event, commentId, userId) {
+    console.log("comme", commentId);
+    this.confirmationService.confirm({
+      target: event.target,
+      message: 'Are you sure that you want to proceed?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: async () => {
+        //confirm action
+        var response = this.deleteComment(commentId, userId);
+        if (
+          (await response.then(
+            (__zone_symbol__state) => __zone_symbol__state
+          )) !== null
+        ) {
+          this.listComments = await this.getCommentByPostId();
+          this.listOwnerComment = await this.getListOwnerComment(this.listComments);
+          this.messageService.add({
+            key: 'smsg',
+            severity: 'success',
+            summary: 'Message',
+            detail: 'Your comment was deleted successfully',
+          });
+
+        } else {
+          this.messageService.add({
+            key: 'smsg',
+            severity: 'error',
+            summary: 'Message',
+            detail: 'Your comment was deleted unsuccessfully',
+          });
+        }
+      },
+      reject: () => {
+        //reject action
+      },
+    });
+  }
+  async deleteComment(commentId, userId) {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        commentId: commentId,
+        userId: userId,
+      },
+    };
+    var response = this.service.sendRequest('deletecomment', data);
+    this.setLoading(response);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+    } else {
+      return null;
+    }
   }
 }

@@ -7,8 +7,8 @@
         alt=""
       />
     </a>
-    <!-- <div class="searchfield"> -->
-      <form class="search-form" (ngSubmit)="onSearch()">
+    <div class="searchfield">
+      <form class="search-form" (ngSubmit)="onSearchByTyping()" [formGroup]="formSearch">
         <div class="input-group input-group-lg">
           <span
             class="ico ico-mglass"
@@ -22,16 +22,17 @@
             [placeholder]="clicked ? 'Search' : '    Search'"
             (click)="clicked = true"
             (clickOutside)="clicked = false"
+            formControlName="content"
           />
           <span class="input-group-append" style="margin-left: 0.5px"> </span>
         </div>
       </form>
-      <!-- <div class="catefield">
-        <div class="eachcate">
-          <button>Cate1</button>
+      <div class="catefield">
+        <div class="eachcate" *ngFor="let cate of cateList">
+          <button [value]="cate.id" (click)="onSearchByCategory(cate.id)">{{cate.name}}</button>
         </div>
-      </div> -->
-    <!-- </div> -->
+      </div>
+    </div>
 
     <div container="body" class="avatar" *ngIf="logIn === true">
       <a href="/gallery">

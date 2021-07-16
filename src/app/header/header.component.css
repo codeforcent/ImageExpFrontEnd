@@ -78,6 +78,11 @@ header {
 .dropdown-toggle::after {
   display: none;
 }
+.searchfield {
+  background-color: black;
+  overflow: hidden;
+}
+
 .searchfield:hover .eachcate {
   display: inline-flex;
   width: 24%;
@@ -87,10 +92,15 @@ header {
 }
 
 .catefield {
-  display: block;
   background-color: aqua;
   width: 70%;
   margin-left: 15%;
+  overflow: hidden;
+  display: block;
+  position: absolute;
+  left: 0;
+  background-color: red;
+  z-index: 1;
 }
 
 .eachcate {

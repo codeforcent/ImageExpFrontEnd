@@ -73,7 +73,6 @@ body {
 .like-section img {
     width: 13%;
     height: auto;
-    cursor: pointer;
 }
 
 .message-section {
@@ -92,47 +91,60 @@ p {
 }
 
 .comment-section {
-  width: auto;
-  max-height: 500px;
-  overflow-y: scroll;
-  color: #5f5f5f;
-  margin-left: 2%;
-  margin-top: 2%;
-  box-sizing: border-box;
-  border: 2px solid;
-  border-color: rgb(255, 0, 212);
+    width: auto;
+    max-height: 500px;
+    overflow-y: scroll;
+    color: #5f5f5f;
+    margin-left: 2%;
+    margin-top: 2%;
+    box-sizing: border-box;
+    border: 2px solid;
+    border-color: rgb(255, 0, 212);
 }
 
 .comment-form a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .comment-form img {
-  float: left;
-  height: auto;
-  width: 25px;
-  padding-left: 2%;
-  padding-right: 2%;
+    float: left;
+    height: auto;
+    width: 25px;
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
 .comment-form form {
-  padding-top: 10px;
+    padding-top: 10px;
 }
 
-.comment-form .textbox {
-  width: 85%;
-  overflow-y: scroll;
-  height: 30px;
-  resize: none;
+.comment-form button {
+    margin-left: 2%;
+}
+
+.textbox {
+    display: block;
+    margin-left: 2%;
+    width: 90%;
+    height: auto;
+    overflow-y: visible;
+    box-sizing: border-box;
+    border: 2px solid;
+    border-color: rgb(255, 0, 212);
 }
 
 .comment a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .comment img {
-  height: auto;
-  width: 5%;
-  padding-left: 2%;
-  padding-top: 2%;
+    height: auto;
+    width: 5%;
+    padding-left: 2%;
+    padding-top: 2%;
+}
+
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
 }

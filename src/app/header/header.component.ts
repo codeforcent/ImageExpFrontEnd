@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { VigenereCipherService } from '../vigenere-cipher.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AppService } from '../app.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -17,22 +18,28 @@ export class HeaderComponent implements OnInit {
   username;
   loading;
   user;
+  cateList = [];
+  formSearch: FormGroup;
+  prevSearch = '';
   constructor(
     private cookieService: CookieService,
     private router: Router,
     private vigenereCipherService: VigenereCipherService,
-    private http: HttpClient,
-    private service: AppService
+    // private http: HttpClient,
+    private service: AppService,
+    private fb: FormBuilder
   ) {
+    this.formSearch = this.fb.group({
+      content: [''],
+    });
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
     } else {
       this.logIn = false;
-
     }
   }
-  ngOnInit(): void {
-
+  async ngOnInit() {
+    this.cateList = await this.getAllCategories();
   }
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -58,7 +65,6 @@ export class HeaderComponent implements OnInit {
       this.avatar =
         'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
     }
-
   }
   async getUserByEmail() {
     var data = {
@@ -86,14 +92,28 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['']);
     }
   }
-  async onSearch() {
-    var res = this.http.get('https://api.datamuse.com/words?rel_trg=li');
-    // https://api.datamuse.com/words?rel_trg=cat
-    // https://api.datamuse.com/sug?s=cat
-    await res.toPromise().then();
+  onSearchByTyping() {
+    // var res = this.http.get(
+    //   'https://api.datamuse.com/words?rel_trg=' + this.formSearch.get('content').value
+    // );
+    // res.subscribe((res) => console.log(res));
+    // // https://api.datamuse.com/words?rel_trg=cat
+    // // https://api.datamuse.com/sug?s=cat
+    // await res.toPromise().then();
+    this.router.navigate(['/search'], { queryParams: { q: this.formSearch.get('content').value } });
+  }
+  onSearchByCategory(id) {
+    this.router.navigate(['/search'], { queryParams: { cat: id} });
   }
   setLoading(promise: Promise<any>) {
     this.loading = true;
     promise.then(() => (this.loading = false));
+  }
+  async getAllCategories() {
+    var response = this.service.sendRequest('getallcategories', '');
+    this.setLoading(response);
+    return await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body
+    );
   }
 }

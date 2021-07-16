@@ -56,14 +56,16 @@
       </div>
       <div class="comment-form">
         <img alt="Owner" [src]="postUser.avatar" />
+        <p>{{postUser.name}} :</p>
         <form [formGroup]="formComment">
-          <textarea
+          <input class="textbox" name="comment" role="textbox" placeholder="Type your's comment" contenteditable formControlName="content"/>
+          <!-- <textarea
             class="textbox"
             name="comment"
             placeholder="Type your's comment"
             formControlName="content"
           >
-          </textarea>
+          </textarea> -->
           <small
             style="color: red"
             *ngIf="this.formComment.get('content')?.errors?.required && clicked"
@@ -84,8 +86,16 @@
             ><a href="/user/{{ listOwnerComment[i].id }}">{{listOwnerComment[i].name}}</a>:
             {{ comment.comment }}</span
           >
+          <div class="flex-end">
+            <button pButton type="button"><i class="far fa-trash-alt" (click)="confirmDelete($event, comment.commentID, listOwnerComment[i].id)"></i
+              ></button>
+              <p-confirmPopup
+              [showTransitionOptions]="'100ms'"
+              [hideTransitionOptions]="'100ms'"
+            ></p-confirmPopup>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
