@@ -14,6 +14,7 @@ export class ImageComponent implements OnInit {
   @Input() modeOverlay;
   @Input() posted;
   @Input() userId;
+  @Input() search;
   @Output() deleted = new EventEmitter<boolean>();
   @Output() saved = new EventEmitter<boolean>();
   @ViewChild('gal_img') gal_img;
@@ -31,35 +32,40 @@ export class ImageComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await setTimeout(() => {
-      console.log('item', this.item);
-    }, 500);
     if (this.modeOverlay === 'search') {
-      for (var it in this.item) {
-        this.picture = await this.getPictureById(this.item[it].picId);
+      if (this.search === 'key') {
+        for (var it in this.item) {
+          this.picture = await this.getPictureById(this.item[it].picId);
+        }
+      } else {
+        this.picture = await this.getPictureById(this.item.picId);
       }
+      console.log("item",this.item);
+
     }
     if (this.posted) {
       this.post = await this.getPostByPicId();
-      // console.log('inPost', this.post);
     }
     if (this.modeOverlay === 'user') {
       var us = await this.getUserById(this.item[0].userId);
       this.avatar = us.avatar;
     } else if (this.modeOverlay !== 'search') {
-      // console.log('usrIs', this.item.userId);
       var us = await this.getUserById(this.item.userId);
       await setTimeout(() => {
-        // console.log("us", us.avatar);
         this.avatar = us.avatar;
       }, 500);
     } else {
-      console.log('userid', this.item.userId);
-      var us = await this.getUserById(this.item.userId);
-      await setTimeout(() => {
-        // console.log("us", us.avatar);
+      if (this.search === 'key') {
+        var us = await this.getUserById(this.item[0].userId);
+        await this.delay(500);
         this.avatar = us.avatar;
-      }, 1000);
+      } else {
+        console.log("??", this.item);
+        var us = await this.getUserById(this.item.userId);
+        await this.delay(500);
+        this.avatar = us.avatar;
+      }
+
     }
   }
   delay(ms: number) {

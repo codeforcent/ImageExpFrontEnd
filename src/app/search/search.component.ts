@@ -27,10 +27,6 @@ export class SearchComponent implements OnInit {
     private service: AppService,
     private messageService: MessageService
   ) {
-    console.log(
-      'searchContent',
-      this.router.getCurrentNavigation().extras.queryParams.q
-    );
     this.searchContent =
       this.router.getCurrentNavigation().extras.queryParams.q;
     this.searchCategoryId =
@@ -44,7 +40,6 @@ export class SearchComponent implements OnInit {
   async ngOnInit() {
     if (this.searchContent !== undefined) {
       var responses = await this.getListSymWords(this.searchContent);
-      // console.log('responses', responses.toString() === '');
       this.listSymWords.push(this.searchContent);
       if (responses.toString() !== '') {
         var i = 0;
@@ -65,8 +60,9 @@ export class SearchComponent implements OnInit {
           i--;
         }
       }
-
       this.listPosts = listTempPosts;
+    } else if (this.searchCategoryId !== undefined) {
+      this.listPosts = await this.getPostsByCategoryId();
     }
   }
   delay(ms: number) {
@@ -131,6 +127,18 @@ export class SearchComponent implements OnInit {
       },
     };
     var response = this.service.sendRequest('getpostsbysearchkey', data);
+    return await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.response
+    );
+  }
+  async getPostsByCategoryId() {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        id: this.searchCategoryId,
+      },
+    };
+    var response = this.service.sendRequest('getpostsbycategoryid', data);
     return await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.response
     );
