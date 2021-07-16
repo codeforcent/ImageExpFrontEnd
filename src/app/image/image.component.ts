@@ -32,16 +32,9 @@ export class ImageComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    await this.delay(500);
     if (this.modeOverlay === 'search') {
-      if (this.search === 'key') {
-        for (var it in this.item) {
-          this.picture = await this.getPictureById(this.item[it].picId);
-        }
-      } else {
-        this.picture = await this.getPictureById(this.item.picId);
-      }
-      console.log("item",this.item);
-
+      this.picture = await this.getPictureById(this.item.picId);
     }
     if (this.posted) {
       this.post = await this.getPostByPicId();
@@ -56,16 +49,14 @@ export class ImageComponent implements OnInit {
       }, 500);
     } else {
       if (this.search === 'key') {
-        var us = await this.getUserById(this.item[0].userId);
+        var us = await this.getUserById(this.item.userId);
         await this.delay(500);
         this.avatar = us.avatar;
       } else {
-        console.log("??", this.item);
         var us = await this.getUserById(this.item.userId);
         await this.delay(500);
         this.avatar = us.avatar;
       }
-
     }
   }
   delay(ms: number) {
@@ -159,7 +150,6 @@ export class ImageComponent implements OnInit {
   }
   async onSave() {
     var isSuccess = await this.addPicture(this.userId, this.item.picture);
-    console.log('isS', isSuccess);
     this.saved.emit(isSuccess);
   }
   async addPicture(userId, picture) {

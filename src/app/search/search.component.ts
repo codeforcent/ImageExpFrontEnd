@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+// import { CookieService } from 'ngx-cookie-service';
+// import {  ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
 import { AppService } from '../app.service';
@@ -19,58 +20,64 @@ export class SearchComponent implements OnInit {
   sub;
   searchContent;
   searchCategoryId;
-  listSymWords = [];
   listPosts;
   constructor(
     private http: HttpClient,
-    private router: Router,
+    // private router: Router,
     private service: AppService,
-    private messageService: MessageService
+    private messageService: MessageService // private cookieService: CookieService // private route: ActivatedRoute
   ) {
-    this.searchContent =
-      this.router.getCurrentNavigation().extras.queryParams.q;
-    this.searchCategoryId =
-      this.router.getCurrentNavigation().extras.queryParams.cat;
-
-    // .params.subscribe((params) => {
-    //   this.searchContent = params['q'];
-    // });
+    this.searchContent = sessionStorage.getItem('key');
+    this.searchCategoryId = sessionStorage.getItem('cat');
+    sessionStorage.clear();
   }
 
   async ngOnInit() {
-    if (this.searchContent !== undefined) {
-      var responses = await this.getListSymWords(this.searchContent);
-      this.listSymWords.push(this.searchContent);
-      if (responses.toString() !== '') {
-        var i = 0;
-        for (var res in responses) {
-          if (i < 10) {
-            this.listSymWords.push(responses[res].word);
-            i++;
-          } else {
-            break;
-          }
-        }
-      }
-      var listTempPosts = await this.searchByWords(this.listSymWords);
-      await this.delay(1000);
-      for (var i = 0; i < listTempPosts.length; i++) {
-        if (listTempPosts[i].length === 0) {
-          listTempPosts.splice(i, 1);
-          i--;
-        }
-      }
-      this.listPosts = listTempPosts;
-    } else if (this.searchCategoryId !== undefined) {
-      this.listPosts = await this.getPostsByCategoryId();
+    if (this.searchContent !== null) {
+      this.searchByKey();
+    } else if (this.searchCategoryId !== null) {
     }
+  }
+  onOuputKey(event) {
+    this.searchContent = event;
+    this.searchByKey();
+  }
+  async onOuputCat(event) {
+    this.searchCategoryId = event;
+    console.log(this.searchCategoryId);
+    this.listPosts = await this.getPostsByCategoryId();
+  }
+  async searchByKey() {
+    var responses = await this.getListSymWords(this.searchContent);
+    var listSymWords = [];
+    listSymWords.push(this.searchContent);
+    if (responses.toString() !== '') {
+      var i = 0;
+      for (var res in responses) {
+        if (i < 9) {
+          listSymWords.push(responses[res].word);
+          i++;
+        } else {
+          break;
+        }
+      }
+    }
+    var listTempPosts = await this.searchByWords(listSymWords);
+    await this.delay(1000);
+    for (var i = 0; i < listTempPosts.length; i++) {
+      if (listTempPosts[i].length === 0) {
+        listTempPosts.splice(i, 1);
+        i--;
+      }
+    }
+    await this.delay(1000);
+    this.listPosts = listTempPosts[0];
   }
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
   async searchByWords(listWords) {
     var listResult = [];
-    // console.log('word', listWords);
     if (listWords.length > 10) {
       for (var i = 0; i < 10; i++) {
         var request = this.getPostsBySearchKey(listWords[i]);
@@ -80,7 +87,6 @@ export class SearchComponent implements OnInit {
       }
     } else {
       for (var word in listWords) {
-        // console.log('word', listWords[word]);
         var request = this.getPostsBySearchKey(listWords[word]);
         forkJoin([request]).subscribe((results) => {
           listResult.push(results[0]);

@@ -1,5 +1,4 @@
-
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { VigenereCipherService } from '../vigenere-cipher.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -11,6 +10,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
+  @Output() key = new EventEmitter<string>();
+  @Output() cat = new EventEmitter<number>();
   clicked = false;
   logIn = false;
   avatar;
@@ -100,10 +101,14 @@ export class HeaderComponent implements OnInit {
     // // https://api.datamuse.com/words?rel_trg=cat
     // // https://api.datamuse.com/sug?s=cat
     // await res.toPromise().then();
-    this.router.navigate(['/search'], { queryParams: { q: this.formSearch.get('content').value } });
+    sessionStorage.setItem('key', this.formSearch.get('content').value);
+    this.key.emit(this.formSearch.get('content').value);
+    this.router.navigate(['/search']);
   }
   onSearchByCategory(id) {
-    this.router.navigate(['/search'], { queryParams: { cat: id} });
+    sessionStorage.setItem('cat', id);
+    this.cat.emit(id);
+    this.router.navigate(['/search']);
   }
   setLoading(promise: Promise<any>) {
     this.loading = true;

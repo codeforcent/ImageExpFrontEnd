@@ -3,11 +3,11 @@
   value="40"
   *ngIf="loading"
 ></mat-progress-bar>
-<app-header></app-header>
+<app-header (key)="onOuputKey($event)" (cat)="onOuputCat($event)"></app-header>
 <p-toast key="smsg" position="top-right"></p-toast>
 <div class="container-fluid">
   <div class="card-columns" >
-    <ng-container *ngIf="searchContent !== undefined">
+    <ng-container *ngIf="searchContent !== null">
       <div class="gal" *ngFor="let item of listPosts">
         <app-image
           [item]="item"
@@ -22,7 +22,7 @@
         ></app-image>
       </div>
     </ng-container>
-    <ng-container *ngIf="searchCategoryId !== undefined">
+    <ng-container *ngIf="searchCategoryId !== null">
       <div class="gal" *ngFor="let item of listPosts">
         <app-image
           [item]="item"
