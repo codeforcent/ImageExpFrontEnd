@@ -23,6 +23,7 @@ export class ImageComponent implements OnInit {
   itemSelected = new EventEmitter<any>();
   selectedItem: any;
   post;
+  picture;
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
@@ -30,15 +31,35 @@ export class ImageComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    await setTimeout(() => {
+      console.log('item', this.item);
+    }, 500);
+    if (this.modeOverlay === 'search') {
+      for (var it in this.item) {
+        this.picture = await this.getPictureById(this.item[it].picId);
+      }
+    }
     if (this.posted) {
       this.post = await this.getPostByPicId();
+      // console.log('inPost', this.post);
     }
     if (this.modeOverlay === 'user') {
       var us = await this.getUserById(this.item[0].userId);
       this.avatar = us.avatar;
-    } else {
+    } else if (this.modeOverlay !== 'search') {
+      // console.log('usrIs', this.item.userId);
       var us = await this.getUserById(this.item.userId);
-      this.avatar = us.avatar;
+      await setTimeout(() => {
+        // console.log("us", us.avatar);
+        this.avatar = us.avatar;
+      }, 500);
+    } else {
+      console.log('userid', this.item.userId);
+      var us = await this.getUserById(this.item.userId);
+      await setTimeout(() => {
+        // console.log("us", us.avatar);
+        this.avatar = us.avatar;
+      }, 1000);
     }
   }
   delay(ms: number) {
@@ -240,5 +261,22 @@ export class ImageComponent implements OnInit {
       },
       reject: () => {},
     });
+  }
+  async getPictureById(id) {
+    var data = {
+      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      body: {
+        id: id,
+      },
+    };
+    var response = this.service.sendRequest('getpicturebyid', data);
+    var isSuccess = await response.then(
+      (__zone_symbol__value) => __zone_symbol__value.body.success
+    );
+    if (isSuccess) {
+      return await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.response
+      );
+    }
   }
 }

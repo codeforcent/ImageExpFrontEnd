@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { forkJoin } from 'rxjs';
 import { AppService } from '../app.service';
 
 @Component({
@@ -17,35 +19,106 @@ export class SearchComponent implements OnInit {
   sub;
   searchContent;
   searchCategoryId;
-  listSymWords;
+  listSymWords = [];
+  listPosts;
   constructor(
     private http: HttpClient,
-    private route: ActivatedRoute,
-    private service: AppService
+    private router: Router,
+    private service: AppService,
+    private messageService: MessageService
   ) {
-    this.sub = this.route.paramMap.subscribe((params) => {
-      // Defaults to 0 if no query param provided.
-      this.searchContent = params['q'];
-      this.searchCategoryId = params['cat'];
-    });
+    console.log(
+      'searchContent',
+      this.router.getCurrentNavigation().extras.queryParams.q
+    );
+    this.searchContent =
+      this.router.getCurrentNavigation().extras.queryParams.q;
+    this.searchCategoryId =
+      this.router.getCurrentNavigation().extras.queryParams.cat;
+
     // .params.subscribe((params) => {
     //   this.searchContent = params['q'];
     // });
   }
 
   async ngOnInit() {
-    this.listSymWords = await this.getListSymWords(this.searchContent);
+    if (this.searchContent !== undefined) {
+      var responses = await this.getListSymWords(this.searchContent);
+      // console.log('responses', responses.toString() === '');
+      this.listSymWords.push(this.searchContent);
+      if (responses.toString() !== '') {
+        var i = 0;
+        for (var res in responses) {
+          if (i < 10) {
+            this.listSymWords.push(responses[res].word);
+            i++;
+          } else {
+            break;
+          }
+        }
+      }
+      var listTempPosts = await this.searchByWords(this.listSymWords);
+      await this.delay(1000);
+      for (var i = 0; i < listTempPosts.length; i++) {
+        if (listTempPosts[i].length === 0) {
+          listTempPosts.splice(i, 1);
+          i--;
+        }
+      }
+
+      this.listPosts = listTempPosts;
+    }
+  }
+  delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+  async searchByWords(listWords) {
+    var listResult = [];
+    // console.log('word', listWords);
+    if (listWords.length > 10) {
+      for (var i = 0; i < 10; i++) {
+        var request = this.getPostsBySearchKey(listWords[i]);
+        forkJoin([request]).subscribe((results) => {
+          listResult.push(results[0]);
+        });
+      }
+    } else {
+      for (var word in listWords) {
+        // console.log('word', listWords[word]);
+        var request = this.getPostsBySearchKey(listWords[word]);
+        forkJoin([request]).subscribe((results) => {
+          listResult.push(results[0]);
+        });
+      }
+    }
+
+    return listResult;
   }
   onMouseover(item) {
-    console.log(item);
+    this.hoveredItem = item;
   }
-  onMouseleave() {}
+  onMouseleave() {
+    this.hoveredItem = null;
+  }
   savePicture(ev) {
-    console.log(ev);
+    if (ev === true) {
+      this.messageService.add({
+        key: 'smsg',
+        severity: 'success',
+        summary: 'Message',
+        detail: 'Save image successfully',
+      });
+    } else {
+      this.messageService.add({
+        key: 'smsg',
+        severity: 'success',
+        summary: 'Message',
+        detail: 'Save image unsuccessfully',
+      });
+    }
   }
   async getListSymWords(word) {
     var res = this.http.get('https://api.datamuse.com/words?rel_trg=' + word);
-    res.subscribe((res) => console.log(res));
     // https://api.datamuse.com/words?rel_trg=cat
     // https://api.datamuse.com/sug?s=cat
     return await res.toPromise().then();

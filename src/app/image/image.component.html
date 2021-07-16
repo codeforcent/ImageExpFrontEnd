@@ -6,7 +6,7 @@
       alt="..."
       [ngStyle]="hovered ? { opacity: '0.4' } : { opacity: '1' }"
       #gal_img
-      *ngIf="modeOverlay !== 'user'"
+      *ngIf="modeOverlay !== 'user' && modeOverlay !== 'search'"
     />
     <img
       src="{{ item[0].picture }}"
@@ -15,6 +15,14 @@
       [ngStyle]="hovered ? { opacity: '0.4' } : { opacity: '1' }"
       #gal_img
       *ngIf="modeOverlay === 'user'"
+    />
+    <img
+      src="{{ picture.picture }}"
+      class="card-img gal-img"
+      alt="..."
+      [ngStyle]="hovered ? { opacity: '0.4' } : { opacity: '1' }"
+      #gal_img
+      *ngIf="modeOverlay === 'search'"
     />
     <div class="home" *ngIf="hovered && modeOverlay === 'home'">
       <button
@@ -54,7 +62,44 @@
         </div>
       </div>
     </div>
+    <div class="home" *ngIf="hovered && modeOverlay === 'search'">
+      <button
+        type="button"
+        class="btn btn-primary save-btn rounded-pill"
+        [ngStyle]="hovered ? { display: 'inline-block' } : { display: 'none' }"
+        (click)="onSave()"
+      >
+        Save
+      </button>
 
+      <a href="/user/{{ picture.userId }}">
+        <img
+          [src]="avatar"
+          class="avatar-img"
+          alt="..."
+          [ngStyle]="hovered ? { top: calHeight() } : { display: 'none' }"
+        />
+      </a>
+      <div class="ellipsis" ngbDropdown placement="top-left">
+        <button ngbDropdownToggle class="btn">
+          <i class="fas fa-ellipsis-h" style="color: black"></i>
+        </button>
+        <div
+          class="DropdownControlled-module_content-3YeM_"
+          ngbDropdownMenu
+          role="menu"
+          style="padding: 5px"
+          aria-labelledby="dropdownConfig"
+        >
+          <a
+            href="/postDetail/{{ item.id }}"
+            ngbDropdownItem
+            (click)="saveUploadedImgToCookie(picture.id, picture.picture)"
+            >View this post</a
+          >
+        </div>
+      </div>
+    </div>
     <div class="upload" *ngIf="hovered && modeOverlay === 'upload'">
       <span
         title="Actions"

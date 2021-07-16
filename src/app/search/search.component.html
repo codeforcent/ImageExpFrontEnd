@@ -7,11 +7,11 @@
 <p-toast key="smsg" position="top-right"></p-toast>
 <div class="container-fluid">
   <div class="card-columns">
-    <div class="gal" *ngFor="let item of listPic">
+    <div class="gal" *ngFor="let item of listPosts">
       <app-image
         [item]="item"
         [hovered]="item === hoveredItem"
-        [modeOverlay]="'home'"
+        [modeOverlay]="'search'"
         [posted]="true"
         [userId]="userId"
         (mouseover)="onMouseover(item)"

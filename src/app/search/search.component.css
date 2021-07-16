@@ -1,0 +1,39 @@
+.container-fluid {
+  background-color: rgb(180, 180, 180, 0.3);
+  margin-top: -48px;
+  padding-top: 50px;
+  margin-right: 14px;
+  padding-bottom: 50px;
+  height: -webkit-fill-available;
+}
+
+.pin {
+  z-index: 2;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  height: 50px;
+  width: 50px;
+  padding: 30px;
+  border-radius: 50%;
+  background-color: rgb(150, 150, 150, 0.4);
+}
+
+.pin i {
+  font-size: 17px;
+  position: relative;
+  top: -8px;
+  right: 8px;
+}
+
+.pin:hover {
+  background-color: white;
+}
+
+.card-columns {
+  column-count: 5;
+  margin-right: 30px;
+  margin-left: 23px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+}
