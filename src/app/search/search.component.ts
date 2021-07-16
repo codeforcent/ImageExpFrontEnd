@@ -20,7 +20,12 @@ export class SearchComponent implements OnInit {
   sub;
   searchContent;
   searchCategoryId;
-  listPosts;
+  listPostsContent;
+  listPostCatId;
+  prevSearchKey;
+  prevSearchCat;
+  searchKey;
+  searchCat;
   constructor(
     private http: HttpClient,
     // private router: Router,
@@ -34,18 +39,39 @@ export class SearchComponent implements OnInit {
 
   async ngOnInit() {
     if (this.searchContent !== null) {
+      this.searchKey = true;
+      this.searchCat = false;
+      console.log('searchContent oninit');
+      this.prevSearchKey = this.searchContent;
       this.searchByKey();
     } else if (this.searchCategoryId !== null) {
+      this.searchKey = false;
+      this.searchCat = true;
+      console.log('searchCategoryId oninit');
+      this.prevSearchCat = this.searchCategoryId;
+      this.listPostCatId = await this.getPostsByCategoryId();
     }
   }
   onOuputKey(event) {
-    this.searchContent = event;
-    this.searchByKey();
+    this.searchKey = true;
+    this.searchCat = false;
+    if (this.prevSearchKey !== event) {
+      console.log('searchContent onOuputKey');
+
+      this.searchContent = event;
+      this.prevSearchKey = event;
+      this.searchByKey();
+    }
   }
   async onOuputCat(event) {
-    this.searchCategoryId = event;
-    console.log(this.searchCategoryId);
-    this.listPosts = await this.getPostsByCategoryId();
+    this.searchKey = false;
+    this.searchCat = true;
+    if (this.prevSearchCat !== event) {
+      console.log('searchCategoryId onOuputCat');
+      this.prevSearchCat = event;
+      this.searchCategoryId = event;
+      this.listPostCatId = await this.getPostsByCategoryId();
+    }
   }
   async searchByKey() {
     var responses = await this.getListSymWords(this.searchContent);
@@ -71,16 +97,21 @@ export class SearchComponent implements OnInit {
       }
     }
     await this.delay(1000);
-    this.listPosts = listTempPosts[0];
+    this.listPostsContent = listTempPosts[0];
   }
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+  setLoading(promise: Promise<any>) {
+    this.loading = true;
+    promise.then(() => (this.loading = false));
   }
   async searchByWords(listWords) {
     var listResult = [];
     if (listWords.length > 10) {
       for (var i = 0; i < 10; i++) {
         var request = this.getPostsBySearchKey(listWords[i]);
+        this.setLoading(request);
         forkJoin([request]).subscribe((results) => {
           listResult.push(results[0]);
         });
@@ -88,6 +119,7 @@ export class SearchComponent implements OnInit {
     } else {
       for (var word in listWords) {
         var request = this.getPostsBySearchKey(listWords[word]);
+        this.setLoading(request);
         forkJoin([request]).subscribe((results) => {
           listResult.push(results[0]);
         });
@@ -121,8 +153,6 @@ export class SearchComponent implements OnInit {
   }
   async getListSymWords(word) {
     var res = this.http.get('https://api.datamuse.com/words?rel_trg=' + word);
-    // https://api.datamuse.com/words?rel_trg=cat
-    // https://api.datamuse.com/sug?s=cat
     return await res.toPromise().then();
   }
   async getPostsBySearchKey(searchKey) {
@@ -133,6 +163,7 @@ export class SearchComponent implements OnInit {
       },
     };
     var response = this.service.sendRequest('getpostsbysearchkey', data);
+    this.setLoading(response);
     return await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.response
     );
@@ -141,10 +172,11 @@ export class SearchComponent implements OnInit {
     var data = {
       'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
       body: {
-        id: this.searchCategoryId,
+        id: +this.searchCategoryId,
       },
     };
     var response = this.service.sendRequest('getpostsbycategoryid', data);
+    this.setLoading(response);
     return await response.then(
       (__zone_symbol__value) => __zone_symbol__value.body.response
     );

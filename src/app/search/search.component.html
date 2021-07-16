@@ -6,9 +6,9 @@
 <app-header (key)="onOuputKey($event)" (cat)="onOuputCat($event)"></app-header>
 <p-toast key="smsg" position="top-right"></p-toast>
 <div class="container-fluid">
-  <div class="card-columns" >
-    <ng-container *ngIf="searchContent !== null">
-      <div class="gal" *ngFor="let item of listPosts">
+  <div class="card-columns">
+    <ng-container *ngIf="searchKey">
+      <div class="gal" *ngFor="let item of listPostsContent">
         <app-image
           [item]="item"
           [hovered]="item === hoveredItem"
@@ -22,8 +22,8 @@
         ></app-image>
       </div>
     </ng-container>
-    <ng-container *ngIf="searchCategoryId !== null">
-      <div class="gal" *ngFor="let item of listPosts">
+    <ng-container *ngIf="searchCat">
+      <div class="gal" *ngFor="let item of listPostCatId">
         <app-image
           [item]="item"
           [hovered]="item === hoveredItem"
@@ -37,7 +37,6 @@
         ></app-image>
       </div>
     </ng-container>
-
   </div>
 
   <a href="/post">
