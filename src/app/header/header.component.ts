@@ -4,6 +4,7 @@ import { VigenereCipherService } from '../vigenere-cipher.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AppService } from '../app.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -22,13 +23,15 @@ export class HeaderComponent implements OnInit {
   cateList = [];
   formSearch: FormGroup;
   prevSearch = '';
+  reg: RegExp = /[0-9a-zA-Z_@!#$<>%^&*()]{0,50}/;
   constructor(
     private cookieService: CookieService,
     private router: Router,
     private vigenereCipherService: VigenereCipherService,
     // private http: HttpClient,
     private service: AppService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private messageService: MessageService
   ) {
     this.formSearch = this.fb.group({
       content: [''],
@@ -94,16 +97,18 @@ export class HeaderComponent implements OnInit {
     }
   }
   onSearchByTyping() {
-    // var res = this.http.get(
-    //   'https://api.datamuse.com/words?rel_trg=' + this.formSearch.get('content').value
-    // );
-    // res.subscribe((res) => console.log(res));
-    // // https://api.datamuse.com/words?rel_trg=cat
-    // // https://api.datamuse.com/sug?s=cat
-    // await res.toPromise().then();
-    sessionStorage.setItem('key', this.formSearch.get('content').value);
-    this.key.emit(this.formSearch.get('content').value);
-    this.router.navigate(['/search']);
+    if (this.formSearch.get('content').value.length <= 50) {
+      sessionStorage.setItem('key', this.formSearch.get('content').value);
+      this.key.emit(this.formSearch.get('content').value);
+      this.router.navigate(['/search']);
+    } else {
+      this.messageService.add({
+        key: 'smsg',
+        severity: 'error',
+        summary: 'Message',
+        detail: 'Please just search for maximum 50 chars',
+      });
+    }
   }
   onSearchByCategory(id) {
     sessionStorage.setItem('cat', id);

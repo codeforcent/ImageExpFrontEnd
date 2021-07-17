@@ -1,3 +1,4 @@
+<p-toast key="smsg" position="top-right"></p-toast>
 <div class="header">
   <header class="d-flex shadow-lg p-3 mb-5 rounded">
     <a href="#">
@@ -8,7 +9,11 @@
       />
     </a>
     <div class="searchfield">
-      <form class="search-form" (ngSubmit)="onSearchByTyping()" [formGroup]="formSearch">
+      <form
+        class="search-form"
+        (ngSubmit)="onSearchByTyping()"
+        [formGroup]="formSearch"
+      >
         <div class="input-group input-group-lg">
           <span
             class="ico ico-mglass"
@@ -23,13 +28,17 @@
             (click)="clicked = true"
             (clickOutside)="clicked = false"
             formControlName="content"
+            [pKeyFilter]="reg"
+            pInputText
           />
           <span class="input-group-append" style="margin-left: 0.5px"> </span>
         </div>
       </form>
       <div class="catefield">
         <div class="eachcate" *ngFor="let cate of cateList">
-          <button [value]="cate.id" (click)="onSearchByCategory(cate.id)">{{cate.name}}</button>
+          <button [value]="cate.id" (click)="onSearchByCategory(cate.id)">
+            {{ cate.name }}
+          </button>
         </div>
       </div>
     </div>

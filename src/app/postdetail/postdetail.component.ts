@@ -29,6 +29,8 @@ export class PostdetailComponent implements OnInit {
   listComments;
   listOwnerComment;
   disabled;
+  checkInfo;
+  checkCookie;
   constructor(
     private route: ActivatedRoute,
     private service: AppService,
@@ -48,7 +50,9 @@ export class PostdetailComponent implements OnInit {
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
     } else {
-      this.router.navigate(['']);
+      this.checkCookie = true;
+      this.position = 'top';
+      this.displayPosition = true;
     }
   }
 
@@ -165,6 +169,7 @@ export class PostdetailComponent implements OnInit {
     this.user = await this.getUserByEmail();
 
     if (this.user.avatar === '' || this.user.username === '') {
+      this.checkInfo = true;
       this.position = 'top';
       this.displayPosition = true;
     }
@@ -196,7 +201,11 @@ export class PostdetailComponent implements OnInit {
   }
   onClickDialog() {
     this.displayPosition = false;
-    this.router.navigate(['/settings']);
+    if (this.checkInfo) {
+      this.router.navigate(['/settings']);
+    } else if (this.checkCookie) {
+      this.router.navigate(['/userLogin']);
+    }
   }
   async getUserById(id: number) {
     var data = {
@@ -276,7 +285,7 @@ export class PostdetailComponent implements OnInit {
     return listUser;
   }
   confirmDelete(event, commentId, userId) {
-    console.log("comme", commentId);
+    console.log('comme', commentId);
     this.confirmationService.confirm({
       target: event.target,
       message: 'Are you sure that you want to proceed?',
@@ -290,14 +299,15 @@ export class PostdetailComponent implements OnInit {
           )) !== null
         ) {
           this.listComments = await this.getCommentByPostId();
-          this.listOwnerComment = await this.getListOwnerComment(this.listComments);
+          this.listOwnerComment = await this.getListOwnerComment(
+            this.listComments
+          );
           this.messageService.add({
             key: 'smsg',
             severity: 'success',
             summary: 'Message',
             detail: 'Your comment was deleted successfully',
           });
-
         } else {
           this.messageService.add({
             key: 'smsg',

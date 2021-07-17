@@ -103,9 +103,26 @@ export class UserProfileComponent implements OnInit {
     if (e.target.files) {
       var reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
-      reader.onload = (event: any) => {
-        this.avatar = event.target.result;
-      };
+      var fileExtension = e.target.files[0].type.toString().split('.').pop();
+      if (
+        fileExtension === 'image/bmp' ||
+        fileExtension === 'image/gif' ||
+        fileExtension === 'image/jpeg' ||
+        fileExtension === 'image/png' ||
+        fileExtension === 'image/tiff' ||
+        fileExtension === 'image/webp'
+      ) {
+        reader.onload = (event: any) => {
+          this.avatar = event.target.result;
+        };
+      } else {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'error',
+          summary: 'Message',
+          detail: 'Uploaded images is invalid',
+        });
+      }
     }
   }
 
@@ -132,7 +149,10 @@ export class UserProfileComponent implements OnInit {
       },
     };
 
-    if (this.formUserProfile.get('username').value !== '' && this.formUserProfile.get('username').valid) {
+    if (
+      this.formUserProfile.get('username').value !== '' &&
+      this.formUserProfile.get('username').valid
+    ) {
       var response = this.service.sendRequest('updateuser', data);
       this.setLoading(response);
       if (
