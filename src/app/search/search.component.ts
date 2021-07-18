@@ -90,6 +90,14 @@ export class SearchComponent implements OnInit {
     }
     await this.delay(1000);
     this.listPostsContent = listTempPosts[0];
+    if (this.listPostsContent === undefined) {
+      this.messageService.add({
+        key: 'smsg',
+        severity: 'error',
+        summary: 'Message',
+        detail: 'No results found',
+      });
+    }
   }
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
