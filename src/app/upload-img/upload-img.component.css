@@ -47,6 +47,7 @@ h1 {
     top: -70px;
     border: 10px solid;
     border-color: blanchedalmond;
+    background-color: blanchedalmond;
 }
 
 section {
@@ -71,7 +72,6 @@ section textarea {
 }
 
 .images {
-
     flex-wrap: wrap;
     margin-top: 20px;
 }
