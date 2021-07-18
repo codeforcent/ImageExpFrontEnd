@@ -18,8 +18,7 @@
   [closable]="false"
 >
   <p-toast key="smsg" position="top-right"></p-toast>
-  <p *ngIf="checkInfo">Let give us your avatar and username before uploading</p>
-  <p *ngIf="checkCookie">Sign in before seeing this post</p>
+  <p>Let give us your avatar and username before uploading</p>
   <ng-template pTemplate="footer">
     <p-button
       icon="pi pi-check"
@@ -60,25 +59,27 @@
         </p>
       </div>
       <div class="comment-form">
-        <img alt="Owner" [src]="postUser.avatar" />
+        <img alt="User" [src]="postUser.avatar" />
         <p>{{ postUser.name }} :</p>
         <form [formGroup]="formComment">
-          <input
+          <textarea
             class="textbox"
             name="comment"
-            role="textbox"
             placeholder="Type your's comment"
-            contenteditable
             formControlName="content"
-          />
+            contenteditable
+          ></textarea>
+
+          <button type="submit" value="comment" (click)="onComment()">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+
           <small
             style="color: red"
             *ngIf="this.formComment.get('content')?.errors?.required && clicked"
-            >Comment is required</small
           >
-          <button type="submit" value="comment" (click)="onComment()">
-            Comment
-          </button>
+            Comment is required</small
+          >
         </form>
       </div>
       <div class="comment-section">

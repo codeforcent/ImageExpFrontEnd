@@ -2,45 +2,23 @@
 <div class="header">
   <header class="d-flex shadow-lg p-3 mb-5 rounded">
     <a href="#">
-      <img
-        id="logo"
-        src="../../assets/Annotation_2021-07-08_173437-removebg-preview.png"
-        alt=""
-      />
+        <img id="logo" src="../../assets/Annotation_2021-07-08_173437-removebg-preview.png" alt="" />
     </a>
     <div class="searchfield">
-      <form
-        class="search-form"
-        (ngSubmit)="onSearchByTyping()"
-        [formGroup]="formSearch"
-      >
-        <div class="input-group input-group-lg">
-          <span
-            class="ico ico-mglass"
-            [ngClass]="
-              clicked ? { 'ico-mglass': false } : { 'ico-mglass': true }
-            "
-          ></span>
-          <input
-            type="text"
-            class="form-control rounded-pill"
-            [placeholder]="clicked ? 'Search' : '    Search'"
-            (click)="clicked = true"
-            (clickOutside)="clicked = false"
-            formControlName="content"
-            [pKeyFilter]="reg"
-            pInputText
-          />
-          <span class="input-group-append" style="margin-left: 0.5px"> </span>
+        <form class="search-form" (ngSubmit)="onSearchByTyping()" [formGroup]="formSearch">
+            <div class="input-group input-group-lg">
+                <span class="ico ico-mglass" [ngClass]="
+          clicked ? { 'ico-mglass': false } : { 'ico-mglass': true }
+        "></span>
+                <input type="text" class="form-control rounded-pill" [placeholder]="clicked ? 'Search' : '    Search'" (click)="clicked = true" (clickOutside)="clicked = false" formControlName="content" />
+                <span class="input-group-append" style="margin-left: 0.5px"> </span>
+            </div>
+        </form>
+        <div class="catefield">
+            <div class="eachcate" *ngFor="let cate of cateList">
+                <button [value]="cate.id" (click)="onSearchByCategory(cate.id)">{{cate.name}}</button>
+            </div>
         </div>
-      </form>
-      <div class="catefield">
-        <div class="eachcate" *ngFor="let cate of cateList">
-          <button [value]="cate.id" (click)="onSearchByCategory(cate.id)">
-            {{ cate.name }}
-          </button>
-        </div>
-      </div>
     </div>
 
     <div container="body" class="avatar" *ngIf="logIn === true">
