@@ -45,6 +45,14 @@ export class SearchComponent implements OnInit {
       this.searchCat = true;
       this.prevSearchCat = this.searchCategoryId;
       this.listPostCatId = await this.getPostsByCategoryId();
+      if (this.listPostCatId.length === 0) {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'error',
+          summary: 'Message',
+          detail: 'No results found',
+        });
+      }
     }
   }
   onOuputKey(event) {
@@ -63,6 +71,15 @@ export class SearchComponent implements OnInit {
       this.prevSearchCat = event;
       this.searchCategoryId = event;
       this.listPostCatId = await this.getPostsByCategoryId();
+      console.log(this.listPostCatId);
+      if (this.listPostCatId.length === 0) {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'error',
+          summary: 'Message',
+          detail: 'No results found',
+        });
+      }
     }
   }
   async searchByKey() {
