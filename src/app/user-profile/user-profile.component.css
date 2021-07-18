@@ -11,12 +11,12 @@ input {
 }
 
 .container-fluid {
-  position: relative;
-  min-height: 100vh;
-  overflow: hidden;
-  display: inline-block;
-  background-color: #a2d5f2;
-  padding: 2rem;
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    display: inline-block;
+    background-color: #A2D5F2;
+    padding: 2rem;
 }
 
 .forms-container {
