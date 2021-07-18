@@ -37,3 +37,23 @@
     margin-bottom: 20px;
     padding-bottom: 20px;
 }
+
+@media (max-width: 870px) {
+    .card-columns {
+        column-count: 3;
+        margin-right: 10px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+}
+
+@media (max-width: 570px) {
+    .card-columns {
+        column-count: 2;
+        margin-right: 10px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+}

@@ -15,17 +15,18 @@ input {
     min-height: 100vh;
     overflow: hidden;
     display: inline-block;
-    background: linear-gradient(45deg, lightsalmon, lightskyblue);
+    background-color: #A2D5F2;
     margin-top: -3rem;
     padding: 2rem;
 }
 
 .forms-container {
     position: absolute;
-    width: 80%;
+    width: 70%;
     height: 100%;
     top: -2rem;
-    left: 20%;
+    left: 30%;
+    z-index: 1;
 }
 
 .input-name {
@@ -75,12 +76,11 @@ form {
     background: none;
     outline: none;
     border: none;
-    line-height: 1;
+    line-height: 55px;
     font-weight: 600;
     font-size: 1.1rem;
     color: #333;
     height: 1.1rem;
-    margin-top: 5px;
     padding: 0 10px;
 }
 
@@ -105,17 +105,17 @@ form {
     outline: none;
     height: 49px;
     border-radius: 49px;
-    color: #fff;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 500;
     margin: 10px 0;
     cursor: pointer;
     transition: 0.5s;
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 .btn:hover {
     background-color: lightsalmon;
+    color: white;
 }
 
 .btn.transparent {
@@ -181,9 +181,10 @@ form {
 }
 
 .error-box {
-  border: 2px solid red !important;
-
+    border: 2px solid red !important;
 }
+
+
 /* :host>>>.p-tabmenu .p-tabmenu-nav {
     display: block;
     background-color: transparent;
@@ -217,7 +218,6 @@ form {
     margin-top: 17px;
     margin-left: 1rem;
     color: red;
-
 }
 
 @media (max-width: 870px) {
@@ -226,5 +226,24 @@ form {
     }
     .input-field {
         width: 870px;
+    }
+}
+
+@media (max-width: 570px) {
+    form {
+        padding: 0rem 0rem;
+    }
+    .input-field {
+        width: 570px;
+    }
+    .forms-container {
+        position: relative;
+        width: 100%;
+        height: 600px;
+        top: 0px;
+        left: 0%;
+    }
+    .input-field {
+        margin: 40px 0;
     }
 }

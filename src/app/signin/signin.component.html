@@ -2,42 +2,26 @@
 </mat-progress-bar>
 
 <div class="container-fluid" [ngClass]="{ 'sign-up-mode': signMode }">
-  <div class="form-container">
-    <div class="signin-signup">
-      <form
-        class="sign-in-form"
-        (ngSubmit)="onSubmitSignIn()"
-        [formGroup]="formSignIn"
-      >
-        <h2 class="title">Sign In</h2>
+    <div class="form-container">
+        <div class="signin-signup">
+            <form class="sign-in-form" (ngSubmit)="onSubmitSignIn()" [formGroup]="formSignIn">
+                <h2 class="title">Sign In</h2>
 
-        <div
-          class="input-field"
-          [ngClass]="{
+                <div class="input-field" [ngClass]="{
             'error-box':
               (formSignIn.get('email')?.invalid &&
                 formSignIn.get('email')?.dirty) ||
               (formSignIn.invalid && clicked)
-          }"
-        >
-          <i class="fas fa-envelope"></i>
-          <input
-            type="text"
-            placeholder="Email"
-            formControlName="email"
-            required
-            id="signInEmail"
-          />
-          <span></span>
+          }">
+                    <i class="fas fa-envelope"></i>
+                    <input type="text" placeholder="Email" formControlName="email" required id="signInEmail" />
+                    <span></span>
 
-          <small
-            *ngIf="
+                    <small *ngIf="
               (formSignIn.get('email')?.invalid &&
                 formSignIn.get('email')?.dirty) ||
               (formSignIn.invalid && clicked)
-            "
-            class="form-text error-text"
-            >Email is required</small
+            " class="form-text error-text">Email is required</small
           >
         </div>
         <div
@@ -251,7 +235,7 @@
     <div class="panel left-panel">
       <div class="content">
         <h3>New here ?</h3>
-        <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+        <p>A few steps to become a member of <span style="color: salmon">DrawIt</span></p>
         <button
           class="btn transparent"
           id="sign-up-btn"
@@ -269,7 +253,7 @@
     <div class="panel right-panel">
       <div class="content">
         <h3>One of us ?</h3>
-        <p>aaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa</p>
+        <p>Lets login to continue the journey with <span style="color: salmon">DrawIt</span></p>
         <button
           class="btn transparent"
           id="sign-in-btn"

@@ -15,7 +15,7 @@
 :host>>>p-tabmenu div {
     display: inline-block;
     width: 20%;
-    float: left;
+    min-width: 200px;
     z-index: 10;
 }
 

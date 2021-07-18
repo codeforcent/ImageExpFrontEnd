@@ -10,11 +10,12 @@ body {
 }
 
 .wrapper {
+    font-family: "Poppins", sans-serif;
     background-color: white;
     padding-top: 20px;
     padding-bottom: 20px;
     border-radius: 5px;
-    width: 720px;
+    width: 100%;
     max-width: 100%;
     margin: 40px auto;
     align-self: center;
@@ -80,7 +81,7 @@ p {
     line-height: 55px;
     height: 55px;
     width: 90%;
-    font-size: 200%;
+    font-size: 3vw;
     font-weight: 700;
     background-color: #CDF0EA;
 }

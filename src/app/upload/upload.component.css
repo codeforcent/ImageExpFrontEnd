@@ -207,66 +207,110 @@ tag-input[name="items"] {
 }
 
 .error-text {
-  margin-top: 3px;
-  color: red;
+    margin-top: 3px;
+    color: red;
 }
 
 .error-box {
-  border: 2px solid red !important;
+    border: 2px solid red !important;
 }
-:host>>>.p-multiselect-panel .p-multiselect-items:not(.p-multiselect-virtualscroll){
- display: grid;
- grid-template-columns: 33% 33% 33%;
-  /* grid-template-columns: 4; */
+
+:host>>>.p-multiselect-panel .p-multiselect-items:not(.p-multiselect-virtualscroll) {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    /* grid-template-columns: 4; */
 }
+
 :host>>>.p-multiselect-panel .p-multiselect-items .p-multiselect-item {
-  font-size: small;
+    font-size: small;
 }
+
 :host>>>.p-multiselect.p-multiselect-chip .p-multiselect-token {
-  background-color:#2196F3;
-  color: white;
+    background-color: #2196F3;
+    color: white;
 }
-:host>>>.p-multiselect{
-width: 100%;
 
+:host>>>.p-multiselect {
+    width: 100%;
+}
 
+:host>>>.p-multiselect .p-multiselect-panel {
+    width: 100%;
 }
-:host>>>.p-multiselect .p-multiselect-panel{
-  width:100%;
-}
+
 :host>>>.p-multiselect-items-wrapper {
-  padding-left: 10px;
+    padding-left: 10px;
+}
 
+:host>>>p-multiselect.ng-dirty.ng-invalid>.p-multiselect {
+    border: 2px solid red;
 }
-:host>>>p-multiselect.ng-dirty.ng-invalid > .p-multiselect {
-  border: 2px solid red;
+
+:host>>>mat-hint {
+    float: right;
+    color: #aaa;
 }
-:host>>>mat-hint{
-  float:right;
-  color: #aaa;
+
+.cate-item-value {
+    padding: .25rem .5rem;
+    border-radius: 3px;
+    display: inline-flex;
+    margin-right: .5rem;
+    background-color: cornflowerblue;
 }
-.cate-item-value{
-  padding: .25rem .5rem;
-  border-radius: 3px;
-  display: inline-flex;
-  margin-right: .5rem;
-  background-color: cornflowerblue;
-}
+
 :host ::ng-deep .p-button {
-  margin: 0 .5rem 0 0;
-  min-width: 10rem;
+    margin: 0 .5rem 0 0;
+    min-width: 10rem;
 }
 
 p {
-  margin: 0;
+    margin: 0;
 }
 
 .confirmation-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 :host ::ng-deep .p-dialog .p-button {
-  min-width: 6rem;
+    min-width: 6rem;
+}
+
+@media (max-width: 870px) {
+    .container-fluid {
+        height: 100%;
+    }
+    form {
+        margin: 0;
+        width: 100%;
+    }
+    .upImg {
+        width: 40%;
+    }
+    .upInfor {
+        width: 60%;
+    }
+}
+
+@media (max-width: 570px) {
+    form {
+        margin: 0;
+        width: 100%;
+    }
+    .upImg {
+        width: 100%;
+        right: 130px;
+        left: auto;
+    }
+    .upInfor {
+        width: 100%;
+        right: 130px;
+        left: auto;
+        margin-top: 30px;
+    }
+    .btn {
+        left: 40%;
+    }
 }
