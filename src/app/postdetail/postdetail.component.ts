@@ -19,7 +19,7 @@ export class PostdetailComponent implements OnInit {
   likeBtn = '../../assets/heart-removebg-preview.png';
   loading: boolean;
   picture: any;
-  user: { id: any; avatar: string; username: string };
+  user;
   displayPosition: boolean;
   position: string;
   postUser: any;
@@ -294,7 +294,6 @@ export class PostdetailComponent implements OnInit {
     return listUser;
   }
   confirmDelete(event, commentId, userId) {
-    console.log('comme', commentId);
     this.confirmationService.confirm({
       target: event.target,
       message: 'Are you sure that you want to proceed?',
@@ -347,15 +346,7 @@ export class PostdetailComponent implements OnInit {
     };
     var response = this.service.sendRequest('deletecomment', data);
     this.setLoading(response);
-    var isSuccess = await response.then(
-      (__zone_symbol__value) => __zone_symbol__value.body.success
-    );
-    if (isSuccess) {
-      return await response.then(
-        (__zone_symbol__value) => __zone_symbol__value.body.response
-      );
-    } else {
-      return null;
-    }
+
+    return await response;
   }
 }

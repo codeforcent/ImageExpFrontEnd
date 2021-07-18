@@ -61,8 +61,8 @@
         </p>
       </div>
       <div class="comment-form">
-        <img alt="User" [src]="postUser.avatar" />
-        <p>{{ postUser.name }} :</p>
+        <img alt="User" [src]="user.avatar" />
+        <p>{{ user.name }} :</p>
         <form [formGroup]="formComment">
           <textarea
             class="textbox"
@@ -99,7 +99,7 @@
             }}</a
             >: {{ comment.comment }}</span
           >
-          <div class="flex-end">
+          <div class="flex-end" *ngIf="listOwnerComment[i].id === user.id">
             <button pButton type="button">
               <i
                 class="far fa-trash-alt"
@@ -112,11 +112,11 @@
                 "
               ></i>
             </button>
-            <p-confirmPopup
-              [showTransitionOptions]="'100ms'"
-              [hideTransitionOptions]="'100ms'"
-            ></p-confirmPopup>
           </div>
+          <p-confirmPopup
+            [showTransitionOptions]="'100ms'"
+            [hideTransitionOptions]="'100ms'"
+          ></p-confirmPopup>
         </div>
       </div>
     </div>

@@ -150,10 +150,7 @@
         </button>
       </span>
     </div>
-    <p-confirmPopup
-      [showTransitionOptions]="'100ms'"
-      [hideTransitionOptions]="'100ms'"
-    ></p-confirmPopup>
+
     <div class="post" *ngIf="hovered && modeOverlay === 'post'">
       <span
         title="Actions"
@@ -209,10 +206,7 @@
         ></span>
       </span>
     </div>
-    <p-confirmPopup
-      [showTransitionOptions]="'100ms'"
-      [hideTransitionOptions]="'100ms'"
-    ></p-confirmPopup>
+
     <div class="user" *ngIf="hovered && modeOverlay === 'user'">
       <span
         title="Actions"
@@ -303,9 +297,9 @@
         ></span>
       </span>
     </div>
-    <p-confirmPopup
-      [showTransitionOptions]="'100ms'"
-      [hideTransitionOptions]="'100ms'"
-    ></p-confirmPopup>
   </div>
 </a>
+<p-confirmPopup
+  [showTransitionOptions]="'100ms'"
+  [hideTransitionOptions]="'100ms'"
+></p-confirmPopup>
