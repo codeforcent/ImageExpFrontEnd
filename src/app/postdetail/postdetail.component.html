@@ -1,4 +1,8 @@
-<mat-progress-bar mode="indeterminate" value="40" *ngIf="loading">
+<mat-progress-bar
+  mode="indeterminate"
+  style="position: absolute; z-index: 1000"
+  *ngIf="loading"
+>
 </mat-progress-bar>
 <app-header></app-header>
 <p-dialog
@@ -57,16 +61,16 @@
       </div>
       <div class="comment-form">
         <img alt="Owner" [src]="postUser.avatar" />
-        <p>{{postUser.name}} :</p>
+        <p>{{ postUser.name }} :</p>
         <form [formGroup]="formComment">
-          <input class="textbox" name="comment" role="textbox" placeholder="Type your's comment" contenteditable formControlName="content"/>
-          <!-- <textarea
+          <input
             class="textbox"
             name="comment"
+            role="textbox"
             placeholder="Type your's comment"
+            contenteditable
             formControlName="content"
-          >
-          </textarea> -->
+          />
           <small
             style="color: red"
             *ngIf="this.formComment.get('content')?.errors?.required && clicked"
@@ -78,25 +82,40 @@
         </form>
       </div>
       <div class="comment-section">
-        <div class="comment" *ngFor="let comment of listComments; let i = index">
+        <div
+          class="comment"
+          *ngFor="let comment of listComments; let i = index"
+        >
           <a href="/user/{{ listOwnerComment[i].id }}">
             <!-- Link to comment user gallery -->
             <img alt="User" [src]="listOwnerComment[i].avatar" />
           </a>
           <span
-            ><a href="/user/{{ listOwnerComment[i].id }}">{{listOwnerComment[i].name}}</a>:
-            {{ comment.comment }}</span
+            ><a href="/user/{{ listOwnerComment[i].id }}">{{
+              listOwnerComment[i].name
+            }}</a
+            >: {{ comment.comment }}</span
           >
           <div class="flex-end">
-            <button pButton type="button"><i class="far fa-trash-alt" (click)="confirmDelete($event, comment.commentID, listOwnerComment[i].id)"></i
-              ></button>
-              <p-confirmPopup
+            <button pButton type="button">
+              <i
+                class="far fa-trash-alt"
+                (click)="
+                  confirmDelete(
+                    $event,
+                    comment.commentID,
+                    listOwnerComment[i].id
+                  )
+                "
+              ></i>
+            </button>
+            <p-confirmPopup
               [showTransitionOptions]="'100ms'"
               [hideTransitionOptions]="'100ms'"
             ></p-confirmPopup>
-            </div>
           </div>
         </div>
       </div>
     </div>
-  </body>
+  </div>
+</body>

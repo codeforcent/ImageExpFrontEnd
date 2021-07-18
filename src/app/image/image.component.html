@@ -30,6 +30,7 @@
         class="btn btn-primary save-btn rounded-pill"
         [ngStyle]="hovered ? { display: 'inline-block' } : { display: 'none' }"
         (click)="onSave()"
+        *ngIf="checkCookie"
       >
         Save
       </button>
@@ -68,6 +69,7 @@
         class="btn btn-primary save-btn rounded-pill"
         [ngStyle]="hovered ? { display: 'inline-block' } : { display: 'none' }"
         (click)="onSave()"
+        *ngIf="checkCookie"
       >
         Save
       </button>

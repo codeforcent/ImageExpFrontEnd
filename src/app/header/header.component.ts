@@ -59,6 +59,7 @@ export class HeaderComponent implements OnInit {
     this.service.sendRequest('changestatus', data);
     this.logIn = false;
     this.cookieService.delete('auth-token');
+    location.reload();
   }
 
   async getInforUser() {

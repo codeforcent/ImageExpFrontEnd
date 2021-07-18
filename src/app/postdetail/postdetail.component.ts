@@ -229,37 +229,41 @@ export class PostdetailComponent implements OnInit {
   }
   async onComment() {
     this.clicked = true;
-    var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
-      body: {
-        postId: this.id,
-        userId: this.user.id,
-        comment: this.formComment.get('content').value,
-      },
-    };
-    var response = this.service.sendRequest('addcomment', data);
-    this.setLoading(response);
+    if (this.formComment.valid) {
+      var data = {
+        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        body: {
+          postId: this.id,
+          userId: this.user.id,
+          comment: this.formComment.get('content').value,
+        },
+      };
+      var response = this.service.sendRequest('addcomment', data);
+      this.setLoading(response);
 
-    if (
-      (await response.then(
-        (__zone_symbol__value) => __zone_symbol__value.body.success
-      )) === true
-    ) {
-      this.listComments = await this.getCommentByPostId();
-      this.listOwnerComment = await this.getListOwnerComment(this.listComments);
-      this.messageService.add({
-        key: 'smsg',
-        severity: 'success',
-        summary: 'Message',
-        detail: 'Your comment was updated successfully',
-      });
-    } else {
-      this.messageService.add({
-        key: 'smsg',
-        severity: 'error',
-        summary: 'Message',
-        detail: 'Your comment was updated unsuccessfully',
-      });
+      if (
+        (await response.then(
+          (__zone_symbol__value) => __zone_symbol__value.body.success
+        )) === true
+      ) {
+        this.listComments = await this.getCommentByPostId();
+        this.listOwnerComment = await this.getListOwnerComment(
+          this.listComments
+        );
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'success',
+          summary: 'Message',
+          detail: 'Your comment was updated successfully',
+        });
+      } else {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'error',
+          summary: 'Message',
+          detail: 'Your comment was updated unsuccessfully',
+        });
+      }
     }
   }
   async getCommentByPostId() {

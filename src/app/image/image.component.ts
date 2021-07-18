@@ -3,6 +3,7 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-image',
   templateUrl: './image.component.html',
@@ -25,11 +26,15 @@ export class ImageComponent implements OnInit {
   selectedItem: any;
   post;
   picture;
+  checkCookie;
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private service: AppService
-  ) {}
+    private service: AppService,
+    private cookieService: CookieService
+  ) {
+    this.checkCookie = this.cookieService.check('auth-token');
+  }
 
   async ngOnInit() {
     await this.delay(500);

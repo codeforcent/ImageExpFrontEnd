@@ -1,4 +1,8 @@
-<mat-progress-bar mode="indeterminate" value="40" *ngIf="loading">
+<mat-progress-bar
+  mode="indeterminate"
+  style="position: absolute; z-index: 1000"
+  *ngIf="loading"
+>
 </mat-progress-bar>
 <p-toast key="smsg" position="top-right"></p-toast>
 <input type="radio" name="Photos" id="check1" checked />
@@ -9,9 +13,9 @@
   <div class="wrap">
     <a href="/" class="button" style="text-decoration: none" id="back">Back</a>
   </div>
-  <h1>{{username}}'s Gallery</h1>
+  <h1>{{ username }}'s Gallery</h1>
   <div class="top-content">
-    <h3>{{username}}'s Galery</h3>
+    <h3>{{ username }}'s Galery</h3>
     <label for="check1">Posted photos</label>
     <label for="check2">Liked photos</label>
   </div>
@@ -24,7 +28,7 @@
             [item]="img"
             [hovered]="img === hoveredItem"
             [modeOverlay]="'user'"
-            [posted] = "true"
+            [posted]="true"
             (mouseover)="onMouseover(img)"
             (mouseleave)="onMouseleave()"
           ></app-image>
@@ -38,7 +42,7 @@
             [item]="img"
             [hovered]="img === hoveredItem"
             [modeOverlay]="'user'"
-            [posted] = "true"
+            [posted]="true"
             (mouseover)="onMouseover(img)"
             (mouseleave)="onMouseleave()"
           ></app-image>
