@@ -139,14 +139,20 @@ export class ImageComponent implements OnInit {
             key: 'smsg',
             severity: 'success',
             summary: 'Message',
-            detail: 'Delete picture successfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         } else {
           this.messageService.add({
             key: 'smsg',
             severity: 'error',
             summary: 'Message',
-            detail: 'Delete picture unsuccessfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         }
       },
@@ -211,14 +217,20 @@ export class ImageComponent implements OnInit {
             key: 'smsg',
             severity: 'success',
             summary: 'Message',
-            detail: 'Delete post successfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         } else {
           this.messageService.add({
             key: 'smsg',
             severity: 'error',
             summary: 'Message',
-            detail: 'Delete post unsuccessfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         }
       },
@@ -249,14 +261,20 @@ export class ImageComponent implements OnInit {
             key: 'smsg',
             severity: 'success',
             summary: 'Message',
-            detail: 'Delete post successfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         } else {
           this.messageService.add({
             key: 'smsg',
             severity: 'error',
             summary: 'Message',
-            detail: 'Delete post unsuccessfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         }
       },

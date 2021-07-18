@@ -84,14 +84,18 @@ export class VerifyemailComponent implements OnInit {
         key: 'smsg',
         severity: 'success',
         summary: 'Message',
-        detail: 'Send verify code successfully',
+        detail: await response.then(
+          (__zone_symbol__value) => __zone_symbol__value.body.response.message
+        ),
       });
     } else {
       this.messageService.add({
         key: 'smsg',
         severity: 'error',
         summary: 'Message',
-        detail: 'Send verify code unsuccessfully',
+        detail: await response.then(
+          (__zone_symbol__value) => __zone_symbol__value.body.response.message
+        ),
       });
     }
   }

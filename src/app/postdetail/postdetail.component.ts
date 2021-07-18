@@ -254,14 +254,18 @@ export class PostdetailComponent implements OnInit {
           key: 'smsg',
           severity: 'success',
           summary: 'Message',
-          detail: 'Your comment was updated successfully',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
         });
       } else {
         this.messageService.add({
           key: 'smsg',
           severity: 'error',
           summary: 'Message',
-          detail: 'Your comment was updated unsuccessfully',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
         });
       }
     }
@@ -310,14 +314,20 @@ export class PostdetailComponent implements OnInit {
             key: 'smsg',
             severity: 'success',
             summary: 'Message',
-            detail: 'Your comment was deleted successfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         } else {
           this.messageService.add({
             key: 'smsg',
             severity: 'error',
             summary: 'Message',
-            detail: 'Your comment was deleted unsuccessfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         }
       },

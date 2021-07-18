@@ -291,14 +291,18 @@ export class UploadComponent implements OnInit {
           key: 'smsg',
           severity: 'success',
           summary: 'Message',
-          detail: 'Updated your post successfully',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
         });
       } else {
         this.messageService.add({
           key: 'smsg',
           severity: 'error',
           summary: 'Message',
-          detail: 'Updated your post unsuccessfully',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
         });
       }
     }
