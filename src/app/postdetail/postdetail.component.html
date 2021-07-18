@@ -1,4 +1,8 @@
-<mat-progress-bar mode="indeterminate" value="40" *ngIf="loading">
+<mat-progress-bar
+  mode="indeterminate"
+  style="position: absolute; z-index: 1000"
+  *ngIf="loading"
+>
 </mat-progress-bar>
 <app-header></app-header>
 <p-dialog header="Notification" [(visible)]="displayPosition" [position]="position" [modal]="true" [style]="{ width: '50vw' }" [baseZIndex]="10000" [draggable]="false" [resizable]="false" [closeOnEscape]="false" [closable]="false">
@@ -57,18 +61,28 @@
                         <img alt="User" [src]="listOwnerComment[i].avatar" />
                     </a>
                     <span><a href="/user/{{ listOwnerComment[i].id }}">{{listOwnerComment[i].name}}</a>:
-            {{ comment.comment }}</span
-          >
+            {{ comment.comment }}</span>
           <div class="flex-end">
-            <button pButton type="button"><i class="far fa-trash-alt" (click)="confirmDelete($event, comment.commentID, listOwnerComment[i].id)"></i
-              ></button>
-              <p-confirmPopup
+            <button pButton type="button">
+              <i
+                class="far fa-trash-alt"
+                (click)="
+                  confirmDelete(
+                    $event,
+                    comment.commentID,
+                    listOwnerComment[i].id
+                  )
+                "
+              ></i>
+            </button>
+            <p-confirmPopup
               [showTransitionOptions]="'100ms'"
               [hideTransitionOptions]="'100ms'"
             ></p-confirmPopup>
-            </div>
           </div>
         </div>
       </div>
     </div>
+
   </body>
+

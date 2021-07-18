@@ -1,4 +1,4 @@
-<mat-progress-bar mode="indeterminate" value="40" *ngIf="loading">
+<mat-progress-bar mode="indeterminate" style="position: absolute; z-index: 1000;" *ngIf="loading">
 </mat-progress-bar>
 <p-dialog header="Notification" [(visible)]="displayPosition" [position]="position" [modal]="true" [style]="{ width: '50vw' }" [baseZIndex]="10000" [draggable]="false" [resizable]="false" [closeOnEscape]="false" [closable]="false">
     <p-toast key="smsg" position="top-right"></p-toast>

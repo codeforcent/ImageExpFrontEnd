@@ -1,4 +1,8 @@
-<mat-progress-bar mode="indeterminate" value="40" *ngIf="loading">
+<mat-progress-bar
+  mode="indeterminate"
+  style="position: absolute; z-index: 1000"
+  *ngIf="loading"
+>
 </mat-progress-bar>
 <app-header></app-header>
 <p-toast key="smsg" position="top-right"></p-toast>
@@ -22,20 +26,29 @@
                 </div>
                 <div class="input-field" [ngClass]="{
             'error-box':
-              (formUserProfile.get('username')?.invalid &&
-                formUserProfile.get('username')?.touched) ||
-              (clicked && formUserProfile.get('username')?.pristine)
-          }">
-                    <i class="fas"></i>
-                    <input type="text" [placeholder]="
+            ((formUserProfile.get('username')?.errors?.required &&
+            formUserProfile.get('username')?.touched) ||
+          (clicked && formUserProfile.get('username')?.pristine ) && username === '')
+          }"
+        >
+          <i class="fas"></i>
+          <input
+            type="text"
+            [placeholder]="
               username !== '' ? username : 'What should we call you'
-            " formControlName="username" required id="username" />
-                    <small *ngIf="
-              (formUserProfile.get('username')?.errors?.required &&
+            "
+            formControlName="username"
+            required
+            id="username"
+          />
+          <small
+            *ngIf="
+              ((formUserProfile.get('username')?.errors?.required &&
                 formUserProfile.get('username')?.touched) ||
-              (clicked && formUserProfile.get('username')?.pristine)
-            " class="form-text error-text">Username is required</small
-          >
+              (clicked && formUserProfile.get('username')?.pristine ) && username === '')
+            "
+            class="form-text error-text"
+            >Username is required</small>
           <small
             *ngIf="formUserProfile.get('username')?.errors?.maxlength"
             class="form-text error-text"

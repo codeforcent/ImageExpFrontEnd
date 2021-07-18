@@ -13,6 +13,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { CookieService } from 'ngx-cookie-service';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import {KeyFilterModule} from 'primeng/keyfilter';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -106,7 +107,8 @@ import { PostdetailComponent } from './postdetail/postdetail.component';
     DialogModule,
     OnlineStatusModule,
     ConfirmPopupModule,
-    PasswordModule
+    PasswordModule,
+    KeyFilterModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [JsonPipe, CookieService, MessageService, ConfirmationService],

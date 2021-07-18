@@ -1,3 +1,4 @@
+import { MessageService } from 'primeng/api';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AppService } from '../app.service';
@@ -17,7 +18,11 @@ export class VerifyemailComponent implements OnInit {
   verified;
   displayPosition: boolean = false;
   position;
-  constructor(private fb: FormBuilder, private service: AppService) {
+  constructor(
+    private fb: FormBuilder,
+    private service: AppService,
+    private messageService: MessageService
+  ) {
     this.formVerifyEmail = this.fb.group({
       email: this.email,
       code: ['', [Validators.required]],
@@ -26,7 +31,10 @@ export class VerifyemailComponent implements OnInit {
 
   ngOnInit(): void {}
   async onSubmitVerifyEmail() {
-    if (sessionStorage.getItem('242dshY2H2YDU3BU3FDEF') !== '_4374gdHGE73BBGH' || sessionStorage.getItem('242dshY2H2YDU3BU3FDEF') == null) {
+    if (
+      sessionStorage.getItem('242dshY2H2YDU3BU3FDEF') !== '_4374gdHGE73BBGH' ||
+      sessionStorage.getItem('242dshY2H2YDU3BU3FDEF') == null
+    ) {
       this.position = 'top';
       this.displayPosition = true;
     }
@@ -66,7 +74,30 @@ export class VerifyemailComponent implements OnInit {
         email: this.email,
       },
     };
-    this.service.sendRequest('sendverifycode', data);
+    var response = this.service.sendRequest('sendverifycode', data);
+    if (
+      (await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.success
+      )) === true
+    ) {
+      this.messageService.add({
+        key: 'smsg',
+        severity: 'success',
+        summary: 'Message',
+        detail: await response.then(
+          (__zone_symbol__value) => __zone_symbol__value.body.response.message
+        ),
+      });
+    } else {
+      this.messageService.add({
+        key: 'smsg',
+        severity: 'error',
+        summary: 'Message',
+        detail: await response.then(
+          (__zone_symbol__value) => __zone_symbol__value.body.response.message
+        ),
+      });
+    }
   }
   onClickDialog() {
     this.displayPosition = false;

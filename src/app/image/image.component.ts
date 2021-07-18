@@ -3,6 +3,7 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-image',
   templateUrl: './image.component.html',
@@ -25,11 +26,15 @@ export class ImageComponent implements OnInit {
   selectedItem: any;
   post;
   picture;
+  checkCookie;
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private service: AppService
-  ) {}
+    private service: AppService,
+    private cookieService: CookieService
+  ) {
+    this.checkCookie = this.cookieService.check('auth-token');
+  }
 
   async ngOnInit() {
     await this.delay(500);
@@ -134,14 +139,20 @@ export class ImageComponent implements OnInit {
             key: 'smsg',
             severity: 'success',
             summary: 'Message',
-            detail: 'Delete picture successfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         } else {
           this.messageService.add({
             key: 'smsg',
             severity: 'error',
             summary: 'Message',
-            detail: 'Delete picture unsuccessfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         }
       },
@@ -206,14 +217,20 @@ export class ImageComponent implements OnInit {
             key: 'smsg',
             severity: 'success',
             summary: 'Message',
-            detail: 'Delete post successfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         } else {
           this.messageService.add({
             key: 'smsg',
             severity: 'error',
             summary: 'Message',
-            detail: 'Delete post unsuccessfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         }
       },
@@ -244,14 +261,20 @@ export class ImageComponent implements OnInit {
             key: 'smsg',
             severity: 'success',
             summary: 'Message',
-            detail: 'Delete post successfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         } else {
           this.messageService.add({
             key: 'smsg',
             severity: 'error',
             summary: 'Message',
-            detail: 'Delete post unsuccessfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         }
       },
