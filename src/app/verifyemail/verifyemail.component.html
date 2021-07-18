@@ -1,36 +1,74 @@
-<p-dialog header="Notification" [(visible)]="displayPosition" [position]="position" [modal]="true" [style]="{ width: '50vw' }" [baseZIndex]="10000" [draggable]="false" [resizable]="false" [closeOnEscape]="false" [closable]="false">
-    <p-toast key="smsg" position="top-right"></p-toast>
-    <p>Please verify your account in the browser you connected with us</p>
-    <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="onClickDialog()" label="Ok" styleClass="p-button-text"></p-button>
-    </ng-template>
+<p-dialog
+  header="Notification"
+  [(visible)]="displayPosition"
+  [position]="position"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+  [closeOnEscape]="false"
+  [closable]="false"
+>
+  <p-toast key="smsg" position="top-right"></p-toast>
+  <p>Please verify your account in the browser you connected with us</p>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-check"
+      (click)="onClickDialog()"
+      label="Ok"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
 </p-dialog>
 
 <p-toast key="smsg" position="top-right"></p-toast>
 
 <body>
-    <div class="wrapper">
-        <header>
-            <img src="../../assets/Annotation_2021-07-08_173437-removebg-preview.png" alt="Logo" class="logo" />
-        </header>
-        <h5>You one step away</h5>
-        <h1>Verify Your Email Address</h1>
-        <div class="message">
-            <p>
-                Hello,<br /> You are almost ready to get started.<br /> Check your mail and enter the
-                <span style="color: steelblue">verification code</span> to become one of
-                <span style="color: salmon">DrawIt</span> members.
-            </p>
-        </div>
-        <div class="section">
-            <form class="form-send" [formGroup]="formVerifyEmail">
-                <input type="text" id="email" name="email" [value]="email" style="display: none" formControlName="email" />
-                <input type="text" id="code" name="code" placeholder="Verification code" formControlName="code" />
-                <br>
-                <small *ngIf="
+  <div class="wrapper">
+    <header>
+      <img
+        src="../../assets/Annotation_2021-07-08_173437-removebg-preview.png"
+        alt="Logo"
+        class="logo"
+      />
+    </header>
+    <h5>You one step away</h5>
+    <h1>Verify Your Email Address</h1>
+    <div class="message">
+      <p>
+        Hello,<br />
+        You are almost ready to get started.<br />
+        Check your mail and enter the
+        <span style="color: steelblue">verification code</span> to become one of
+        <span style="color: salmon">DrawIt</span> members.
+      </p>
+    </div>
+    <div class="section">
+      <form class="form-send" [formGroup]="formVerifyEmail">
+        <input
+          type="text"
+          id="email"
+          name="email"
+          [value]="email"
+          style="display: none"
+          formControlName="email"
+        />
+        <input
+          type="text"
+          id="code"
+          name="code"
+          placeholder="Verification code"
+          formControlName="code"
+        />
+        <br />
+        <small
+          *ngIf="
             formVerifyEmail.get('code').touched &&
             formVerifyEmail.get('code')?.errors?.required
-          " style="color: red">Verification code is required</small
+          "
+          style="color: red"
+          >Verification code is required</small
         >
         <small
           *ngIf="

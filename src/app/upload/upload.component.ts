@@ -41,6 +41,8 @@ export class UploadComponent implements OnInit {
   mode;
   loading;
   user;
+  checkCookie;
+  checkInfo;
   constructor(
     private fb: FormBuilder,
     private _ngZone: NgZone,
@@ -98,9 +100,11 @@ export class UploadComponent implements OnInit {
     }
 
     if (this.cookieService.check('auth-token')) {
+      this.checkCookie = false;
       this.getInforUser();
     } else {
-      this.router.navigate(['']);
+      this.displayPosition = true;
+      this.checkCookie = true;
     }
   }
   /**
@@ -150,6 +154,7 @@ export class UploadComponent implements OnInit {
     if (this.avatar === '' || this.username === '') {
       this.position = 'top';
       this.displayPosition = true;
+      this.checkInfo = true;
     }
   }
   async getAllCategories() {
@@ -363,7 +368,11 @@ export class UploadComponent implements OnInit {
   }
   onClickDialog() {
     this.displayPosition = false;
-    this.router.navigate(['/settings']);
+    if (this.checkCookie) {
+      this.router.navigate(['/userLogin']);
+    } else if (this.checkInfo) {
+      this.router.navigate(['/settings']);
+    }
   }
 
   @HostListener('window:unload', ['$event'])
