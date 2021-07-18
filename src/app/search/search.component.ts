@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-// import { CookieService } from 'ngx-cookie-service';
-// import {  ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
 import { AppService } from '../app.service';
@@ -28,9 +26,8 @@ export class SearchComponent implements OnInit {
   searchCat;
   constructor(
     private http: HttpClient,
-    // private router: Router,
     private service: AppService,
-    private messageService: MessageService // private cookieService: CookieService // private route: ActivatedRoute
+    private messageService: MessageService
   ) {
     this.searchContent = sessionStorage.getItem('key');
     this.searchCategoryId = sessionStorage.getItem('cat');
@@ -41,23 +38,27 @@ export class SearchComponent implements OnInit {
     if (this.searchContent !== null) {
       this.searchKey = true;
       this.searchCat = false;
-      console.log('searchContent oninit');
       this.prevSearchKey = this.searchContent;
       this.searchByKey();
     } else if (this.searchCategoryId !== null) {
       this.searchKey = false;
       this.searchCat = true;
-      console.log('searchCategoryId oninit');
       this.prevSearchCat = this.searchCategoryId;
       this.listPostCatId = await this.getPostsByCategoryId();
+      if (this.listPostCatId.length === 0) {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'error',
+          summary: 'Message',
+          detail: 'No results found',
+        });
+      }
     }
   }
   onOuputKey(event) {
     this.searchKey = true;
     this.searchCat = false;
     if (this.prevSearchKey !== event) {
-      console.log('searchContent onOuputKey');
-
       this.searchContent = event;
       this.prevSearchKey = event;
       this.searchByKey();
@@ -67,10 +68,18 @@ export class SearchComponent implements OnInit {
     this.searchKey = false;
     this.searchCat = true;
     if (this.prevSearchCat !== event) {
-      console.log('searchCategoryId onOuputCat');
       this.prevSearchCat = event;
       this.searchCategoryId = event;
       this.listPostCatId = await this.getPostsByCategoryId();
+      console.log(this.listPostCatId);
+      if (this.listPostCatId.length === 0) {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'error',
+          summary: 'Message',
+          detail: 'No results found',
+        });
+      }
     }
   }
   async searchByKey() {
@@ -98,6 +107,14 @@ export class SearchComponent implements OnInit {
     }
     await this.delay(1000);
     this.listPostsContent = listTempPosts[0];
+    if (this.listPostsContent === undefined) {
+      this.messageService.add({
+        key: 'smsg',
+        severity: 'error',
+        summary: 'Message',
+        detail: 'No results found',
+      });
+    }
   }
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));

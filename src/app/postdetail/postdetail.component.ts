@@ -29,6 +29,8 @@ export class PostdetailComponent implements OnInit {
   listComments;
   listOwnerComment;
   disabled;
+  checkInfo;
+  checkCookie;
   constructor(
     private route: ActivatedRoute,
     private service: AppService,
@@ -39,6 +41,7 @@ export class PostdetailComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
+    sessionStorage.clear();
     this.sub = this.route.params.subscribe((params) => {
       this.id = +params['id'];
     });
@@ -48,7 +51,9 @@ export class PostdetailComponent implements OnInit {
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
     } else {
-      this.router.navigate(['']);
+      this.checkCookie = true;
+      this.position = 'top';
+      this.displayPosition = true;
     }
   }
 
@@ -165,6 +170,7 @@ export class PostdetailComponent implements OnInit {
     this.user = await this.getUserByEmail();
 
     if (this.user.avatar === '' || this.user.username === '') {
+      this.checkInfo = true;
       this.position = 'top';
       this.displayPosition = true;
     }
@@ -196,7 +202,11 @@ export class PostdetailComponent implements OnInit {
   }
   onClickDialog() {
     this.displayPosition = false;
-    this.router.navigate(['/settings']);
+    if (this.checkInfo) {
+      this.router.navigate(['/settings']);
+    } else if (this.checkCookie) {
+      this.router.navigate(['/userLogin']);
+    }
   }
   async getUserById(id: number) {
     var data = {
@@ -220,37 +230,45 @@ export class PostdetailComponent implements OnInit {
   }
   async onComment() {
     this.clicked = true;
-    var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
-      body: {
-        postId: this.id,
-        userId: this.user.id,
-        comment: this.formComment.get('content').value,
-      },
-    };
-    var response = this.service.sendRequest('addcomment', data);
-    this.setLoading(response);
+    if (this.formComment.valid) {
+      var data = {
+        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        body: {
+          postId: this.id,
+          userId: this.user.id,
+          comment: this.formComment.get('content').value,
+        },
+      };
+      var response = this.service.sendRequest('addcomment', data);
+      this.setLoading(response);
 
-    if (
-      (await response.then(
-        (__zone_symbol__value) => __zone_symbol__value.body.success
-      )) === true
-    ) {
-      this.listComments = await this.getCommentByPostId();
-      this.listOwnerComment = await this.getListOwnerComment(this.listComments);
-      this.messageService.add({
-        key: 'smsg',
-        severity: 'success',
-        summary: 'Message',
-        detail: 'Your comment was updated successfully',
-      });
-    } else {
-      this.messageService.add({
-        key: 'smsg',
-        severity: 'error',
-        summary: 'Message',
-        detail: 'Your comment was updated unsuccessfully',
-      });
+      if (
+        (await response.then(
+          (__zone_symbol__value) => __zone_symbol__value.body.success
+        )) === true
+      ) {
+        this.listComments = await this.getCommentByPostId();
+        this.listOwnerComment = await this.getListOwnerComment(
+          this.listComments
+        );
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'success',
+          summary: 'Message',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
+        });
+      } else {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'error',
+          summary: 'Message',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
+        });
+      }
     }
   }
   async getCommentByPostId() {
@@ -276,7 +294,7 @@ export class PostdetailComponent implements OnInit {
     return listUser;
   }
   confirmDelete(event, commentId, userId) {
-    console.log("comme", commentId);
+    console.log('comme', commentId);
     this.confirmationService.confirm({
       target: event.target,
       message: 'Are you sure that you want to proceed?',
@@ -290,20 +308,27 @@ export class PostdetailComponent implements OnInit {
           )) !== null
         ) {
           this.listComments = await this.getCommentByPostId();
-          this.listOwnerComment = await this.getListOwnerComment(this.listComments);
+          this.listOwnerComment = await this.getListOwnerComment(
+            this.listComments
+          );
           this.messageService.add({
             key: 'smsg',
             severity: 'success',
             summary: 'Message',
-            detail: 'Your comment was deleted successfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
-
         } else {
           this.messageService.add({
             key: 'smsg',
             severity: 'error',
             summary: 'Message',
-            detail: 'Your comment was deleted unsuccessfully',
+            detail: await response.then(
+              (__zone_symbol__value) =>
+                __zone_symbol__value.body.response.message
+            ),
           });
         }
       },

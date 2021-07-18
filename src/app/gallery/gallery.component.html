@@ -1,11 +1,31 @@
-<mat-progress-bar mode="indeterminate" value="40" *ngIf="loading">
+<mat-progress-bar
+  mode="indeterminate"
+  style="position: absolute; z-index: 1000"
+  *ngIf="loading"
+>
 </mat-progress-bar>
-<p-dialog header="Notification" [(visible)]="displayPosition" [position]="position" [modal]="true" [style]="{ width: '50vw' }" [baseZIndex]="10000" [draggable]="false" [resizable]="false" [closeOnEscape]="false" [closable]="false">
-    <p-toast key="smsg" position="top-right"></p-toast>
-    <p>Let give us your avatar and username before uploading</p>
-    <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="onClickDialog()" label="Ok" styleClass="p-button-text"></p-button>
-    </ng-template>
+<p-dialog
+  header="Notification"
+  [(visible)]="displayPosition"
+  [position]="position"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+  [closeOnEscape]="false"
+  [closable]="false"
+>
+  <p-toast key="smsg" position="top-right"></p-toast>
+  <p>Let give us your avatar and username before uploading</p>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-check"
+      (click)="onClickDialog()"
+      label="Ok"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
 </p-dialog>
 <p-toast key="smsg" position="top-right"></p-toast>
 <input type="radio" name="Photos" id="check1" checked />
@@ -13,52 +33,76 @@
 <input type="radio" name="Photos" id="check3" />
 
 <div class="container-fluid">
-    <div class="wrap">
-        <a href="/" class="button" style="text-decoration: none" id="back">Back</a>
-    </div>
-    <h1>{{ username }}'s Gallery</h1>
-    <div class="top-content">
-        <h3>{{ username }}'s Galery</h3>
-        <label for="check1">Posted</label>
-        <label for="check2">Liked</label>
-        <label for="check3">Uploaded</label>
-    </div>
+  <div class="wrap">
+    <a href="/" class="button" style="text-decoration: none" id="back">Back</a>
+  </div>
+  <h1>{{ username }}'s Gallery</h1>
+  <div class="top-content">
+    <h3>{{ username }}'s Galery</h3>
+    <label for="check1">Posted</label>
+    <label for="check2">Liked</label>
+    <label for="check3">Uploaded</label>
+  </div>
 
-    <div class="photo-gallery">
-        <div class="pic posted">
-            <div class="card-columns">
-                <div class="gal" *ngFor="let img of postedImages">
-                    <app-image [item]="img" [hovered]="img === hoveredItem" [modeOverlay]="'post'" [posted]="true" (mouseover)="onMouseover(img)" (mouseleave)="onMouseleave()" (deleted)="updateUploadedPictures($event)"></app-image>
-                </div>
-            </div>
+  <div class="photo-gallery">
+    <div class="pic posted">
+      <div class="card-columns">
+        <div class="gal" *ngFor="let img of postedImages">
+          <app-image
+            [item]="img"
+            [hovered]="img === hoveredItem"
+            [modeOverlay]="'post'"
+            [posted]="true"
+            (mouseover)="onMouseover(img)"
+            (mouseleave)="onMouseleave()"
+            (deleted)="updateUploadedPictures($event)"
+          ></app-image>
         </div>
-        <div class="pic liked">
-            <div class="card-columns">
-                <div class="gal" *ngFor="let img of likeImages">
-                    <app-image [item]="img" [hovered]="img === hoveredItem" [modeOverlay]="'like'" [posted]="true" (mouseover)="onMouseover(img)" (mouseleave)="onMouseleave()" (deleted)="updateUploadedPictures($event)"></app-image>
-                </div>
-            </div>
-        </div>
-
-        <div class="pic uploaded">
-            <!-- [maxFileSize]="maxFileSize | number" -->
-
-            <form [formGroup]="formUploadPic">
-                <label id="upload_label" for="img">
-                <a
-                  href="/uploadImg"
-                  name="img"
-                  style="text-decoration: none; color: black"
-                  >Upload new Photo</a
-                >
-              </label>
-            </form>
-
-            <div class="card-columns">
-                <div class="gal" *ngFor="let img of uploadedImages">
-                    <app-image [item]="img" [hovered]="img === hoveredItem" [modeOverlay]="'upload'" [posted]="false" (mouseover)="onMouseover(img)" (mouseleave)="onMouseleave()" (deleted)="updateUploadedPictures($event)"></app-image>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="pic liked">
+      <div class="card-columns">
+        <div class="gal" *ngFor="let img of likeImages">
+          <app-image
+            [item]="img"
+            [hovered]="img === hoveredItem"
+            [modeOverlay]="'like'"
+            [posted]="true"
+            (mouseover)="onMouseover(img)"
+            (mouseleave)="onMouseleave()"
+            (deleted)="updateUploadedPictures($event)"
+          ></app-image>
+        </div>
+      </div>
+    </div>
+
+    <div class="pic uploaded">
+      <!-- [maxFileSize]="maxFileSize | number" -->
+
+      <form [formGroup]="formUploadPic">
+        <label id="upload_label" for="img">
+          <a
+            href="/uploadImg"
+            name="img"
+            style="text-decoration: none; color: black"
+            >Upload new Photo</a
+          >
+        </label>
+      </form>
+
+      <div class="card-columns">
+        <div class="gal" *ngFor="let img of uploadedImages">
+          <app-image
+            [item]="img"
+            [hovered]="img === hoveredItem"
+            [modeOverlay]="'upload'"
+            [posted]="false"
+            (mouseover)="onMouseover(img)"
+            (mouseleave)="onMouseleave()"
+            (deleted)="updateUploadedPictures($event)"
+          ></app-image>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

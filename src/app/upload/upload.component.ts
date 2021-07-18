@@ -41,6 +41,8 @@ export class UploadComponent implements OnInit {
   mode;
   loading;
   user;
+  checkCookie;
+  checkInfo;
   constructor(
     private fb: FormBuilder,
     private _ngZone: NgZone,
@@ -98,9 +100,11 @@ export class UploadComponent implements OnInit {
     }
 
     if (this.cookieService.check('auth-token')) {
+      this.checkCookie = false;
       this.getInforUser();
     } else {
-      this.router.navigate(['']);
+      this.displayPosition = true;
+      this.checkCookie = true;
     }
   }
   /**
@@ -150,6 +154,7 @@ export class UploadComponent implements OnInit {
     if (this.avatar === '' || this.username === '') {
       this.position = 'top';
       this.displayPosition = true;
+      this.checkInfo = true;
     }
   }
   async getAllCategories() {
@@ -163,10 +168,27 @@ export class UploadComponent implements OnInit {
     if (e.target.files) {
       var reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
-      reader.onload = (event: any) => {
-        this.img = event.target.result;
-      };
-      this.uploaded = true;
+      var fileExtension = e.target.files[0].type.toString().split('.').pop();
+      if (
+        fileExtension === 'image/bmp' ||
+        fileExtension === 'image/gif' ||
+        fileExtension === 'image/jpeg' ||
+        fileExtension === 'image/png' ||
+        fileExtension === 'image/tiff' ||
+        fileExtension === 'image/webp'
+      ) {
+        reader.onload = (event: any) => {
+          this.img = event.target.result;
+        };
+        this.uploaded = true;
+      } else {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'error',
+          summary: 'Message',
+          detail: 'Uploaded images is invalid',
+        });
+      }
     }
   }
   onItemSelect(item: any) {
@@ -199,37 +221,53 @@ export class UploadComponent implements OnInit {
     for (var k in this.formUpload.get('keywords').value) {
       listKeywords.push(this.formUpload.get('keywords').value[k].value);
     }
-    var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
-      body: {
-        userId: this.userId,
-        picId: +this.picId,
-        title: this.formUpload.get('title').value,
-        description: this.formUpload.get('des').value,
-        categoryId: listCategoryId,
-        keyword: listKeywords.join(','),
-      },
-    };
-    var response = this.service.sendRequest('addpost', data);
-    this.setLoading(response);
     if (
-      (await response.then(
-        (__zone_symbol__value) => __zone_symbol__value.body.success
-      )) === true
+      this.picId !== null &&
+      this.formUpload.get('title').valid &&
+      this.formUpload.get('cates').valid &&
+      this.formUpload.get('des').valid &&
+      this.formUpload.get('keywords').valid
     ) {
-      this.messageService.add({
-        key: 'smsg',
-        severity: 'success',
-        summary: 'Message',
-        detail: 'Uploaded your post successfully',
-      });
-    } else {
-      this.messageService.add({
-        key: 'smsg',
-        severity: 'error',
-        summary: 'Message',
-        detail: 'Updated your post unsuccessfully',
-      });
+      var data = {
+        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        body: {
+          userId: this.userId,
+          picId: +this.picId,
+          title: this.formUpload.get('title').value,
+          description: this.formUpload.get('des').value,
+          categoryId: listCategoryId,
+          keyword: listKeywords.join(','),
+        },
+      };
+      var response = this.service.sendRequest('addpost', data);
+      this.setLoading(response);
+      console.log(response);
+      if (
+        (await response.then(
+          (__zone_symbol__value) => __zone_symbol__value.body.success
+        )) === true
+      ) {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'success',
+          summary: 'Message',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
+        });
+        await setTimeout(() => {
+          location.reload();
+        }, 500);
+      } else {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'error',
+          summary: 'Message',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
+        });
+      }
     }
   }
   async onUpdate() {
@@ -242,37 +280,42 @@ export class UploadComponent implements OnInit {
       listKeywords.push(this.formUpload.get('keywords').value[k].value);
     }
     var id = +sessionStorage.getItem('id');
-    var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
-      body: {
-        postId: id,
-        title: this.formUpload.get('title').value,
-        description: this.formUpload.get('des').value,
-        categoryId: listCategoryId,
-        keyword: listKeywords.join(','),
-      },
-    };
-    console.log('data', data);
-    var response = this.service.sendRequest('updatepost', data);
-    this.setLoading(response);
-    var isSuccess = await response.then(
-      (__zone_symbol__value) => __zone_symbol__value.body.success
-    );
-    if (isSuccess) {
-      sessionStorage.clear();
-      this.messageService.add({
-        key: 'smsg',
-        severity: 'success',
-        summary: 'Message',
-        detail: 'Updated your post successfully',
-      });
-    } else {
-      this.messageService.add({
-        key: 'smsg',
-        severity: 'error',
-        summary: 'Message',
-        detail: 'Updated your post unsuccessfully',
-      });
+    if (this.formUpload.valid) {
+      var data = {
+        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        body: {
+          postId: id,
+          title: this.formUpload.get('title').value,
+          description: this.formUpload.get('des').value,
+          categoryId: listCategoryId,
+          keyword: listKeywords.join(','),
+        },
+      };
+      var response = this.service.sendRequest('updatepost', data);
+      this.setLoading(response);
+      var isSuccess = await response.then(
+        (__zone_symbol__value) => __zone_symbol__value.body.success
+      );
+      if (isSuccess) {
+        sessionStorage.clear();
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'success',
+          summary: 'Message',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
+        });
+      } else {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'error',
+          summary: 'Message',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
+        });
+      }
     }
   }
   async getUserByEmail() {
@@ -331,7 +374,11 @@ export class UploadComponent implements OnInit {
   }
   onClickDialog() {
     this.displayPosition = false;
-    this.router.navigate(['/settings']);
+    if (this.checkCookie) {
+      this.router.navigate(['/userLogin']);
+    } else if (this.checkInfo) {
+      this.router.navigate(['/settings']);
+    }
   }
 
   @HostListener('window:unload', ['$event'])

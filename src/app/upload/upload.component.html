@@ -1,4 +1,8 @@
-<mat-progress-bar mode="indeterminate" value="40" *ngIf="loading">
+<mat-progress-bar
+  mode="indeterminate"
+  style="position: absolute; z-index: 1000"
+  *ngIf="loading"
+>
 </mat-progress-bar>
 <app-header></app-header>
 
@@ -14,7 +18,9 @@
   [closeOnEscape]="false"
   [closable]="false"
 >
-  <p>Let give us your avatar and username before uploading</p>
+  <p-toast key="smsg" position="top-right"></p-toast>
+  <p *ngIf="checkInfo">Let give us your avatar and username before uploading</p>
+  <p *ngIf="checkCookie">Sign in before uploading post?</p>
   <ng-template pTemplate="footer">
     <p-button
       icon="pi pi-check"

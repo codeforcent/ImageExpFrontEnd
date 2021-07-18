@@ -1,28 +1,49 @@
-<mat-progress-bar mode="indeterminate" value="40" *ngIf="loading">
+<mat-progress-bar
+  mode="indeterminate"
+  style="position: absolute; z-index: 1000"
+  *ngIf="loading"
+>
 </mat-progress-bar>
 <app-header></app-header>
-<p-dialog header="Notification" [(visible)]="displayPosition" [position]="position" [modal]="true" [style]="{ width: '50vw' }" [baseZIndex]="10000" [draggable]="false" [resizable]="false" [closeOnEscape]="false" [closable]="false">
-    <p-toast key="smsg" position="top-right"></p-toast>
-    <p>Let give us your avatar and username before uploading</p>
-    <ng-template pTemplate="footer">
-        <p-button icon="pi pi-check" (click)="onClickDialog()" label="Ok" styleClass="p-button-text"></p-button>
-    </ng-template>
+<p-dialog
+  header="Notification"
+  [(visible)]="displayPosition"
+  [position]="position"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [baseZIndex]="10000"
+  [draggable]="false"
+  [resizable]="false"
+  [closeOnEscape]="false"
+  [closable]="false"
+>
+  <p-toast key="smsg" position="top-right"></p-toast>
+  <p *ngIf="checkInfo">Let give us your avatar and username before uploading</p>
+  <p *ngIf="checkCookie">Sign in before seeing this post?</p>
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-check"
+      (click)="onClickDialog()"
+      label="Ok"
+      styleClass="p-button-text"
+    ></p-button>
+  </ng-template>
 </p-dialog>
 <p-toast key="smsg" position="top-right"></p-toast>
 
 <body>
-    <div class="wrapper">
-        <div class="pic-section">
-            <img [src]="picture.picture" alt="Picture" />
-        </div>
+  <div class="wrapper">
+    <div class="pic-section">
+      <img [src]="picture.picture" alt="Picture" />
+    </div>
 
-        <div class="detail-section">
-            <div class="owner-section">
-                <a href="user/{{ postUser.id }}">
-                    <!-- Link to user gallery -->
-                    <img alt="Owner" [src]="postUser.avatar" />
-                </a>
-                <span>
+    <div class="detail-section">
+      <div class="owner-section">
+        <a href="user/{{ postUser.id }}">
+          <!-- Link to user gallery -->
+          <img alt="Owner" [src]="postUser.avatar" />
+        </a>
+        <span>
           By <a href="user/{{ postUser.id }}">{{ postUser.name }}</a></span
         >
       </div>
@@ -33,42 +54,71 @@
           class="like"
           (click)="onChangeLikeBtn()"
         /><span>{{ likeCount }} Like</span>
-            </div>
-            <div class="message-section">
-                <p>
-                    {{ post.description }}
-                </p>
-            </div>
-            <div class="comment-form">
-                <img alt="User" [src]="postUser.avatar" />
-                <p>{{postUser.name}} :</p>
-                <form [formGroup]="formComment">
-                    <textarea class="textbox" name="comment" placeholder="Type your's comment" formControlName="content" contenteditable></textarea>
+      </div>
+      <div class="message-section">
+        <p>
+          {{ post.description }}
+        </p>
+      </div>
+      <div class="comment-form">
+        <img alt="User" [src]="postUser.avatar" />
+        <p>{{ postUser.name }} :</p>
+        <form [formGroup]="formComment">
+          <textarea
+            class="textbox"
+            name="comment"
+            placeholder="Type your's comment"
+            formControlName="content"
+            contenteditable
+          ></textarea>
 
-                    <button type="submit" value="comment" (click)="onComment()"><i class="fas fa-paper-plane"></i></button>
+          <button type="submit" value="comment" (click)="onComment()">
+            <i class="fas fa-paper-plane"></i>
+          </button>
 
-                    <small style="color: red" *ngIf="this.formComment.get('content')?.errors?.required && clicked">   Comment is required</small>
-                </form>
-            </div>
-            <div class="comment-section">
-                <div class="comment" *ngFor="let comment of listComments; let i = index">
-                    <a href="/user/{{ listOwnerComment[i].id }}">
-                        <!-- Link to comment user gallery -->
-                        <img alt="User" [src]="listOwnerComment[i].avatar" />
-                    </a>
-                    <span><a href="/user/{{ listOwnerComment[i].id }}">{{listOwnerComment[i].name}}</a>:
-            {{ comment.comment }}</span
+          <small
+            style="color: red"
+            *ngIf="this.formComment.get('content')?.errors?.required && clicked"
+          >
+            Comment is required</small
+          >
+        </form>
+      </div>
+      <div class="comment-section">
+        <div
+          class="comment"
+          *ngFor="let comment of listComments; let i = index"
+        >
+          <a href="/user/{{ listOwnerComment[i].id }}">
+            <!-- Link to comment user gallery -->
+            <img alt="User" [src]="listOwnerComment[i].avatar" />
+          </a>
+          <span
+            ><a href="/user/{{ listOwnerComment[i].id }}">{{
+              listOwnerComment[i].name
+            }}</a
+            >: {{ comment.comment }}</span
           >
           <div class="flex-end">
-            <button pButton type="button"><i class="far fa-trash-alt" (click)="confirmDelete($event, comment.commentID, listOwnerComment[i].id)"></i
-              ></button>
-              <p-confirmPopup
+            <button pButton type="button">
+              <i
+                class="far fa-trash-alt"
+                (click)="
+                  confirmDelete(
+                    $event,
+                    comment.commentID,
+                    listOwnerComment[i].id
+                  )
+                "
+              ></i>
+            </button>
+            <p-confirmPopup
               [showTransitionOptions]="'100ms'"
               [hideTransitionOptions]="'100ms'"
             ></p-confirmPopup>
-            </div>
           </div>
         </div>
       </div>
     </div>
-  </body>
+  </div>
+</body>

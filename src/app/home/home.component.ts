@@ -39,15 +39,8 @@ export class HomeComponent implements OnInit {
     this.listPic = await this.getPicture(listId);
   }
   async getInforUser() {
-    // const isMe = (element) => element.userId === this.userId;
     this.user = await this.getUserByEmail();
     this.userId = this.user.id;
-
-    // if (this.user !== null) {
-    //   if (listId.findIndex(isMe) > -1) {
-    //     listId.splice(listId.findIndex(isMe), 1);
-    //   }
-    // }
   }
   async getUserByEmail() {
     var data = {

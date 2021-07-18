@@ -1,8 +1,9 @@
 <mat-progress-bar
   mode="indeterminate"
-  value="40"
   *ngIf="loading"
+  style="position: absolute; z-index: 1000;"
 ></mat-progress-bar>
+
 <app-header></app-header>
 <p-toast key="smsg" position="top-right"></p-toast>
 <div class="container-fluid">
