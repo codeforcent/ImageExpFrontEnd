@@ -21,6 +21,8 @@ export class UserComponent implements OnInit {
   postedImages: any = [];
   hoveredItem;
   likedImages;
+  displayPosition;
+  position
   constructor(
     private vigenereCipherService: VigenereCipherService,
     private router: Router,
@@ -34,7 +36,7 @@ export class UserComponent implements OnInit {
     if (this.cookieService.check('auth-token')) {
       this.getInforUsers();
     } else {
-      this.router.navigate(['']);
+      this.displayPosition = true;
     }
   }
 
@@ -192,5 +194,9 @@ export class UserComponent implements OnInit {
     });
 
     return listItem;
+  }
+  onClickDialog() {
+    this.displayPosition = false;
+    this.router.navigate(['/userLogin']);
   }
 }

@@ -41,6 +41,7 @@ export class PostdetailComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {
+    sessionStorage.clear();
     this.sub = this.route.params.subscribe((params) => {
       this.id = +params['id'];
     });
