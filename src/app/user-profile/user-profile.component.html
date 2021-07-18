@@ -48,9 +48,9 @@
           class="input-field"
           [ngClass]="{
             'error-box':
-              (formUserProfile.get('username')?.invalid &&
-                formUserProfile.get('username')?.touched) ||
-              (clicked && formUserProfile.get('username')?.pristine)
+            ((formUserProfile.get('username')?.errors?.required &&
+            formUserProfile.get('username')?.touched) ||
+          (clicked && formUserProfile.get('username')?.pristine ) && username === '')
           }"
         >
           <i class="fas"></i>
@@ -65,9 +65,9 @@
           />
           <small
             *ngIf="
-              (formUserProfile.get('username')?.errors?.required &&
+              ((formUserProfile.get('username')?.errors?.required &&
                 formUserProfile.get('username')?.touched) ||
-              (clicked && formUserProfile.get('username')?.pristine)
+              (clicked && formUserProfile.get('username')?.pristine ) && username === '')
             "
             class="form-text error-text"
             >Username is required</small

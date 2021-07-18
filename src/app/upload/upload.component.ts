@@ -216,10 +216,7 @@ export class UploadComponent implements OnInit {
     for (var k in this.formUpload.get('keywords').value) {
       listKeywords.push(this.formUpload.get('keywords').value[k].value);
     }
-    if (
-      this.formUpload.valid &&
-      (this.formUpload.get('img').valid || this.formUpload.get('img').invalid)
-    ) {
+    if (this.formUpload.valid || this.picId !== null) {
       var data = {
         'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
         body: {
@@ -233,6 +230,7 @@ export class UploadComponent implements OnInit {
       };
       var response = this.service.sendRequest('addpost', data);
       this.setLoading(response);
+      console.log(response);
       if (
         (await response.then(
           (__zone_symbol__value) => __zone_symbol__value.body.success
@@ -242,14 +240,21 @@ export class UploadComponent implements OnInit {
           key: 'smsg',
           severity: 'success',
           summary: 'Message',
-          detail: 'Uploaded your post successfully',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
         });
+        await setTimeout(() => {
+          location.reload();
+        }, 500);
       } else {
         this.messageService.add({
           key: 'smsg',
           severity: 'error',
           summary: 'Message',
-          detail: 'Updated your post unsuccessfully',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
         });
       }
     }

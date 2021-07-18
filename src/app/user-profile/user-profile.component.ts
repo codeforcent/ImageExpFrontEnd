@@ -148,10 +148,27 @@ export class UserProfileComponent implements OnInit {
         avatar: this.avatar,
       },
     };
-
     if (
-      this.formUserProfile.get('username').value !== '' &&
-      this.formUserProfile.get('username').valid
+      this.username !== '' &&
+      this.formUserProfile.get('username').value === ''
+    ) {
+      data = {
+        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        body: {
+          email: this.email,
+          username: this.username,
+          avatar: this.avatar,
+        },
+      };
+    }
+    if (
+      ((this.formUserProfile.get('username').value !== '' &&
+        this.formUserProfile.get('username').valid) ||
+        this.username !== '') &&
+      this.formUserProfile.get('avatar').value !== this.avatar &&
+      this.formUserProfile.get('username').value !== this.username &&
+      (this.formUserProfile.get('avatar').value !== '' ||
+        this.formUserProfile.get('username').value !== '')
     ) {
       var response = this.service.sendRequest('updateuser', data);
       this.setLoading(response);
@@ -164,7 +181,9 @@ export class UserProfileComponent implements OnInit {
           key: 'smsg',
           severity: 'success',
           summary: 'Message',
-          detail: 'Updated your profile successfully',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
         });
         location.reload();
       } else {
@@ -172,10 +191,11 @@ export class UserProfileComponent implements OnInit {
           key: 'smsg',
           severity: 'error',
           summary: 'Message',
-          detail: 'Updated your profile unsuccessfully',
+          detail: await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.response.message
+          ),
         });
       }
-    } else {
     }
   }
 }
