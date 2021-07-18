@@ -221,7 +221,13 @@ export class UploadComponent implements OnInit {
     for (var k in this.formUpload.get('keywords').value) {
       listKeywords.push(this.formUpload.get('keywords').value[k].value);
     }
-    if (this.formUpload.valid || this.picId !== null) {
+    if (
+      this.picId !== null &&
+      this.formUpload.get('title').valid &&
+      this.formUpload.get('cates').valid &&
+      this.formUpload.get('des').valid &&
+      this.formUpload.get('keywords').valid
+    ) {
       var data = {
         'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
         body: {
