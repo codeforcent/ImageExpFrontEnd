@@ -37,16 +37,15 @@ export class HeaderComponent implements OnInit {
     private http: HttpClient
   ) {
     this.http
-    .get('assets/config.json', { responseType: 'json' })
-    .subscribe((data) => {
-      this.auth_token_key = data[2].authtokenkey;
-      this.verified_key = data[0].verifiedkey;
-    });
+      .get('assets/config.json', { responseType: 'json' })
+      .subscribe((data) => {
+        this.verified_key = data[0].verifiedkey;
+        this.auth_token_key = data[2].authtokenkey;
+      });
 
     this.formSearch = this.fb.group({
       content: [''],
     });
-
   }
   async ngOnInit() {
     await this.delay(500);
