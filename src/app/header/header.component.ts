@@ -48,7 +48,7 @@ export class HeaderComponent implements OnInit {
     });
   }
   async ngOnInit() {
-    await this.delay(500);
+    await this.delay(1000);
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
     } else {
