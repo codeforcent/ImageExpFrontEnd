@@ -7,6 +7,7 @@ import { VigenereCipherService } from '../vigenere-cipher.service';
 import { AppComponent } from '../app.component';
 import { CookieService } from 'ngx-cookie-service';
 import { AppService } from '../app.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-profile',
@@ -16,7 +17,6 @@ import { AppService } from '../app.service';
 })
 export class UserProfileComponent implements OnInit {
   hovered = false;
-
   formUserProfile: FormGroup;
   items: MenuItem[];
   email;
@@ -25,6 +25,8 @@ export class UserProfileComponent implements OnInit {
   clicked = false;
   user;
   loading;
+  auth_token_key;
+  verified_key;
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
@@ -32,23 +34,30 @@ export class UserProfileComponent implements OnInit {
     private router: Router,
     private service: AppService,
     private vigenereCipherService: VigenereCipherService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private http: HttpClient
   ) {
+    this.http
+      .get('assets/config.json', { responseType: 'json' })
+      .subscribe((data) => {
+        this.verified_key = data[0].verifiedkey;
+        this.auth_token_key = data[2].authtokenkey;
+      });
     this.formUserProfile = this.fb.group({
       username: ['', [Validators.required, Validators.maxLength(50)]],
       avatar: '',
     });
-    if (this.cookieService.check('auth-token')) {
-      this.getInforUser();
-    } else {
-      this.router.navigate(['']);
-    }
   }
 
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
   ngOnInit() {
+    if (this.cookieService.check('auth-token')) {
+      this.getInforUser();
+    } else {
+      this.router.navigate(['']);
+    }
     this.items = [
       {
         label: 'Edit profile',
@@ -72,11 +81,11 @@ export class UserProfileComponent implements OnInit {
   }
   async getUserByEmail() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.vigenereCipherService.vigenereCipher(
           this.cookieService.get('auth-token'),
-          '24DJBWID328FNSU32Z',
+          this.auth_token_key,
           false
         ),
       },
@@ -132,7 +141,7 @@ export class UserProfileComponent implements OnInit {
       this.email !==
       this.vigenereCipherService.vigenereCipher(
         this.app.cookieService.get('auth-token'),
-        '24DJBWID328FNSU32Z',
+        this.auth_token_key,
         false
       )
     ) {
@@ -141,7 +150,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.email,
         username: this.formUserProfile.get('username').value,
@@ -153,7 +162,7 @@ export class UserProfileComponent implements OnInit {
       this.formUserProfile.get('username').value === ''
     ) {
       data = {
-        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        'secret-key': this.verified_key,
         body: {
           email: this.email,
           username: this.username,

@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AppService } from '../app.service';
 import { forkJoin } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-upload-img',
   templateUrl: './upload-img.component.html',
@@ -22,26 +23,35 @@ export class UploadImgComponent implements OnInit {
   position: string;
   loading;
   user;
+  auth_token_key;
+  verified_key;
   constructor(
     private messageService: MessageService,
     private vigenereCipherService: VigenereCipherService,
     private router: Router,
     private fb: FormBuilder,
     private service: AppService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private http: HttpClient
   ) {
+    this.http
+      .get('assets/config.json', { responseType: 'json' })
+      .subscribe((data) => {
+        this.verified_key = data[0].verifiedkey;
+        this.auth_token_key = data[2].authtokenkey;
+      });
     this.formUploadPic = this.fb.group({
       pics: [''],
     });
+  }
 
+  ngOnInit() {
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
     } else {
       this.router.navigate(['']);
     }
   }
-
-  ngOnInit(): void {}
 
   async getInforUser() {
     this.user = await this.getUserByEmail();
@@ -55,11 +65,11 @@ export class UploadImgComponent implements OnInit {
   }
   async getUserByEmail() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.vigenereCipherService.vigenereCipher(
           this.cookieService.get('auth-token'),
-          '24DJBWID328FNSU32Z',
+          this.auth_token_key,
           false
         ),
       },
@@ -99,7 +109,7 @@ export class UploadImgComponent implements OnInit {
   }
   async addPicture(pic) {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         userId: this.userId,
         picture: pic,
@@ -115,7 +125,7 @@ export class UploadImgComponent implements OnInit {
         key: 'smsg',
         severity: 'success',
         summary: 'Message',
-        detail: "Upload image successfully",
+        detail: 'Upload image successfully',
       });
       return await response.then(
         (__zone_symbol__value) => __zone_symbol__value.body.response
@@ -125,7 +135,7 @@ export class UploadImgComponent implements OnInit {
         key: 'smsg',
         severity: 'error',
         summary: 'Message',
-        detail: "Upload image unsuccessfully",
+        detail: 'Upload image unsuccessfully',
       });
       return null;
     }

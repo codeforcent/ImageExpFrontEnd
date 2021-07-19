@@ -5,6 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AppService } from '../app.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -23,7 +24,8 @@ export class HeaderComponent implements OnInit {
   cateList = [];
   formSearch: FormGroup;
   prevSearch = '';
-  reg: RegExp = /[0-9a-zA-Z_@!#$<>%^&*()]{0,50}/;
+  auth_token_key;
+  verified_key;
   constructor(
     private cookieService: CookieService,
     private router: Router,
@@ -31,18 +33,28 @@ export class HeaderComponent implements OnInit {
     // private http: HttpClient,
     private service: AppService,
     private fb: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private http: HttpClient
   ) {
+    this.http
+    .get('assets/config.json', { responseType: 'json' })
+    .subscribe((data) => {
+      this.auth_token_key = data[2].authtokenkey;
+      this.verified_key = data[0].verifiedkey;
+    });
+
     this.formSearch = this.fb.group({
       content: [''],
     });
+
+  }
+  async ngOnInit() {
+    await this.delay(500);
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
     } else {
       this.logIn = false;
     }
-  }
-  async ngOnInit() {
     this.cateList = await this.getAllCategories();
   }
   delay(ms: number) {
@@ -50,7 +62,7 @@ export class HeaderComponent implements OnInit {
   }
   signOut() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.email,
         status: 'offline',
@@ -73,11 +85,11 @@ export class HeaderComponent implements OnInit {
   }
   async getUserByEmail() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.vigenereCipherService.vigenereCipher(
           this.cookieService.get('auth-token'),
-          '24DJBWID328FNSU32Z',
+          this.auth_token_key,
           false
         ),
       },

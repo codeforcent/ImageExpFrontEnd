@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AppService } from '../app.service';
 import { forkJoin } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -22,25 +23,34 @@ export class UserComponent implements OnInit {
   hoveredItem;
   likedImages;
   displayPosition;
-  position
+  position;
+  auth_token_key;
+  verified_key;
   constructor(
     private vigenereCipherService: VigenereCipherService,
     private router: Router,
     private route: ActivatedRoute,
     private cookieService: CookieService,
-    private service: AppService
+    private service: AppService,
+    private http: HttpClient
   ) {
+    this.http
+      .get('assets/config.json', { responseType: 'json' })
+      .subscribe((data) => {
+        this.verified_key = data[0].verifiedkey;
+        this.auth_token_key = data[2].authtokenkey;
+      });
     this.sub = this.route.params.subscribe((params) => {
       this.id = +params['id'];
     });
+  }
+
+  async ngOnInit() {
     if (this.cookieService.check('auth-token')) {
       this.getInforUsers();
     } else {
       this.displayPosition = true;
     }
-  }
-
-  async ngOnInit() {
     var listOfListPic = await this.getAllListImages(
       this.getPostedPicturesByUserId(),
       this.getLikedPosts()
@@ -63,11 +73,11 @@ export class UserComponent implements OnInit {
   }
   async getUserByEmail() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.vigenereCipherService.vigenereCipher(
           this.cookieService.get('auth-token'),
-          '24DJBWID328FNSU32Z',
+          this.auth_token_key,
           false
         ),
       },
@@ -88,7 +98,7 @@ export class UserComponent implements OnInit {
   }
   async getUserById(id: number) {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         id: id,
       },
@@ -118,7 +128,7 @@ export class UserComponent implements OnInit {
   }
   async getPostedPicturesByUserId() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         id: this.id,
       },
@@ -146,7 +156,7 @@ export class UserComponent implements OnInit {
   }
   async getPictureById(picId) {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         id: picId,
       },
@@ -166,7 +176,7 @@ export class UserComponent implements OnInit {
   }
   async getLikedPosts() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         userId: this.id,
       },
@@ -185,14 +195,12 @@ export class UserComponent implements OnInit {
   async getAllListImages(...args) {
     var listItem = [];
     var i = 0;
-
     forkJoin([...args]).subscribe(async (results) => {
       while (i < args.length) {
         listItem.push(await this.getListImages(await results[i++]));
         listItem.push(await this.getListImages(await results[i++]));
       }
     });
-
     return listItem;
   }
   onClickDialog() {

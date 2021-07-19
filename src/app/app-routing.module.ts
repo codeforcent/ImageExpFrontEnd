@@ -26,6 +26,7 @@ const routes: Routes = [
   { path: 'uploadImg', component: UploadImgComponent },
   { path: 'postDetail/:id', component: PostdetailComponent },
   { path: 'search', component: SearchComponent },
+  { path: 'assets/config.json', redirectTo: '**', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
 @NgModule({

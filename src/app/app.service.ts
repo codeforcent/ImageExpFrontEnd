@@ -5,7 +5,14 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class AppService {
-  constructor(private http: HttpClient) {}
+  demoUrl;
+  constructor(private http: HttpClient) {
+    this.http
+      .get('assets/config.json', { responseType: 'json' })
+      .subscribe((data) => {
+        this.demoUrl = data[1].demoUrl;
+      });
+  }
 
   async sendRequest(action, data) {
     const httpOptions: { headers; observe } = {
@@ -16,11 +23,7 @@ export class AppService {
     };
 
     var respo = null;
-    var res = await this.http.post(
-      'https://image-exp-backend.herokuapp.com/' + action,
-      data,
-      httpOptions
-    );
+    var res = await this.http.post(this.demoUrl + action, data, httpOptions);
 
     await res.toPromise().then((response) => {
       respo = response;

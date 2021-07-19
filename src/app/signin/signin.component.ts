@@ -4,6 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { VigenereCipherService } from '../vigenere-cipher.service';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -22,6 +23,9 @@ export class SigninComponent implements OnInit {
   loading: boolean;
   verifiedSignUp = false;
   verifiedSignIn = false;
+  auth_token_key;
+  verified_key;
+  check_browser_key;
   /**
    * Creates an instance of SigninComponent.
    * @param {FormBuilder} fb
@@ -36,8 +40,16 @@ export class SigninComponent implements OnInit {
     private router: Router,
     private vigenereCipherService: VigenereCipherService,
     private cookieService: CookieService,
-    private service: AppService
+    private service: AppService,
+    private http: HttpClient
   ) {
+    this.http
+      .get('assets/config.json', { responseType: 'json' })
+      .subscribe((data) => {
+        this.verified_key = data[0].verifiedkey;
+        this.auth_token_key = data[2].authtokenkey;
+        this.check_browser_key = data[3].checkbrowserkey;
+      });
     this.formSignUp = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: [
@@ -87,7 +99,7 @@ export class SigninComponent implements OnInit {
    */
   async onSubmitSignIn(): Promise<void> {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.formSignIn.get('email').value,
         password: this.formSignIn.get('password').value,
@@ -109,7 +121,7 @@ export class SigninComponent implements OnInit {
       ) {
         this.email = this.formSignIn.get('email').value;
         var dt = {
-          'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+          'secret-key': this.verified_key,
           body: {
             email: this.formSignIn.get('email').value,
           },
@@ -121,9 +133,8 @@ export class SigninComponent implements OnInit {
             (__zone_symbol__value) => __zone_symbol__value.body.response.state
           )) === false
         ) {
-
           var dat = {
-            'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+            'secret-key': this.verified_key,
             body: {
               email: this.email,
             },
@@ -170,7 +181,7 @@ export class SigninComponent implements OnInit {
    */
   async onSubmitSignUp(): Promise<void> {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.formSignUp.get('email').value,
         password: this.formSignUp.get('password').value,
@@ -188,10 +199,10 @@ export class SigninComponent implements OnInit {
           (__zone_symbol__value) => __zone_symbol__value.body.success
         )) === true
       ) {
-        sessionStorage.setItem('242dshY2H2YDU3BU3FDEF', '_4374gdHGE73BBGH');
+        sessionStorage.setItem('242dshY2H2YDU3BU3FDEF', this.check_browser_key);
         this.email = this.formSignUp.get('email').value;
         var dat = {
-          'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+          'secret-key': this.verified_key,
           body: {
             email: this.formSignUp.get('email').value,
           },
@@ -215,7 +226,7 @@ export class SigninComponent implements OnInit {
   onVerifySignUp(ev: boolean): void {
     if (ev == true) {
       var dt = {
-        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        'secret-key': this.verified_key,
         body: {
           email: this.email,
           state: true,
@@ -224,7 +235,7 @@ export class SigninComponent implements OnInit {
       var res = this.service.sendRequest('setverifystate', dt);
       this.setLoading(res);
       var data = {
-        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        'secret-key': this.verified_key,
         body: {
           email: this.email,
           status: 'online',
@@ -233,7 +244,7 @@ export class SigninComponent implements OnInit {
       var response = this.service.sendRequest('changestatus', data);
       this.setLoading(response);
       var dat = {
-        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        'secret-key': this.verified_key,
         body: {
           email: this.email,
           password: this.formSignIn.get('password').value,
@@ -244,7 +255,7 @@ export class SigninComponent implements OnInit {
         'auth-token',
         this.vigenereCipherService.vigenereCipher(
           this.formSignUp.get('email').value,
-          '24DJBWID328FNSU32Z',
+          this.auth_token_key,
           true
         )
       );
@@ -268,7 +279,7 @@ export class SigninComponent implements OnInit {
    */
   onSignIn(): void {
     var dt = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.email,
         state: true,
@@ -278,7 +289,7 @@ export class SigninComponent implements OnInit {
     this.setLoading(res);
 
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.email,
         status: 'online',
@@ -287,7 +298,7 @@ export class SigninComponent implements OnInit {
     var response = this.service.sendRequest('changestatus', data);
     this.setLoading(response);
     var dat = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.email,
         password: this.formSignIn.get('password').value,
@@ -298,7 +309,7 @@ export class SigninComponent implements OnInit {
       'auth-token',
       this.vigenereCipherService.vigenereCipher(
         this.formSignIn.get('email').value,
-        '24DJBWID328FNSU32Z',
+        this.auth_token_key,
         true
       )
     );

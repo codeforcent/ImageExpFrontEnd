@@ -10,6 +10,7 @@ import { MessageService, SelectItem } from 'primeng/api';
 import { AppService } from '../app.service';
 import { forkJoin } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-upload',
@@ -43,6 +44,8 @@ export class UploadComponent implements OnInit {
   user;
   checkCookie;
   checkInfo;
+  auth_token_key;
+  verified_key;
   constructor(
     private fb: FormBuilder,
     private _ngZone: NgZone,
@@ -50,8 +53,15 @@ export class UploadComponent implements OnInit {
     private vigenereCipherService: VigenereCipherService,
     private messageService: MessageService,
     private service: AppService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private http: HttpClient
   ) {
+    this.http
+      .get('assets/config.json', { responseType: 'json' })
+      .subscribe((data) => {
+        this.verified_key = data[0].verifiedkey;
+        this.auth_token_key = data[2].authtokenkey;
+      });
     this.img = sessionStorage.getItem('img');
     this.picId = sessionStorage.getItem('id');
     this.mode = sessionStorage.getItem('mode');
@@ -98,7 +108,11 @@ export class UploadComponent implements OnInit {
         });
       }
     }
-
+  }
+  /**
+   * on init
+   */
+  async ngOnInit() {
     if (this.cookieService.check('auth-token')) {
       this.checkCookie = false;
       this.getInforUser();
@@ -107,11 +121,6 @@ export class UploadComponent implements OnInit {
       this.position = 'top';
       this.checkCookie = true;
     }
-  }
-  /**
-   * on init
-   */
-  async ngOnInit() {
     this.cateList = await this.getAllCategories();
     this.cateList.forEach((cate) => this.dropdownList.push(cate));
     this.selectedCates = await this.getSelectedListCategory(this.listCateId);
@@ -128,7 +137,7 @@ export class UploadComponent implements OnInit {
   }
   async getCategoryById(id: any) {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         id: id,
       },
@@ -230,7 +239,7 @@ export class UploadComponent implements OnInit {
       this.formUpload.get('keywords').valid
     ) {
       var data = {
-        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        'secret-key': this.verified_key,
         body: {
           userId: this.userId,
           picId: +this.picId,
@@ -283,7 +292,7 @@ export class UploadComponent implements OnInit {
     var id = +sessionStorage.getItem('id');
     if (this.formUpload.valid) {
       var data = {
-        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        'secret-key': this.verified_key,
         body: {
           postId: id,
           title: this.formUpload.get('title').value,
@@ -321,11 +330,11 @@ export class UploadComponent implements OnInit {
   }
   async getUserByEmail() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.vigenereCipherService.vigenereCipher(
           this.cookieService.get('auth-token'),
-          '24DJBWID328FNSU32Z',
+          this.auth_token_key,
           false
         ),
       },
@@ -350,7 +359,7 @@ export class UploadComponent implements OnInit {
   }
   async onUploadPic() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         userId: this.userId,
         picture: this.img,

@@ -24,11 +24,17 @@ export class SearchComponent implements OnInit {
   prevSearchCat;
   searchKey;
   searchCat;
+  verified_key;
   constructor(
     private http: HttpClient,
     private service: AppService,
     private messageService: MessageService
   ) {
+    this.http
+      .get('assets/config.json', { responseType: 'json' })
+      .subscribe((data) => {
+        this.verified_key = data[0].verifiedkey;
+      });
     this.searchContent = sessionStorage.getItem('key');
     this.searchCategoryId = sessionStorage.getItem('cat');
     sessionStorage.clear();
@@ -71,7 +77,6 @@ export class SearchComponent implements OnInit {
       this.prevSearchCat = event;
       this.searchCategoryId = event;
       this.listPostCatId = await this.getPostsByCategoryId();
-      console.log(this.listPostCatId);
       if (this.listPostCatId.length === 0) {
         this.messageService.add({
           key: 'smsg',
@@ -142,7 +147,6 @@ export class SearchComponent implements OnInit {
         });
       }
     }
-
     return listResult;
   }
   onMouseover(item) {
@@ -174,7 +178,7 @@ export class SearchComponent implements OnInit {
   }
   async getPostsBySearchKey(searchKey) {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         searchKey: searchKey,
       },
@@ -187,7 +191,7 @@ export class SearchComponent implements OnInit {
   }
   async getPostsByCategoryId() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         id: +this.searchCategoryId,
       },

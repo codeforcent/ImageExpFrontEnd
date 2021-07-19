@@ -6,6 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { AppService } from '../app.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-postdetail',
@@ -31,6 +32,8 @@ export class PostdetailComponent implements OnInit {
   disabled;
   checkInfo;
   checkCookie = true;
+  auth_token_key;
+  verified_key;
   constructor(
     private route: ActivatedRoute,
     private service: AppService,
@@ -39,8 +42,15 @@ export class PostdetailComponent implements OnInit {
     private vigenereCipherService: VigenereCipherService,
     private fb: FormBuilder,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private http: HttpClient
   ) {
+    this.http
+      .get('assets/config.json', { responseType: 'json' })
+      .subscribe((data) => {
+        this.auth_token_key = data[2].authtokenkey;
+        this.verified_key = data[0].verifiedkey;
+      });
     sessionStorage.clear();
     this.displayPosition = true;
     this.position = 'top';
@@ -51,15 +61,15 @@ export class PostdetailComponent implements OnInit {
     this.formComment = this.fb.group({
       content: ['', [Validators.required]],
     });
+  }
+
+  async ngOnInit() {
     if (this.cookieService.check('auth-token')) {
       this.checkCookie = false;
       this.getInforUser();
     } else {
       this.router.navigate(['/userLogin']);
     }
-  }
-
-  async ngOnInit() {
     this.post = await this.getPostById();
     this.picture = await this.getPictureById(this.post.picId);
     this.postUser = await this.getUserById(this.post.userId);
@@ -73,7 +83,7 @@ export class PostdetailComponent implements OnInit {
   }
   private async countLike() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         postId: this.id,
       },
@@ -86,7 +96,7 @@ export class PostdetailComponent implements OnInit {
 
   private async checkLike() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         postId: this.id,
         userId: this.user.id,
@@ -105,7 +115,7 @@ export class PostdetailComponent implements OnInit {
 
   async getPostById() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         id: this.id,
       },
@@ -135,7 +145,7 @@ export class PostdetailComponent implements OnInit {
   }
   async toggleLike() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         postId: this.id,
         userId: this.user.id,
@@ -146,7 +156,7 @@ export class PostdetailComponent implements OnInit {
   }
   async getPictureById(picId: any) {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         id: picId,
       },
@@ -179,11 +189,11 @@ export class PostdetailComponent implements OnInit {
   }
   async getUserByEmail() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         email: this.vigenereCipherService.vigenereCipher(
           this.cookieService.get('auth-token'),
-          '24DJBWID328FNSU32Z',
+          this.auth_token_key,
           false
         ),
       },
@@ -212,7 +222,7 @@ export class PostdetailComponent implements OnInit {
   }
   async getUserById(id: number) {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         id: id,
       },
@@ -234,7 +244,7 @@ export class PostdetailComponent implements OnInit {
     this.clicked = true;
     if (this.formComment.valid) {
       var data = {
-        'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+        'secret-key': this.verified_key,
         body: {
           postId: this.id,
           userId: this.user.id,
@@ -275,7 +285,7 @@ export class PostdetailComponent implements OnInit {
   }
   async getCommentByPostId() {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         id: this.id,
       },
@@ -340,7 +350,7 @@ export class PostdetailComponent implements OnInit {
   }
   async deleteComment(commentId, userId) {
     var data = {
-      'secret-key': 'd7sTPQBxmSv8OmHdgjS5',
+      'secret-key': this.verified_key,
       body: {
         commentId: commentId,
         userId: userId,
