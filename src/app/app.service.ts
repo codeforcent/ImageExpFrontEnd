@@ -15,6 +15,8 @@ export class AppService {
   }
 
   async sendRequest(action, data) {
+    console.log(this.demoUrl);
+
     const httpOptions: { headers; observe } = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

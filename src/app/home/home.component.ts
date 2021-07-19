@@ -32,13 +32,13 @@ export class HomeComponent implements OnInit {
     this.http
       .get('assets/config.json', { responseType: 'json' })
       .subscribe((data) => {
-        this.auth_token_key = data[2].authtokenkey;
         this.verified_key = data[0].verifiedkey;
+        this.auth_token_key = data[2].authtokenkey;
       });
   }
 
   async ngOnInit() {
-    await this.delay(500);
+    await this.delay(1000);
     this.getAllPosts();
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
