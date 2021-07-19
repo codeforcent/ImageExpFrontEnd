@@ -107,7 +107,7 @@ export class SearchComponent implements OnInit {
     }
     await this.delay(1000);
     this.listPostsContent = listTempPosts[0];
-    if (this.listPostsContent === undefined) {
+    if (this.listPostsContent === undefined || this.searchContent === '') {
       this.messageService.add({
         key: 'smsg',
         severity: 'error',

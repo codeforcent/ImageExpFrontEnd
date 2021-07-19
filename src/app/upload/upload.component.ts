@@ -104,6 +104,7 @@ export class UploadComponent implements OnInit {
       this.getInforUser();
     } else {
       this.displayPosition = true;
+      this.position = 'top';
       this.checkCookie = true;
     }
   }

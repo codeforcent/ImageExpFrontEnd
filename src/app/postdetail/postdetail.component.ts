@@ -30,7 +30,7 @@ export class PostdetailComponent implements OnInit {
   listOwnerComment;
   disabled;
   checkInfo;
-  checkCookie;
+  checkCookie = true;
   constructor(
     private route: ActivatedRoute,
     private service: AppService,
@@ -42,6 +42,9 @@ export class PostdetailComponent implements OnInit {
     private confirmationService: ConfirmationService
   ) {
     sessionStorage.clear();
+    this.displayPosition = true;
+    this.position = 'top';
+    this.checkCookie = true;
     this.sub = this.route.params.subscribe((params) => {
       this.id = +params['id'];
     });
@@ -49,11 +52,10 @@ export class PostdetailComponent implements OnInit {
       content: ['', [Validators.required]],
     });
     if (this.cookieService.check('auth-token')) {
+      this.checkCookie = false;
       this.getInforUser();
     } else {
-      this.checkCookie = true;
-      this.position = 'top';
-      this.displayPosition = true;
+      this.router.navigate(['/userLogin']);
     }
   }
 
