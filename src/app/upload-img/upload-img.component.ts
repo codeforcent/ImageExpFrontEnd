@@ -115,9 +115,7 @@ export class UploadImgComponent implements OnInit {
         key: 'smsg',
         severity: 'success',
         summary: 'Message',
-        detail: await response.then(
-          (__zone_symbol__value) => __zone_symbol__value.body.response.message
-        ),
+        detail: "Upload image successfully",
       });
       return await response.then(
         (__zone_symbol__value) => __zone_symbol__value.body.response
@@ -127,9 +125,7 @@ export class UploadImgComponent implements OnInit {
         key: 'smsg',
         severity: 'error',
         summary: 'Message',
-        detail: await response.then(
-          (__zone_symbol__value) => __zone_symbol__value.body.response.message
-        ),
+        detail: "Upload image unsuccessfully",
       });
       return null;
     }
