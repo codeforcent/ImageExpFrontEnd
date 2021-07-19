@@ -52,7 +52,8 @@ export class UserProfileComponent implements OnInit {
   delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
-  ngOnInit() {
+  async ngOnInit() {
+    await this.delay(500);
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
     } else {
@@ -74,6 +75,7 @@ export class UserProfileComponent implements OnInit {
     this.email = this.user.email;
     this.avatar = this.user.avatar;
     this.username = this.user.name;
+    console.log(this.username);
     if (this.avatar === '') {
       this.avatar =
         'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png';
@@ -173,7 +175,7 @@ export class UserProfileComponent implements OnInit {
     if (
       ((this.formUserProfile.get('username').value !== '' &&
         this.formUserProfile.get('username').valid) ||
-        this.username !== '') &&
+        (this.username !== '' && this.formUserProfile.get('username').valid)) &&
       this.formUserProfile.get('avatar').value !== this.avatar &&
       this.formUserProfile.get('username').value !== this.username &&
       (this.formUserProfile.get('avatar').value !== '' ||
