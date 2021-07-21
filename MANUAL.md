@@ -8,11 +8,11 @@
 2. Open the terminal on the folder that the file is downloaded on
 3. Run the command `ng serve -o`
 4. Wait for the server to load
-5. On the folder, open src/assets/config.json, and change some settings
-+ verifiedkey is key interacting with backend server
+5. On the folder, open src/config.ts, and change some settings
++ verified_key is key interacting with backend server
 + demoUrl is base url when demo
-+ authtokenkey is key encoding cookie when authorizing
-+ checkbrowserkey is key checking accepted browser for verifying email
++ auth_token_key is key encoding cookie when authorizing
++ check_browser_key is key checking accepted browser for verifying email
 # Run
 1. Open the terminal on the folder that the file is downloaded on
 2. Run the command `ng serve -o`
