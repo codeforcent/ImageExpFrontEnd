@@ -79,9 +79,6 @@ export class ChangePasswordComponent implements OnInit {
       this.router.navigate(['']);
     }
   }
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   async getInforUser() {
     this.user = await this.getUserByEmail();
