@@ -68,9 +68,9 @@ export class UploadComponent implements OnInit {
     this.formUpload = this.fb.group({
       title: ['', [Validators.required, Validators.maxLength(50)]],
       img: ['', [Validators.required]],
-      cates: ['', Validators.required],
+      cates: [''],
       des: ['', Validators.maxLength(250)],
-      keywords: ['', Validators.required],
+      keywords: ['', [Validators.required]],
     });
     if (sessionStorage.getItem('title') !== null) {
       this.formUpload.setValue({
@@ -279,8 +279,13 @@ export class UploadComponent implements OnInit {
     for (var k in this.formUpload.get('keywords').value) {
       listKeywords.push(this.formUpload.get('keywords').value[k].value);
     }
-    var id = +sessionStorage.getItem('id');
-    if (this.formUpload.valid) {
+    var id = this.user.id;
+    console.log(this.formUpload);
+
+    if (
+      this.formUpload.valid &&
+      this.formUpload.get('cates').value.length !== 0
+    ) {
       var data = {
         'secret-key': config.verified_key,
         body: {
@@ -291,7 +296,9 @@ export class UploadComponent implements OnInit {
           keyword: listKeywords.join(','),
         },
       };
+      console.log(data);
       var response = this.service.sendRequest('updatepost', data);
+      console.log(response);
       this.setLoading(response);
       var isSuccess = await response.then(
         (__zone_symbol__value) => __zone_symbol__value.body.success

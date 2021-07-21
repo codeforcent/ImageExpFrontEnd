@@ -78,6 +78,13 @@ export class SearchComponent implements OnInit {
           summary: 'Message',
           detail: 'No results found',
         });
+      } else {
+        this.messageService.add({
+          key: 'smsg',
+          severity: 'success',
+          summary: 'Message',
+          detail: this.listPostCatId.length + ' result(s) found',
+        });
       }
     }
   }
@@ -96,19 +103,15 @@ export class SearchComponent implements OnInit {
         }
       }
     }
-    this.searchByWords(listSymWords)
-      .then((listTempPosts) => {
-        for (var i = 0; i < listTempPosts.length; i++) {
-          if (listTempPosts[i].length === 0) {
-            listTempPosts.splice(i, 1);
-            i--;
-          }
+    this.searchByWords(listSymWords).then((listTempPosts) => {
+      for (var i = 0; i < listTempPosts.length; i++) {
+        if (listTempPosts[i].length === 0) {
+          listTempPosts.splice(i, 1);
+          i--;
         }
-      })
-      .then((listTempPosts) => {
+      }
+      setTimeout(() => {
         this.listPostsContent = listTempPosts[0];
-      })
-      .then(() => {
         if (this.listPostsContent === undefined || this.searchContent === '') {
           this.messageService.add({
             key: 'smsg',
@@ -116,8 +119,16 @@ export class SearchComponent implements OnInit {
             summary: 'Message',
             detail: 'No results found',
           });
+        } else {
+          this.messageService.add({
+            key: 'smsg',
+            severity: 'success',
+            summary: 'Message',
+            detail: this.listPostsContent.length + ' result(s) found',
+          });
         }
-      });
+      }, 600);
+    });
   }
 
   setLoading(promise: Promise<any>) {

@@ -62,7 +62,7 @@ export class GalleryComponent implements OnInit {
       this.displayPosition = true;
     }
 
-    await this.getAllListImages(
+    this.getAllListImages(
       this.getPostedPicturesByUserId(),
       this.getLikedPosts(),
       this.getUploadedPicturesByUserId()

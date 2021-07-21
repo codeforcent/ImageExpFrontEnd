@@ -191,7 +191,8 @@
             *ngIf="
               (formUpload.get('cates')?.errors?.required &&
                 formUpload.get('cates')?.dirty) ||
-              (clicked && formUpload.get('cates')?.pristine)
+              (clicked && formUpload.get('cates')?.pristine) ||
+              formUpload.get('cates').value.length === 0
             "
             class="form-text error-text"
             >Choose at least 1 category</small

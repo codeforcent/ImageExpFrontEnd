@@ -24,14 +24,14 @@ export class PostdetailComponent implements OnInit {
   displayPosition: boolean;
   position: string;
   postUser: any;
-  likeCount: any;
+  likeCount: any = 0;
   formComment: FormGroup;
   clicked = false;
   listComments;
   listOwnerComment;
   disabled;
   checkInfo;
-  checkCookie = true;
+  checkCookie;
   constructor(
     private route: ActivatedRoute,
     private service: AppService,
@@ -43,24 +43,24 @@ export class PostdetailComponent implements OnInit {
     private confirmationService: ConfirmationService
   ) {
     sessionStorage.clear();
-    this.displayPosition = true;
-    this.position = 'top';
-    this.checkCookie = true;
+
     this.sub = this.route.params.subscribe((params) => {
       this.id = +params['id'];
     });
     this.formComment = this.fb.group({
       content: ['', [Validators.required]],
     });
+    if (this.cookieService.check('auth-token')) {
+      this.getInforUser();
+    } else {
+      this.checkCookie = true;
+      this.position = 'top';
+      this.displayPosition = true;
+      this.router.navigate(['/userLogin']);
+    }
   }
 
   async ngOnInit() {
-    if (this.cookieService.check('auth-token')) {
-      this.checkCookie = false;
-      this.getInforUser();
-    } else {
-      this.router.navigate(['/userLogin']);
-    }
     this.post = await this.getPostById();
     this.picture = await this.getPictureById(this.post.picId);
     this.postUser = await this.getUserById(this.post.userId);
