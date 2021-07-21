@@ -4,7 +4,8 @@ import { EventEmitter } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CookieService } from 'ngx-cookie-service';
-import { HttpClient } from '@angular/common/http';
+import { config } from '../../config';
+
 @Component({
   selector: 'app-image',
   templateUrl: './image.component.html',
@@ -28,24 +29,16 @@ export class ImageComponent implements OnInit {
   post;
   picture;
   checkCookie;
-  verified_key;
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private service: AppService,
-    private cookieService: CookieService,
-    private http: HttpClient
+    private cookieService: CookieService
   ) {
-    this.http
-      .get('assets/config.json', { responseType: 'json' })
-      .subscribe((data) => {
-        this.verified_key = data[0].verifiedkey;
-      });
     this.checkCookie = this.cookieService.check('auth-token');
   }
 
   async ngOnInit() {
-    await this.delay(500);
     if (this.modeOverlay === 'search') {
       this.picture = await this.getPictureById(this.item.picId);
     }
@@ -79,14 +72,14 @@ export class ImageComponent implements OnInit {
     var data;
     if (this.modeOverlay === 'user') {
       data = {
-        'secret-key': this.verified_key,
+        'secret-key': config.verified_key,
         body: {
           id: this.item[0].id,
         },
       };
     } else {
       data = {
-        'secret-key': this.verified_key,
+        'secret-key': config.verified_key,
         body: {
           id: this.item.id,
         },
@@ -130,7 +123,7 @@ export class ImageComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: async () => {
         var data = {
-          'secret-key': this.verified_key,
+          'secret-key': config.verified_key,
           body: {
             picId: id,
             userId: this.item.userId,
@@ -173,7 +166,7 @@ export class ImageComponent implements OnInit {
   }
   async addPicture(userId, picture) {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         userId: userId,
         picture: picture,
@@ -186,7 +179,7 @@ export class ImageComponent implements OnInit {
   }
   async getUserById(id: number) {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         id: id,
       },
@@ -208,7 +201,7 @@ export class ImageComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: async () => {
         var data = {
-          'secret-key': this.verified_key,
+          'secret-key': config.verified_key,
           body: {
             postId: this.post.id,
             userId: this.item.userId,
@@ -252,7 +245,7 @@ export class ImageComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: async () => {
         var data = {
-          'secret-key': this.verified_key,
+          'secret-key': config.verified_key,
           body: {
             postId: this.post.id,
             userId: this.item.userId,
@@ -291,7 +284,7 @@ export class ImageComponent implements OnInit {
   }
   async getPictureById(id) {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         id: id,
       },

@@ -5,7 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AppService } from '../app.service';
 import { forkJoin } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { config } from '../../config';
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -24,22 +25,13 @@ export class UserComponent implements OnInit {
   likedImages;
   displayPosition;
   position;
-  auth_token_key;
-  verified_key;
   constructor(
     private vigenereCipherService: VigenereCipherService,
     private router: Router,
     private route: ActivatedRoute,
     private cookieService: CookieService,
-    private service: AppService,
-    private http: HttpClient
+    private service: AppService
   ) {
-    this.http
-      .get('assets/config.json', { responseType: 'json' })
-      .subscribe((data) => {
-        this.verified_key = data[0].verifiedkey;
-        this.auth_token_key = data[2].authtokenkey;
-      });
     this.sub = this.route.params.subscribe((params) => {
       this.id = +params['id'];
     });
@@ -73,11 +65,11 @@ export class UserComponent implements OnInit {
   }
   async getUserByEmail() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         email: this.vigenereCipherService.vigenereCipher(
           this.cookieService.get('auth-token'),
-          this.auth_token_key,
+          config.auth_token_key,
           false
         ),
       },
@@ -98,7 +90,7 @@ export class UserComponent implements OnInit {
   }
   async getUserById(id: number) {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         id: id,
       },
@@ -128,7 +120,7 @@ export class UserComponent implements OnInit {
   }
   async getPostedPicturesByUserId() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         id: this.id,
       },
@@ -156,7 +148,7 @@ export class UserComponent implements OnInit {
   }
   async getPictureById(picId) {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         id: picId,
       },
@@ -176,7 +168,7 @@ export class UserComponent implements OnInit {
   }
   async getLikedPosts() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         userId: this.id,
       },

@@ -2,7 +2,7 @@ import { MessageService } from 'primeng/api';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AppService } from '../app.service';
-import { HttpClient } from '@angular/common/http';
+import { config } from '../../config';
 
 @Component({
   selector: 'app-verifyemail',
@@ -19,20 +19,11 @@ export class VerifyemailComponent implements OnInit {
   verified;
   displayPosition: boolean = false;
   position;
-  verified_key;
-  check_browser_key;
   constructor(
     private fb: FormBuilder,
     private service: AppService,
-    private messageService: MessageService,
-    private http: HttpClient
+    private messageService: MessageService
   ) {
-    this.http
-      .get('assets/config.json', { responseType: 'json' })
-      .subscribe((data) => {
-        this.verified_key = data[0].verifiedkey;
-        this.check_browser_key = data[3].checkbrowserkey;
-      });
     this.formVerifyEmail = this.fb.group({
       email: this.email,
       code: ['', [Validators.required]],
@@ -43,7 +34,7 @@ export class VerifyemailComponent implements OnInit {
   async onSubmitVerifyEmail() {
     if (
       sessionStorage.getItem('242dshY2H2YDU3BU3FDEF') !==
-        this.check_browser_key ||
+        config.check_browser_key ||
       sessionStorage.getItem('242dshY2H2YDU3BU3FDEF') == null
     ) {
       this.position = 'top';
@@ -51,7 +42,7 @@ export class VerifyemailComponent implements OnInit {
     }
     this.clicked = true;
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         email: this.email,
         code: this.formVerifyEmail.get('code').value,
@@ -80,7 +71,7 @@ export class VerifyemailComponent implements OnInit {
   }
   async onSubmitResendCode() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         email: this.email,
       },

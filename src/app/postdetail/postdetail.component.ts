@@ -6,7 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { AppService } from '../app.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
-import { HttpClient } from '@angular/common/http';
+import { config } from '../../config';
 
 @Component({
   selector: 'app-postdetail',
@@ -32,8 +32,6 @@ export class PostdetailComponent implements OnInit {
   disabled;
   checkInfo;
   checkCookie = true;
-  auth_token_key;
-  verified_key;
   constructor(
     private route: ActivatedRoute,
     private service: AppService,
@@ -42,15 +40,8 @@ export class PostdetailComponent implements OnInit {
     private vigenereCipherService: VigenereCipherService,
     private fb: FormBuilder,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private http: HttpClient
+    private confirmationService: ConfirmationService
   ) {
-    this.http
-      .get('assets/config.json', { responseType: 'json' })
-      .subscribe((data) => {
-        this.auth_token_key = data[2].authtokenkey;
-        this.verified_key = data[0].verifiedkey;
-      });
     sessionStorage.clear();
     this.displayPosition = true;
     this.position = 'top';
@@ -83,7 +74,7 @@ export class PostdetailComponent implements OnInit {
   }
   private async countLike() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         postId: this.id,
       },
@@ -96,7 +87,7 @@ export class PostdetailComponent implements OnInit {
 
   private async checkLike() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         postId: this.id,
         userId: this.user.id,
@@ -115,7 +106,7 @@ export class PostdetailComponent implements OnInit {
 
   async getPostById() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         id: this.id,
       },
@@ -145,7 +136,7 @@ export class PostdetailComponent implements OnInit {
   }
   async toggleLike() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         postId: this.id,
         userId: this.user.id,
@@ -156,7 +147,7 @@ export class PostdetailComponent implements OnInit {
   }
   async getPictureById(picId: any) {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         id: picId,
       },
@@ -189,11 +180,11 @@ export class PostdetailComponent implements OnInit {
   }
   async getUserByEmail() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         email: this.vigenereCipherService.vigenereCipher(
           this.cookieService.get('auth-token'),
-          this.auth_token_key,
+          config.auth_token_key,
           false
         ),
       },
@@ -222,7 +213,7 @@ export class PostdetailComponent implements OnInit {
   }
   async getUserById(id: number) {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         id: id,
       },
@@ -244,7 +235,7 @@ export class PostdetailComponent implements OnInit {
     this.clicked = true;
     if (this.formComment.valid) {
       var data = {
-        'secret-key': this.verified_key,
+        'secret-key': config.verified_key,
         body: {
           postId: this.id,
           userId: this.user.id,
@@ -285,7 +276,7 @@ export class PostdetailComponent implements OnInit {
   }
   async getCommentByPostId() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         id: this.id,
       },
@@ -350,7 +341,7 @@ export class PostdetailComponent implements OnInit {
   }
   async deleteComment(commentId, userId) {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         commentId: commentId,
         userId: userId,

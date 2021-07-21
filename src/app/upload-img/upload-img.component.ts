@@ -6,7 +6,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AppService } from '../app.service';
 import { forkJoin } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { HttpClient } from '@angular/common/http';
+import { config } from '../../config';
+
 @Component({
   selector: 'app-upload-img',
   templateUrl: './upload-img.component.html',
@@ -23,23 +24,14 @@ export class UploadImgComponent implements OnInit {
   position: string;
   loading;
   user;
-  auth_token_key;
-  verified_key;
   constructor(
     private messageService: MessageService,
     private vigenereCipherService: VigenereCipherService,
     private router: Router,
     private fb: FormBuilder,
     private service: AppService,
-    private cookieService: CookieService,
-    private http: HttpClient
+    private cookieService: CookieService
   ) {
-    this.http
-      .get('assets/config.json', { responseType: 'json' })
-      .subscribe((data) => {
-        this.verified_key = data[0].verifiedkey;
-        this.auth_token_key = data[2].authtokenkey;
-      });
     this.formUploadPic = this.fb.group({
       pics: [''],
     });
@@ -65,11 +57,11 @@ export class UploadImgComponent implements OnInit {
   }
   async getUserByEmail() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         email: this.vigenereCipherService.vigenereCipher(
           this.cookieService.get('auth-token'),
-          this.auth_token_key,
+          config.auth_token_key,
           false
         ),
       },
@@ -109,7 +101,7 @@ export class UploadImgComponent implements OnInit {
   }
   async addPicture(pic) {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         userId: this.userId,
         picture: pic,

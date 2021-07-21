@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
@@ -6,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
 import { AppService } from '../app.service';
 import { VigenereCipherService } from '../vigenere-cipher.service';
+import { config } from '../../config';
 
 @Component({
   selector: 'app-home',
@@ -19,26 +19,15 @@ export class HomeComponent implements OnInit {
   loading;
   user;
   userId;
-  auth_token_key;
-  verified_key;
   constructor(
     private service: AppService,
     private cookieService: CookieService,
     private vigenereCipherService: VigenereCipherService,
     private router: Router,
-    private messageService: MessageService,
-    private http: HttpClient
-  ) {
-    this.http
-      .get('assets/config.json', { responseType: 'json' })
-      .subscribe((data) => {
-        this.verified_key = data[0].verifiedkey;
-        this.auth_token_key = data[2].authtokenkey;
-      });
-  }
+    private messageService: MessageService
+  ) {}
 
   async ngOnInit() {
-    await this.delay(1000);
     this.getAllPosts();
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
@@ -56,11 +45,11 @@ export class HomeComponent implements OnInit {
   }
   async getUserByEmail() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         email: this.vigenereCipherService.vigenereCipher(
           this.cookieService.get('auth-token'),
-          this.auth_token_key,
+          config.auth_token_key,
           false
         ),
       },
@@ -108,7 +97,7 @@ export class HomeComponent implements OnInit {
   }
   async getPictureById(picId) {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         id: picId,
       },

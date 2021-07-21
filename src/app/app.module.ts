@@ -13,7 +13,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { CookieService } from 'ngx-cookie-service';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import {KeyFilterModule} from 'primeng/keyfilter';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -31,15 +31,14 @@ import { OnlineStatusModule } from 'ngx-online-status';
 import { FileUploadModule } from 'primeng/fileupload';
 import { GalleriaModule } from 'primeng/galleria';
 import { ConnectionServiceModule } from 'ngx-connection-service';
-import {DialogModule} from 'primeng/dialog';
+import { DialogModule } from 'primeng/dialog';
 import { PasswordModule } from 'primeng/password';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
 import { UserComponent } from './user/user.component';
 import { SigninComponent } from './signin/signin.component';
-import {ConfirmPopupModule} from 'primeng/confirmpopup';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
 import { ClickOutsideDirective } from './click-outside.directive';
 import { ImageComponent } from './image/image.component';
@@ -59,7 +58,6 @@ import { PostdetailComponent } from './postdetail/postdetail.component';
     AppComponent,
     HomeComponent,
     HeaderComponent,
-    FooterComponent,
     UserComponent,
     SigninComponent,
     ClickOutsideDirective,
@@ -108,7 +106,7 @@ import { PostdetailComponent } from './postdetail/postdetail.component';
     OnlineStatusModule,
     ConfirmPopupModule,
     PasswordModule,
-    KeyFilterModule
+    KeyFilterModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [JsonPipe, CookieService, MessageService, ConfirmationService],

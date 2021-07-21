@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { VigenereCipherService } from '../vigenere-cipher.service';
 import { AppService } from '../app.service';
 import { CookieService } from 'ngx-cookie-service';
-import { HttpClient } from '@angular/common/http';
+import { config } from '../../config';
 
 @Component({
   selector: 'app-change-password',
@@ -30,23 +30,14 @@ export class ChangePasswordComponent implements OnInit {
   clicked = false;
   loading;
   user;
-  auth_token_key;
-  verified_key;
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
     private router: Router,
     private vigenereCipherService: VigenereCipherService,
     private service: AppService,
-    private cookieService: CookieService,
-    private http: HttpClient
+    private cookieService: CookieService
   ) {
-    this.http
-      .get('assets/config.json', { responseType: 'json' })
-      .subscribe((data) => {
-        this.auth_token_key = data[2].authtokenkey;
-        this.verified_key = data[0].verifiedkey;
-      });
     this.formChangePass = this.fb.group({
       email: this.email,
       password: ['', [Validators.required]],
@@ -99,11 +90,11 @@ export class ChangePasswordComponent implements OnInit {
   }
   async getUserByEmail() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         email: this.vigenereCipherService.vigenereCipher(
           this.cookieService.get('auth-token'),
-          this.auth_token_key,
+          config.auth_token_key,
           false
         ),
       },
@@ -133,7 +124,7 @@ export class ChangePasswordComponent implements OnInit {
       this.email !==
       this.vigenereCipherService.vigenereCipher(
         this.cookieService.get('auth-token'),
-        this.auth_token_key,
+        config.auth_token_key,
         false
       )
     ) {
@@ -146,7 +137,7 @@ export class ChangePasswordComponent implements OnInit {
         this.formChangePass.get('renewpassword').value
     ) {
       var data = {
-        'secret-key': this.verified_key,
+        'secret-key': config.verified_key,
         body: {
           email: this.email,
           password: this.formChangePass.get('password').value,

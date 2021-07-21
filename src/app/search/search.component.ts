@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
 import { AppService } from '../app.service';
-
+import { config } from '../../config';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -24,17 +24,11 @@ export class SearchComponent implements OnInit {
   prevSearchCat;
   searchKey;
   searchCat;
-  verified_key;
   constructor(
-    private http: HttpClient,
     private service: AppService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private http: HttpClient
   ) {
-    this.http
-      .get('assets/config.json', { responseType: 'json' })
-      .subscribe((data) => {
-        this.verified_key = data[0].verifiedkey;
-      });
     this.searchContent = sessionStorage.getItem('key');
     this.searchCategoryId = sessionStorage.getItem('cat');
     sessionStorage.clear();
@@ -178,7 +172,7 @@ export class SearchComponent implements OnInit {
   }
   async getPostsBySearchKey(searchKey) {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         searchKey: searchKey,
       },
@@ -191,7 +185,7 @@ export class SearchComponent implements OnInit {
   }
   async getPostsByCategoryId() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         id: +this.searchCategoryId,
       },

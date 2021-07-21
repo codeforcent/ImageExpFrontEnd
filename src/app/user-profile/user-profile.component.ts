@@ -7,7 +7,7 @@ import { VigenereCipherService } from '../vigenere-cipher.service';
 import { AppComponent } from '../app.component';
 import { CookieService } from 'ngx-cookie-service';
 import { AppService } from '../app.service';
-import { HttpClient } from '@angular/common/http';
+import { config } from '../../config';
 
 @Component({
   selector: 'app-user-profile',
@@ -25,8 +25,6 @@ export class UserProfileComponent implements OnInit {
   clicked = false;
   user;
   loading;
-  auth_token_key;
-  verified_key;
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
@@ -34,15 +32,8 @@ export class UserProfileComponent implements OnInit {
     private router: Router,
     private service: AppService,
     private vigenereCipherService: VigenereCipherService,
-    private cookieService: CookieService,
-    private http: HttpClient
+    private cookieService: CookieService
   ) {
-    this.http
-      .get('assets/config.json', { responseType: 'json' })
-      .subscribe((data) => {
-        this.verified_key = data[0].verifiedkey;
-        this.auth_token_key = data[2].authtokenkey;
-      });
     this.formUserProfile = this.fb.group({
       username: ['', [Validators.required, Validators.maxLength(50)]],
       avatar: '',
@@ -53,7 +44,6 @@ export class UserProfileComponent implements OnInit {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
   async ngOnInit() {
-    await this.delay(500);
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
     } else {
@@ -83,11 +73,11 @@ export class UserProfileComponent implements OnInit {
   }
   async getUserByEmail() {
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         email: this.vigenereCipherService.vigenereCipher(
           this.cookieService.get('auth-token'),
-          this.auth_token_key,
+          config.auth_token_key,
           false
         ),
       },
@@ -143,7 +133,7 @@ export class UserProfileComponent implements OnInit {
       this.email !==
       this.vigenereCipherService.vigenereCipher(
         this.app.cookieService.get('auth-token'),
-        this.auth_token_key,
+        config.auth_token_key,
         false
       )
     ) {
@@ -152,7 +142,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     var data = {
-      'secret-key': this.verified_key,
+      'secret-key': config.verified_key,
       body: {
         email: this.email,
         username: this.formUserProfile.get('username').value,
@@ -164,7 +154,7 @@ export class UserProfileComponent implements OnInit {
       this.formUserProfile.get('username').value === ''
     ) {
       data = {
-        'secret-key': this.verified_key,
+        'secret-key': config.verified_key,
         body: {
           email: this.email,
           username: this.username,
