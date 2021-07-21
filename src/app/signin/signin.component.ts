@@ -146,15 +146,7 @@ export class SigninComponent implements OnInit {
       // }
     }
   }
-  /**
-   * Delay function
-   * @param {number} ms
-   * @return {*}  {Promise<unknown>}
-   * @memberof SigninComponent
-   */
-  delay(ms: number): Promise<unknown> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+
   /**
    * Change loading status
    * @param {Promise<any>} promise

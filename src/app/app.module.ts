@@ -14,7 +14,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { KeyFilterModule } from 'primeng/keyfilter';
-
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -106,7 +105,7 @@ import { PostdetailComponent } from './postdetail/postdetail.component';
     OnlineStatusModule,
     ConfirmPopupModule,
     PasswordModule,
-    KeyFilterModule,
+    KeyFilterModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [JsonPipe, CookieService, MessageService, ConfirmationService],

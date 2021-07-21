@@ -68,9 +68,7 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['']);
     }
   }
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+
   onMouseover(item) {
     this.hoveredItem = item;
   }
@@ -92,7 +90,6 @@ export class HomeComponent implements OnInit {
         images.push(results[0]);
       });
     }
-    await this.delay(1000);
     return images;
   }
   async getPictureById(picId) {

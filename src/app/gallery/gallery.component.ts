@@ -62,16 +62,17 @@ export class GalleryComponent implements OnInit {
       this.displayPosition = true;
     }
 
-    var listOfListPic = await this.getAllListImages(
+    await this.getAllListImages(
       this.getPostedPicturesByUserId(),
       this.getLikedPosts(),
       this.getUploadedPicturesByUserId()
-    );
-    await this.delay(500);
-
-    this.postedImages = listOfListPic.shift();
-    this.likeImages = listOfListPic.shift();
-    this.uploadedImages = listOfListPic.shift();
+    ).then((listOfListPic) => {
+      setTimeout(() => {
+        this.postedImages = listOfListPic.shift();
+        this.likeImages = listOfListPic.shift();
+        this.uploadedImages = listOfListPic.shift();
+      }, 500);
+    });
   }
   async getImages(listId, mode) {
     var images = [];
@@ -189,20 +190,20 @@ export class GalleryComponent implements OnInit {
       return null;
     }
   }
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+
   async updateUploadedPictures(ev) {
     if (ev === true) {
-      var listOfListPic = await this.getAllListImages(
+      this.getAllListImages(
         this.getPostedPicturesByUserId(),
         this.getLikedPosts(),
         this.getUploadedPicturesByUserId()
-      );
-      await this.delay(500);
-      this.postedImages = listOfListPic.shift();
-      this.likeImages = listOfListPic.shift();
-      this.uploadedImages = listOfListPic.shift();
+      ).then((listOfListPic) => {
+        setTimeout(() => {
+          this.postedImages = listOfListPic.shift();
+          this.likeImages = listOfListPic.shift();
+          this.uploadedImages = listOfListPic.shift();
+        }, 500);
+      });
     }
   }
 

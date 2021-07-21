@@ -96,28 +96,30 @@ export class SearchComponent implements OnInit {
         }
       }
     }
-    var listTempPosts = await this.searchByWords(listSymWords);
-    await this.delay(1000);
-    for (var i = 0; i < listTempPosts.length; i++) {
-      if (listTempPosts[i].length === 0) {
-        listTempPosts.splice(i, 1);
-        i--;
-      }
-    }
-    await this.delay(1000);
-    this.listPostsContent = listTempPosts[0];
-    if (this.listPostsContent === undefined || this.searchContent === '') {
-      this.messageService.add({
-        key: 'smsg',
-        severity: 'error',
-        summary: 'Message',
-        detail: 'No results found',
+    this.searchByWords(listSymWords)
+      .then((listTempPosts) => {
+        for (var i = 0; i < listTempPosts.length; i++) {
+          if (listTempPosts[i].length === 0) {
+            listTempPosts.splice(i, 1);
+            i--;
+          }
+        }
+      })
+      .then((listTempPosts) => {
+        this.listPostsContent = listTempPosts[0];
+      })
+      .then(() => {
+        if (this.listPostsContent === undefined || this.searchContent === '') {
+          this.messageService.add({
+            key: 'smsg',
+            severity: 'error',
+            summary: 'Message',
+            detail: 'No results found',
+          });
+        }
       });
-    }
   }
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+
   setLoading(promise: Promise<any>) {
     this.loading = true;
     promise.then(() => (this.loading = false));

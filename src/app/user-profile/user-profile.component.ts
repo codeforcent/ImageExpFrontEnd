@@ -40,9 +40,6 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
   async ngOnInit() {
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();

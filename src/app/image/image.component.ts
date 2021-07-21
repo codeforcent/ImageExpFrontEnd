@@ -54,19 +54,12 @@ export class ImageComponent implements OnInit {
         this.avatar = us.avatar;
       }, 500);
     } else {
-      if (this.search === 'key') {
-        var us = await this.getUserById(this.item.userId);
-        await this.delay(500);
-        this.avatar = us.avatar;
-      } else {
-        var us = await this.getUserById(this.item.userId);
-        await this.delay(500);
-        this.avatar = us.avatar;
+      if (this.search === 'key' || this.search === 'cat') {
+        this.getUserById(this.item.userId).then((us) => {
+          this.avatar = us.avatar;
+        });
       }
     }
-  }
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   }
   async getPostByPicId() {
     var data;

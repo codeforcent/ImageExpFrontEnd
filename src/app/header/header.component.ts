@@ -46,9 +46,7 @@ export class HeaderComponent implements OnInit {
     }
     this.cateList = await this.getAllCategories();
   }
-  delay(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+
   signOut() {
     var data = {
       'secret-key': config.verified_key,
