@@ -73,7 +73,6 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.delay(500);
     if (this.cookieService.check('auth-token')) {
       this.getInforUser();
     } else {
