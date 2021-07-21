@@ -78,7 +78,12 @@
 
           <small
             style="color: red"
-            *ngIf="this.formComment.get('content')?.errors?.required && clicked"
+            *ngIf="
+              (formComment.get('content')?.errors?.required &&
+                clicked &&
+                !commented) ||
+              (formComment.get('content')?.pristine && clicked)
+            "
           >
             Comment is required</small
           >

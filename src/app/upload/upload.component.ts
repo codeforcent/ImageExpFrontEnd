@@ -271,6 +271,7 @@ export class UploadComponent implements OnInit {
     }
   }
   async onUpdate() {
+    this.clicked = true;
     var listCategoryId: number[] = [];
     for (var e in this.formUpload.get('cates').value) {
       listCategoryId.push(this.formUpload.get('cates').value[e].id);
@@ -296,9 +297,7 @@ export class UploadComponent implements OnInit {
           keyword: listKeywords.join(','),
         },
       };
-      console.log(data);
       var response = this.service.sendRequest('updatepost', data);
-      console.log(response);
       this.setLoading(response);
       var isSuccess = await response.then(
         (__zone_symbol__value) => __zone_symbol__value.body.success

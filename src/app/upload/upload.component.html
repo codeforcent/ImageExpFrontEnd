@@ -122,7 +122,7 @@
                 'border-bottom':
                   (formUpload.get('title')?.invalid &&
                     formUpload.get('title')?.touched) ||
-                  (clicked && formUpload.get('title')?.pristine)
+                  (clicked && formUpload.get('title')?.invalid)
                     ? '2px solid red'
                     : '2px solid #aaa'
               }"
@@ -131,7 +131,7 @@
               *ngIf="
                 (formUpload.get('title')?.errors?.required &&
                   formUpload.get('title')?.touched) ||
-                (clicked && formUpload.get('title')?.pristine)
+                (clicked && formUpload.get('title')?.errors?.required)
               "
               class="form-text error-text"
               >Title is required</small
@@ -189,10 +189,8 @@
           </p-multiSelect>
           <small
             *ngIf="
-              (formUpload.get('cates')?.errors?.required &&
-                formUpload.get('cates')?.dirty) ||
               (clicked && formUpload.get('cates')?.pristine) ||
-              formUpload.get('cates').value.length === 0
+              (formUpload.get('cates').value.length === 0 && clicked)
             "
             class="form-text error-text"
             >Choose at least 1 category</small

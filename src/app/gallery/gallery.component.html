@@ -68,6 +68,7 @@
             [hovered]="img === hoveredItem"
             [modeOverlay]="'like'"
             [posted]="true"
+            [userId]="user.id"
             (mouseover)="onMouseover(img)"
             (mouseleave)="onMouseleave()"
             (deleted)="updateUploadedPictures($event)"

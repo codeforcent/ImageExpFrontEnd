@@ -32,6 +32,7 @@ export class PostdetailComponent implements OnInit {
   disabled;
   checkInfo;
   checkCookie;
+  commented;
   constructor(
     private route: ActivatedRoute,
     private service: AppService,
@@ -125,14 +126,16 @@ export class PostdetailComponent implements OnInit {
     }
   }
   async onChangeLikeBtn() {
-    if (this.likeBtn === '../../assets/heart-removebg-preview.png') {
-      this.likeCount++;
-      this.likeBtn = '../../assets/heart__1_-removebg-preview.png';
-    } else {
-      this.likeCount--;
-      this.likeBtn = '../../assets/heart-removebg-preview.png';
+    if (this.user.id === this.postUser.id) {
+      if (this.likeBtn === '../../assets/heart-removebg-preview.png') {
+        this.likeCount++;
+        this.likeBtn = '../../assets/heart__1_-removebg-preview.png';
+      } else {
+        this.likeCount--;
+        this.likeBtn = '../../assets/heart-removebg-preview.png';
+      }
+      this.toggleLike();
     }
-    this.toggleLike();
   }
   async toggleLike() {
     var data = {
@@ -250,6 +253,7 @@ export class PostdetailComponent implements OnInit {
           (__zone_symbol__value) => __zone_symbol__value.body.success
         )) === true
       ) {
+        this.commented = true;
         this.listComments = await this.getCommentByPostId();
         this.listOwnerComment = await this.getListOwnerComment(
           this.listComments
@@ -262,7 +266,9 @@ export class PostdetailComponent implements OnInit {
             (__zone_symbol__value) => __zone_symbol__value.body.response.message
           ),
         });
+        this.formComment.get('content').setValue('');
       } else {
+        this.commented = false;
         this.messageService.add({
           key: 'smsg',
           severity: 'error',

@@ -241,7 +241,7 @@ export class ImageComponent implements OnInit {
           'secret-key': config.verified_key,
           body: {
             postId: this.post.id,
-            userId: this.item.userId,
+            userId: this.userId,
           },
         };
         var response = this.service.sendRequest('togglelike', data);
