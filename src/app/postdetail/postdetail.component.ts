@@ -126,16 +126,14 @@ export class PostdetailComponent implements OnInit {
     }
   }
   async onChangeLikeBtn() {
-    if (this.user.id === this.postUser.id) {
-      if (this.likeBtn === '../../assets/heart-removebg-preview.png') {
-        this.likeCount++;
-        this.likeBtn = '../../assets/heart__1_-removebg-preview.png';
-      } else {
-        this.likeCount--;
-        this.likeBtn = '../../assets/heart-removebg-preview.png';
-      }
-      this.toggleLike();
+    if (this.likeBtn === '../../assets/heart-removebg-preview.png') {
+      this.likeCount++;
+      this.likeBtn = '../../assets/heart__1_-removebg-preview.png';
+    } else {
+      this.likeCount--;
+      this.likeBtn = '../../assets/heart-removebg-preview.png';
     }
+    this.toggleLike();
   }
   async toggleLike() {
     var data = {

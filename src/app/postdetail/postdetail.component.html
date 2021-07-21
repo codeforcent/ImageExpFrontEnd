@@ -105,17 +105,18 @@
             >: {{ comment.comment }}</span
           >
           <div class="flex-end" *ngIf="listOwnerComment[i].id === user.id">
-            <button pButton type="button">
-              <i
-                class="fa fa-trash"
-                (click)="confirmDelete($event, comment.commentID, user.id)"
-              ></i>
+            <button
+              pButton
+              type="button"
+              (click)="confirmDelete($event, comment.commentID, user.id)"
+            >
+              <i class="fa fa-trash"></i>
             </button>
+            <p-confirmPopup
+              [showTransitionOptions]="'100ms'"
+              [hideTransitionOptions]="'100ms'"
+            ></p-confirmPopup>
           </div>
-          <p-confirmPopup
-            [showTransitionOptions]="'100ms'"
-            [hideTransitionOptions]="'100ms'"
-          ></p-confirmPopup>
         </div>
       </div>
     </div>

@@ -174,7 +174,7 @@ p {
 }
 :host ::ng-deep .p-button {
   margin: 0 .5rem 0 0;
-  min-width: 10rem;
+  min-width: 1rem;
 }
 
 p {
