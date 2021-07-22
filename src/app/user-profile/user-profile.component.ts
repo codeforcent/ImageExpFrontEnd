@@ -162,12 +162,14 @@ export class UserProfileComponent implements OnInit {
     if (
       ((this.formUserProfile.get('username').value !== '' &&
         this.formUserProfile.get('username').valid) ||
-        (this.username !== '' && this.formUserProfile.get('username').valid)) &&
+        (this.username !== '' && this.formUserProfile.get('username').valid) ||
+        this.avatar !== '') &&
       this.formUserProfile.get('avatar').value !== this.avatar &&
       this.formUserProfile.get('username').value !== this.username &&
       (this.formUserProfile.get('avatar').value !== '' ||
         this.formUserProfile.get('username').value !== '')
     ) {
+      console.log('upate');
       var response = this.service.sendRequest('updateuser', data);
       this.setLoading(response);
       if (
