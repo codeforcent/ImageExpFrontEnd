@@ -280,7 +280,7 @@ export class UploadComponent implements OnInit {
     for (var k in this.formUpload.get('keywords').value) {
       listKeywords.push(this.formUpload.get('keywords').value[k].value);
     }
-    var id = this.user.id;
+    var id = +sessionStorage.getItem('id');
     console.log(this.formUpload);
 
     if (
