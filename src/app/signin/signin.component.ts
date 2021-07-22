@@ -99,51 +99,51 @@ export class SigninComponent implements OnInit {
     if (this.formSignIn.valid) {
       var response = this.service.sendRequest('loginuser', data);
       this.setLoading(response);
-      // if (
-      //   await response.then(
-      //     (__zone_symbol__value) =>
-      //       __zone_symbol__value.body.response.status !== 'online'
-      //   )
-      // ) {
       if (
-        (await response.then(
-          (__zone_symbol__value) => __zone_symbol__value.body.success
-        )) === true
+        await response.then(
+          (__zone_symbol__value) =>
+            __zone_symbol__value.body.response.status !== 'online'
+        )
       ) {
-        this.email = this.formSignIn.get('email').value;
-        var dt = {
-          'secret-key': config.verified_key,
-          body: {
-            email: this.formSignIn.get('email').value,
-          },
-        };
-        var res = this.service.sendRequest('getverifystate', dt);
-        this.setLoading(res);
         if (
-          (await res.then(
-            (__zone_symbol__value) => __zone_symbol__value.body.response.state
-          )) === false
+          (await response.then(
+            (__zone_symbol__value) => __zone_symbol__value.body.success
+          )) === true
         ) {
-          var dat = {
+          this.email = this.formSignIn.get('email').value;
+          var dt = {
             'secret-key': config.verified_key,
             body: {
-              email: this.email,
+              email: this.formSignIn.get('email').value,
             },
           };
-          var response = this.service.sendRequest('sendverifycode', dat);
-          this.setLoading(response);
-          this.verifiedSignIn = true;
+          var res = this.service.sendRequest('getverifystate', dt);
+          this.setLoading(res);
+          if (
+            (await res.then(
+              (__zone_symbol__value) => __zone_symbol__value.body.response.state
+            )) === false
+          ) {
+            var dat = {
+              'secret-key': config.verified_key,
+              body: {
+                email: this.email,
+              },
+            };
+            var response = this.service.sendRequest('sendverifycode', dat);
+            this.setLoading(response);
+            this.verifiedSignIn = true;
+          } else {
+            sessionStorage.clear();
+            this.verifiedSignIn = false;
+            this.onSignIn();
+          }
         } else {
-          sessionStorage.clear();
-          this.verifiedSignIn = false;
-          this.onSignIn();
+          this.signInSuccess = false;
         }
       } else {
-        this.signInSuccess = false;
+        this.router.navigate(['']);
       }
-      // } else {
-      // this.router.navigate(['']);
-      // }
     }
   }
 
