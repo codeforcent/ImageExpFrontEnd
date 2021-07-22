@@ -312,7 +312,9 @@ export class UploadComponent implements OnInit {
             (__zone_symbol__value) => __zone_symbol__value.body.response.message
           ),
         });
-        this.router.navigate(['/gallery']);
+        setTimeout(() => {
+          this.router.navigate(['/gallery']);
+        }, 1000);
       } else {
         this.messageService.add({
           key: 'smsg',
